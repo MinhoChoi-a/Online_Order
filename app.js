@@ -12,7 +12,6 @@ app.set('view engine', 'pug');
 
 app.use('/', router);
 
-
 var object = [
     {
     date:'0926',

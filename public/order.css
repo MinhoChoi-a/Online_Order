@@ -1,3 +1,27 @@
+html, body {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding: 0;
+   
+}
+
+.container {
+    margin:0;
+    width: 370px;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    
+}
+
+
 button {
     border-style: none;
     width:100%;
@@ -6,7 +30,87 @@ button {
     cursor: pointer;
 }
 
+.first {
+    width: 100%;
+    display: block;
+}
+
 .calendar td {
     width : 50px;
     height: 60px;
 }
+
+.second {
+    max-width: 370px;
+    height: 600px;
+    overflow: auto;
+}
+
+
+.second .item__list {
+    width: 100%;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 5px;
+    margin:0;    
+}
+
+.second .item__list ul{
+    margin: 0;
+    left: 0;    
+    text-align: center;
+    list-style: none;
+    padding:0;
+}
+
+.second .item__list #name h1 {
+    margin: 0;    
+}
+
+
+.second .item__list img {
+    width: 100%;
+}
+
+.second #button {
+    background: grey;
+    height: 50px;
+}
+
+.second button {
+    background : none;
+}
+
+.second .next_button {
+    width: 370px;
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+}
+
+.second .next_button button{
+    background: yellowgreen;    
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    transition: 1s ease-in-out;
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: var(--text_light);
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border-radius: 20px;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
