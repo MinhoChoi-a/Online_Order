@@ -1,5 +1,7 @@
 var today = new Date();
-var nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+31);
+var nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
+
+var today__num = today.getDay();
 
 var fullDate = nextWeek.toISOString().slice(0,10);
 var date = fullDate.split('-');
@@ -27,17 +29,21 @@ let dac__injeol = {
 }
 
 
-
 function updateSchedule() {
     for(var i = 0; i < schedule__date.length; i++ ) {
-        if(schedule__date[i].id < availalbeDate) {
-            schedule__date[i].style.background = 'black';
-            schedule__date[i].setAttribute('disabled', 'disabled');
+        
+        if(today__num == 7) {
+        
+            if(schedule__date[i].id < availalbeDate) {
+                schedule__date[i].style.background = 'black';
+                schedule__date[i].setAttribute('disabled', 'disabled');
+            }
+
         }
 
         if( parseInt((schedule__date[i].id).substr(0,2)) == 1 + parseInt(availalbeDate.substr(0,2))) {
             schedule__date[i].style.background = 'orange';
-            schedule__date[i].setAttribute('disabled', 'disabled');
+            //schedule__date[i].setAttribute('disabled', 'disabled');
         }
 
         if( parseInt((schedule__date[i].id).substr(0,2)) == 2 + parseInt(availalbeDate.substr(0,2))) {
@@ -51,6 +57,8 @@ function updateSchedule() {
 const baking__data = document.querySelector('.data').value;
 
 const calendar_section = document.querySelector('.first');
+
+const item_section = document.querySelector('.second');
 
 const item_list = document.querySelector('.second .item__list');
 const item_list_next = document.querySelector('.second .next_button');
@@ -114,19 +122,22 @@ calendar.addEventListener('click', e => {
         div += content;
         }
 
-        calendar_section.style.display = "none";    
+        calendar_section.style.display = 'none';
 
         item_list.innerHTML = div;
         item_list_next.innerHTML =  "<button>previous</button><button>next</button>"
-    });
 
-    
+        item_section.style.display = 'block';
+    });
 
 let orderObject = [{
     item_name: '',
     amount: '',
     price: '',
 }];
+
+//when click 
+
 
 
 const modal = document.querySelector(".modal");
@@ -139,7 +150,12 @@ function myFunction(p) {
     console.log((amount.firstElementChild).value);
     console.log(title);
 
-    modal.style.display = "block";    
+    modal.style.display = "flex";
+    
+    //need message successfully added
+    //you can add more desert or click the next button
+
+    //add order info to orderObject
     
 }
 
