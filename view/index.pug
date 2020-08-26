@@ -4,11 +4,16 @@ head
   meta(name='viewport' content='width=device-width, initial-scale=1')
   link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
   link(href='https://fonts.googleapis.com/css2?family=Fredoka+One&family=Lato&display=swap' rel='stylesheet')
+  
+  script(
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY"
+      defer)
+    
   link(rel='stylesheet' href='/order.css')
   meta(name='description' content='Web site')
   title Baking Bunny
 
-input.data(type='text' style='display:none' value= baking__data)
+input.data(type='text' style='display:none' value=limit_data)
 
 body
 
@@ -121,11 +126,53 @@ body
 
     section.second
       .item__list
-      .next_button
-      .modal
-        .modal__content
-          h3
-            | Thank you      
+      .nav
+        button#prev__schedule Previous
+        button#next_customer Next
+       
+
+    section.third
+      form(action="")
+        ul
+          li(class="question")
+            label(for="cust_name") Name
+          li(class="answer")
+            input(type="text" id="cust_name" name="name")
+          li(class="question")
+            label(for="insta") Instagram ID
+          li(class="answer")
+            input(type="text" id="insta" name="insta") 
+          li(class="question")
+            label(for="phone") Phone Number or Email
+          li(class="answer")
+            input(type="text" id="phone" name="phone")
+          li(class="question")
+            label(for="allergy") Any food allergies?
+          li(class="answer")
+            input(type="text" id="allergy" name="allergy")
+          li(class="question")
+            | Select Delviery
+          li(class="answer" id="radio")
+            input(type='radio' id='pick' name='pickup' value='pick-up')
+            label Pick Up
+            input(type='radio' id='delivery' name='pickup' value='delivery')
+            label Delivery
+          li.pickup_info            
+          li.delivery_info
+            label(for='address') Put your Postal Code
+            input(type='text' id= 'postal' name='address')
+            button(type='button' id="address_check") Check address
+            div(id="delivery_fee") 
+              p additional $ 5
+            div(id="delivery_free") 
+              p free delivery service
+          
+      .nav
+        button#prev__items Previous
+        button#next_check Next
+    
+    .modal
+      .modal__content
 
 
 script(type='text/javascript' src='/js/order.js')

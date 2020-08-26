@@ -15,21 +15,23 @@ app.use('/', router);
 var object = [
     {
     date:'0926',
-    dac__blac: ['black', 10],
-    dac__mach: ['matcha', 5],
-    dac__lemo: ['lemon', 0],
+    day_num: 6,
+    dac_limit: 50,
+    cake_limit: 3,    
     },
     {
     date:'0927',
-    dac__blac: ['black', 10],
-    dac__mach: ['matcha', 0],
-    dac__lemo: ['lemon', 5],
+    day_num: 7,
+    dac_limit: 50,
+    cake_limit: 3,
     }
 ]
 
+//mongoose get array which dac and cake limit are 0
 
 router.get('/', function (req, res) {
-    res.render('index', {baking__data: object});
+  console.log(object)  ;
+  res.render('index', {limit_data: object});
 });
 
 // catch 404 and forward to error handler
@@ -45,7 +47,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.send('we got the error');
+  res.send(err.message);
 });
 
 module.exports = app;

@@ -1,0 +1,16 @@
+[
+    {
+        "item_name": "SSook",
+        "price": 73.9,
+        "close_date": 1027,
+        "image": "img/blue.jpg"
+    },
+
+    {
+        "item_name": "Flower Rice",
+        "price": 53.6,
+        "close_date": 1025,
+        "image": "img/blue.jpg"
+    }
+
+]

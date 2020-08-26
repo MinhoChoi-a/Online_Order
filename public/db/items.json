@@ -1,0 +1,42 @@
+[
+    {
+        "type": "cake",
+        "item_name": "SSook",
+        "price": 73.9,
+        "close_date": 1027,
+        "image": "blue.jpg"
+    },
+
+    {
+        "type": "cake",
+        "item_name": "Flower_Rice",
+        "price": 53.6,
+        "close_date": 1025,
+        "image": "blue.jpg"
+    },
+
+    {
+        "type": "dacq",
+        "item_name": "black",
+        "price": 3.9,
+        "close_date": 927,
+        "image": "blue.jpg"
+    },
+
+    {
+        "type": "dacq",
+        "item_name": "matcha",
+        "price": 3.6,
+        "close_date": 925,
+        "image": "blue.jpg"
+    },
+
+    {
+        "type": "dacq",
+        "item_name": "lemon",
+        "price": 3.5,
+        "close_date": 920,
+        "image": "blue.jpg"
+    }
+
+]
