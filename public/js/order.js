@@ -11,36 +11,50 @@ const availalbeDate = date[1]+date[2];
 const calendar = document.querySelector('.calendar');
 const schedule__date = document.querySelectorAll('.date');
 
+const sales__limit = document.querySelector('.data').value;
+var limit = JSON.parse(sales__limit);
+
+const sold_out_date = [];
+
 window.onload=updateSchedule;
 
 function updateSchedule() {
+
+    for(var i =0; i <limit.length; i++) {
+        if(limit[i].dac_limit == 0 && limit[i].cake_limit == 0) {
+            sold_out_date.push(limit[i].date);
+        }
+    }
+
+    console.log(sold_out_date);
+
     for(var i = 0; i < schedule__date.length; i++ ) {
         
         if(today__num == 7) {
-        
-            if(schedule__date[i].id < availalbeDate) {
-                schedule__date[i].style.background = 'black';
+                if(schedule__date[i].id < availalbeDate) {
+                schedule__date[i].style.background = 'grey';
                 schedule__date[i].setAttribute('disabled', 'disabled');
             }
         }
 
-        //schedule__date[i].id == sold_out.date => style.background = "something" + disabled
+        if( parseInt((schedule__date[i].id).substr(0,2)) == parseInt(availalbeDate.substr(0,2))) {
+            schedule__date[i].style.background = '#e6dae8';            
+        }
 
         if( parseInt((schedule__date[i].id).substr(0,2)) == 1 + parseInt(availalbeDate.substr(0,2))) {
-            schedule__date[i].style.background = 'orange';            
-        }
-
-        if( parseInt((schedule__date[i].id).substr(0,2)) == 2 + parseInt(availalbeDate.substr(0,2))) {
-            schedule__date[i].style.background = 'red';
+            schedule__date[i].style.background = '#fff8d4';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
+
+        if(sold_out_date.includes(schedule__date[i].id)) {
+            schedule__date[i].style.background = 'grey';
+            schedule__date[i].setAttribute('disabled', 'disabled');
+        }
+
     }
 }
 
 /* schedule select => menu section*/
-
-const sales__limit = document.querySelector('.data').value;
-var limit = JSON.parse(sales__limit);
 
 const calendar_section = document.querySelector('.first');
 
@@ -128,18 +142,16 @@ calendar.addEventListener('click', e => {
                 <li id="image">
                     <img src="/img/${available_data[i].image}"/>
                 </li>
-                <li id="price" style="display:none">
-                    <input type='number' value='${available_data[i].price}'/>       
-                </li>
                 <li id="name">${available_data[i].item_name}</li>
                 <li id="amount">
+                    <p>$ ${available_data[i].price}</p>
                     <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                 </li>
                 <li class="add_button" id="button_${available_data[i].item_name}">
                     <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                 </li>
                 <li class="fix_button" id="fixCart_${available_data[i].item_name}">
-                    <button type="button" onclick="fixCart(this.parentElement)">Change Amount</button>
+                    <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                 </li>
             </ul>`;    
         }
@@ -150,19 +162,17 @@ calendar.addEventListener('click', e => {
             `<ul class="item" id=${available_data[i].type}>
                 <li id="image">
                     <img src="/img/${available_data[i].image}"/>
-                </li>
-                <li id="price" style="display:none">
-                    <input type='number' value='${available_data[i].price}'/>       
-                </li>
+                </li>                
                 <li id="name">${available_data[i].item_name}</li>
                 <li id="amount">
+                    <p>$ ${available_data[i].price}</p>
                     <input type='number' value=1 min=0 max='${today_limit.dac_limit}'/>       
                 </li>
                 <li class="add_button" id="button_${available_data[i].item_name}">
                     <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                 </li>
                 <li class="fix_button" id="fixCart_${available_data[i].item_name}">
-                    <button type="button" onclick="fixCart(this.parentElement)">Change Amount</button>
+                    <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                 </li>
             </ul>`;    
         }
@@ -199,6 +209,7 @@ function getSumOrder() {
     return sum;
 }
 
+const total__check = document.querySelector('.total_check');
 
 const modal = document.querySelector(".modal");
 const modal_content = document.querySelector(".modal__content");
@@ -210,9 +221,10 @@ function addCart(p) {
 
     const amount_class = p.previousElementSibling;
     const title = amount_class.previousElementSibling.innerHTML;
-    const price = parseFloat(amount_class.previousElementSibling.previousElementSibling.firstElementChild.value);
+    const price_array = (amount_class.firstElementChild.innerHTML).split(' ');
+    const price = price_array[1];
     const type = p.parentElement;
-    const amount = parseInt(amount_class.firstElementChild.value);
+    const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
     
     var content = `Succesfully added, you can add other items more, otherwise click the next button below`;
 
@@ -222,6 +234,7 @@ function addCart(p) {
         if(cake_total > today_limit.cake_limit) {
             content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
             cake_total -= amount;
+            amount_class.firstElementChild.nextElementSibling.value = cake_total;
         }
 
         else{
@@ -235,8 +248,15 @@ function addCart(p) {
             var cartButton = document.querySelector(`#button_${title}`);
             cartButton.style.display = "none";
 
+            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price);
+
             var fixCartButton = document.querySelector(`#fixCart_${title}`);
-            fixCartButton.style.display = "block";           
+            fixCartButton.style.display = "block";
+            
+            var sum = getSumOrder()
+            
+            total__check.innerHTML = `<p>Total purchase ${sum}</p>`;
+            total__check.style.height = '30px';
 
         }
     }
@@ -247,6 +267,7 @@ function addCart(p) {
         if(dacq_total > today_limit.dac_limit) {
             content = `Sorry, You cannot put dacq more than ${today_limit.dac_limit}`;
             dacq_total -= amount;
+            amount_class.firstElementChild.nextElementSibling.value = dacq_total;
         }
 
         else{
@@ -260,10 +281,19 @@ function addCart(p) {
             var cartButton = document.querySelector(`#button_${title}`);
             cartButton.style.display = "none";
             
+            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price);
+
             var fixCartButton = document.querySelector(`#fixCart_${title}`);
-            fixCartButton.style.display = "block";           
+            fixCartButton.style.display = "block";
+            
+            var sum = getSumOrder()
+            
+            total__check.innerHTML = `<p>Total purchase ${sum}</p>`;
+            total__check.style.height = '30px';
         }
     }
+
+    console.log(orderObjectArray);
 
     modal_content.innerHTML = content;   
     modal.style.display = "flex";
@@ -281,7 +311,7 @@ function fixCart(p) {
     const amount_class = (p.previousElementSibling).previousElementSibling;
     const title = amount_class.previousElementSibling.innerHTML;
     const type = p.parentElement;
-    const amount = parseInt(amount_class.firstElementChild.value);
+    const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
 
     var content = `Succesfully fixed, you can add other items more, otherwise click the next button below`;
 
@@ -299,10 +329,17 @@ function fixCart(p) {
                     if(cake_total > today_limit.cake_limit) {
                         content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
                         cake_total -= difference;
+                        amount_class.firstElementChild.nextElementSibling.value = cake_total;
                     }
 
                     else {
                         orderObjectArray[i].amount = amount;
+                        amount_class.firstElementChild.innerHTML = "$ "+ (orderObjectArray[i].amount * orderObjectArray[i].price);
+
+                        var sum = getSumOrder()
+            
+                        total__check.innerHTML = `<p>Total purchase ${sum}</p>`;
+                        total__check.style.height = '30px';
                     }
 
                 }
@@ -318,17 +355,29 @@ function fixCart(p) {
         while(!check) {
             if(orderObjectArray[i].item_name === title) {
                 var difference = amount - orderObjectArray[i].amount;
+                
+                console.log(difference);
+                
                 dacq_total += difference;
                 check = true;
 
-                if(cake_total > today_limit.dac_limit) {
+                if(dacq_total > today_limit.dac_limit) {
                     content = `Sorry, You cannot put cake more than ${today_limit.dac_limit}`;
                     dacq_total -= difference;
+                    amount_class.firstElementChild.nextElementSibling.value = dacq_total;
+
+                    console.log(amount_class.firstElementChild.nextElementSibling.value);
                 }
 
                 else {
                     orderObjectArray[i].amount = amount;
-                }
+                    amount_class.firstElementChild.innerHTML = "$ "+ (orderObjectArray[i].amount * orderObjectArray[i].price);
+
+                    var sum = getSumOrder()
+            
+                    total__check.innerHTML = `<p>Total purchase ${sum}</p>`;
+                    total__check.style.height = '30px';
+                 }
 
             }
             i++;

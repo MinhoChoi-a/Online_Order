@@ -1,25 +1,43 @@
+:root {
+    --button: #f4efec;
+    --font_color: #05386b;
+    --font_style_korea: 'Gamja Flower', cursive;
+    --font_style_english: 'Balsamiq Sans', cursive;
+    --beige: #f8e3de;
+    --point: #fff8d4;   
+    --purple: #e6dae8;
+    --yellow: #fffdee;
+    --ivory: #efdcbe;
+}
+
 html, body {
     width: 100%;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     padding: 0;
+    background: var(--beige);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
    
 }
 
 .container {
     margin:0;
-    width: 350px;
-    height: 100%;
+    width: 400px;
+    height: 650px;
     overflow: hidden;
     display: flex;
-    flex-direction: row;
-    justify-content: start;
+    flex-direction: row;    
     align-items: center;
-}
+    box-shadow: 5px 5px 5px #aaaaaa;
+    background: var(--yellow);
+    background-size: cover;   
 
+}
 
 button {
     border-style: none;
@@ -27,14 +45,36 @@ button {
     height: 100%;
     margin: 0;
     cursor: pointer;
-    background: none;
+    border-radius: 20px;
+    font-size: 20px;
+    color: var(--font_color);
+    background: var(--beige);
+
+    font-family: var(--font_style_korea);
 }
 
-ul {
+ul, ul li{
     text-decoration : none;
     list-style: none;
+    background: none;    
+    margin: 0;
+    padding: 0;
 }
 
+h1, p, h3 {
+    color: var(--font_color);
+    font-family: var(--font_style_korea), Arial, Helvetica, sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;
+      }
+    /* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: var(--beige);
+    }
 
 @-webkit-keyframes fadeIn {
 	0% {
@@ -78,21 +118,88 @@ ul {
 	}
 }
 
+@media screen and (max-width: 500px) {
+    .container {
+        margin:0;
+        width: 100%;
+        height: 100vh;
+    }
+}
+
+.welcome {
+    width: 100%;
+    height: 100%;
+    display: block;
+    text-align: center;
+}
+
+.welcome h1 {
+    font-size: 50px;
+}
+
+.welcome p {
+    font-size: 20px;
+}
+
+.welcome a {
+    width: 100%;
+    height: 100%;
+}
+
+.welcome a .welcome__button {
+    width: 200px;
+    height: 50px;
+    background: var(--beige);    
+}
+
 
 .first {
     width: 100%;
+    height: 100%;
     display: block;
     position: relative;
     transition: all 0.5s ease-in;
-
+    margin: 0;
     -webkit-animation-name: fadeIn;
 	-webkit-animation-duration: 0.5s;
 	animation-name: fadeIn;
-	animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    padding: 10px;
+    margin-top: 10px;
 }
 
-.calendar td {
-    width : 50px;
+.first h3 {
+    margin: 5px;
+    font-size: 15px;
+}
+
+.first h1{
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.first button {
+    background: var(--beige);
+}
+
+.first table {
+    width: 100%;    
+}
+
+.first tr {
+    width: 100%;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.first .day td {
+    height: 30px;
+    text-align: center;
+    font-family: var(--font_style_korea);
+}
+
+.first .week td {
     height: 60px;
 }
 
@@ -107,9 +214,10 @@ ul {
     -webkit-animation-name: fadeIn;
 	-webkit-animation-duration: 0.5s;
 	animation-name: fadeIn;
-	animation-duration: 0.5s;
-}
+    animation-duration: 0.5s;
+    padding: 10px;
 
+}
 
 .second .item__list {
     width: 100%;
@@ -117,7 +225,8 @@ ul {
     grid-gap: 5px;
     grid-template-columns: repeat(2, 1fr);
     padding: 0;
-    margin:0;    
+    margin:0;
+    font-family: var(--font_style_korea);    
 }
 
 .second .item__list ul{
@@ -128,25 +237,73 @@ ul {
     padding:0;
 }
 
-.second .item__list #name h1 {
-    margin: 0;    
+.second .item__list ul li #name, .second .item__list ul li #amount{
+    height:25px;
+    padding: 5px
 }
-
 
 .second .item__list img {
     width: 100%;
 }
 
+.second .item__list p {
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+    color: var(--font_color);
+    margin: 0;
+    padding: 0;
+}
+
 .second .add_button {
-    display: block;
-    background: grey;
-    height: 50px;
+    display: block;    
+}
+
+.second button{
+    height: 30px;
+    border-radius: 0;
+    font-size: 15px;
 }
 
 .second .fix_button {
     display: none;
-    background : blueviolet;
-    height: 50px;
+}
+
+.second .fix_button button{
+    background: var(--font_color);
+    color: var(--beige);
+}
+
+.second .item #amount {
+    display: flex;
+    flex-direction: row;    
+}
+
+.second .item #amount input {
+    border: none;
+    text-align: center;
+    width: 150px;    
+}
+
+.total_check {
+    display: block;
+    margin: 0;
+    height: 0;
+    width: 100%;
+    font-size: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    background: rgba(255, 248, 212, 0.8);
+    transition: height 0.5s ease-in-out;
+
+    text-align: center;
+
+}
+
+.total_check p {
+    margin: 0;    
 }
 
 .nav {
@@ -155,20 +312,31 @@ ul {
     bottom: 0;
     left: 0;
     z-index: 9;
-    background: yellowgreen;
-
     display: flex;
-    flex-direction: row;;
+    flex-direction: row;
+    
+}
+
+.nav a {
+    text-align: center;
+    width: 100%;
+    height: 30px;    
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+
 }
 
 .nav button {
     width: 100%;
     height: 30px;
+    font-size: 20px;
+    border-radius: 0;
+    background: rgba(255, 248, 212, 0.8);
+    
 }
 
-
-
-  .third {
+.third {
     width: 100%;
     height: 100%;
     display: none;
@@ -182,12 +350,79 @@ ul {
 	animation-duration: 0.5s;
 }
 
+.third form{
+    height: 100vh;
+    padding: 10px;
+    font-family: var(--font_style_korea);    
+}
+
+.third .question {
+    margin-top: 10px;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.third .answer {
+    margin-bottom: 20px;
+    margin-top: 5px;    
+}
+
+.third .answer input{
+    border: none;
+    border-bottom: 1px solid black;
+    width: 80%;
+    height: 40px;
+    background: var(--point);
+    font-size: 15px;
+    
+}
+
+.third form #radio {
+    width: 100%;
+    height: 50px;
+}
+
+.third form #radio label {
+    float:left;
+    width:120px;
+	margin:0px;
+    background-color:var(--beige);
+    border-radius:5px;
+    border: 1px solid var(--font_color);
+    overflow:auto;    
+    margin-top: 5px;
+}
+
+.third form #radio label span {
+    text-align:center;
+    font-size: 16px;
+    padding:10px 0px;
+    display:block;
+}
+
+.third form #radio label input {
+    position:absolute;
+    top:-20px;
+}
+
+.third form #radio label input:checked + span {
+    background-color:var(--font_color);
+    color: var(--beige);
+}
+
+.third form #radio label {
+    background-color:var(--beige);
+    color:var(--font_color);
+}
+
 .pickup_info {
     position: relative;
-    width: 300px;
+    width: 100%;
+    margin-top: 10px;
     height: 0px;
     transition: height 0.5s ease-in-out;
 }
+
 
 .office_address {
     width: 100%;
@@ -202,22 +437,46 @@ ul {
     left: 0;
     z-index: 9;
     background-color: rgba(0, 0, 0, 0.5);
-  
-    color: white;
-  
+}
+
+.office_address h3 {
+    color: var(--button);
 }
 
 .delivery_info {
     position: relative;
     display: none;
+    margin-top: 15px;
+    height: 150px;
+    width: 100%;
+
+}
+
+.delivery_info label{
+    padding-left: 10px;
+    margin-top: 15px;
+}
+
+.delivery_info input{
+    margin-left: 10px;
+    height: 20px;
+}
+
+.delivery_info button{
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 0;
+    height: 30px;
 }
 
 #delivery_fee {
+    text-align: center;
     position: relative;
     display: none;
 }
 
 #delivery_free {
+    text-align: center;
     position: relative;
     display: none;
 }

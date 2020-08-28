@@ -1,178 +1,23 @@
-doctype html
 head
   meta(charset='utf-8')
   meta(name='viewport' content='width=device-width, initial-scale=1')
   link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
   link(href='https://fonts.googleapis.com/css2?family=Fredoka+One&family=Lato&display=swap' rel='stylesheet')
   
-  script(
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY"
-      defer)
-    
   link(rel='stylesheet' href='/order.css')
   meta(name='description' content='Web site')
   title Baking Bunny
 
-input.data(type='text' style='display:none' value=limit_data)
-
 body
 
-  .container
+    .container
+        section.welcome
+            h1 Baking Bunny
+            P 항상 건강한 디저트를 생각합니다
+            p 하고 싶은 말? 넣고 싶은 이미지?
+            a(href='/order') 
+                button.welcome__button(type='button') Online Order
+            
+                
+                
 
-    section.first
-      h3 Mon = break
-      h3 Tue, Wed = Pick Up
-      h3 Others = Delivery ($50)
-      h1.month September
-      table.calendar
-        tr.day
-          td Sun
-          td Mon
-          td Tue
-          td Wed
-          td Thu
-          td Fri
-          td Sat
-        tr.week
-          td
-            button#0830.date 30
-          td
-            button#0831.date 31
-          td
-            button#0901.date 1
-          td
-            button#0902.date 2
-          td
-            button#0903.date 3
-          td
-            button#0904.date 4
-          td
-            button#0905.date 5
-        tr.week
-          td
-            button#0906.date 6
-          td
-            button#0907.date 7
-          td
-            button#0908.date 8
-          td
-            button#0909.date 9
-          td
-            button#0910.date 10
-          td
-            button#0911.date 11
-          td
-            button#0912.date 12
-        tr.week
-          td
-            button#0913.date 13
-          td
-            button#0914.date 14
-          td
-            button#0915.date 15
-          td
-            button#0916.date 16
-          td
-            button#0917.date 17
-          td
-            button#0918.date 18
-          td
-            button#0919.date 19
-        tr.week
-          td
-            button#0920.date 20
-          td
-            button#0921.date 21
-          td
-            button#0922.date 22
-          td
-            button#0923.date 23
-          td
-            button#0924.date 24
-          td
-            button#0925.date 25
-          td
-            button#0926.date 26
-        tr.week
-          td
-            button#0927.date 27
-          td
-            button#0928.date 28
-          td
-            button#0929.date 29
-          td
-            button#0930.date 30
-          td
-            button#1001.date 1
-          td
-            button#1002.date 2
-          td
-            button#1003.date 3
-        tr.week
-          td
-            button#1004.date 4
-          td
-            button#1005.date 5
-          td
-            button#1006.date 6
-          td
-            button#1007.date 7
-          td
-            button#1008.date 8
-          td
-            button#1009.date 9
-          td
-            button#1010.date 10
-
-    section.second
-      .item__list
-      .nav
-        button#prev__schedule Previous
-        button#next_customer Next
-       
-
-    section.third
-      form(action="")
-        ul
-          li(class="question")
-            label(for="cust_name") Name
-          li(class="answer")
-            input(type="text" id="cust_name" name="name")
-          li(class="question")
-            label(for="insta") Instagram ID
-          li(class="answer")
-            input(type="text" id="insta" name="insta") 
-          li(class="question")
-            label(for="phone") Phone Number or Email
-          li(class="answer")
-            input(type="text" id="phone" name="phone")
-          li(class="question")
-            label(for="allergy") Any food allergies?
-          li(class="answer")
-            input(type="text" id="allergy" name="allergy")
-          li(class="question")
-            | Select Delviery
-          li(class="answer" id="radio")
-            input(type='radio' id='pick' name='pickup' value='pick-up')
-            label Pick Up
-            input(type='radio' id='delivery' name='pickup' value='delivery')
-            label Delivery
-          li.pickup_info            
-          li.delivery_info
-            label(for='address') Put your Postal Code
-            input(type='text' id= 'postal' name='address')
-            button(type='button' id="address_check") Check address
-            div(id="delivery_fee") 
-              p additional $ 5
-            div(id="delivery_free") 
-              p free delivery service
-          
-      .nav
-        button#prev__items Previous
-        button#next_check Next
-    
-    .modal
-      .modal__content
-
-
-script(type='text/javascript' src='/js/order.js')

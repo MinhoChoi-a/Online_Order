@@ -27,7 +27,7 @@
         "type": "dacq",
         "item_name": "matcha",
         "price": 3.6,
-        "close_date": 925,
+        "close_date": 1027,
         "image": "blue.jpg"
     },
 
@@ -35,7 +35,7 @@
         "type": "dacq",
         "item_name": "lemon",
         "price": 3.5,
-        "close_date": 920,
+        "close_date": 1020,
         "image": "blue.jpg"
     }
 

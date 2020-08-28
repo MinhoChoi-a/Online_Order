@@ -14,6 +14,12 @@ app.use('/', router);
 
 var object = [
     {
+    date:'0922',
+    day_num: 2,
+    dac_limit: 0,
+    cake_limit: 0,    
+    },
+    {
     date:'0926',
     day_num: 6,
     dac_limit: 50,
@@ -30,8 +36,12 @@ var object = [
 //mongoose get array which dac and cake limit are 0
 
 router.get('/', function (req, res) {
+  res.render('index');
+});
+
+router.get('/order', function (req, res) {
   console.log(object)  ;
-  res.render('index', {limit_data: object});
+  res.render('order', {limit_data: object});
 });
 
 // catch 404 and forward to error handler
