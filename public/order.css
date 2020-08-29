@@ -45,11 +45,10 @@ button {
     height: 100%;
     margin: 0;
     cursor: pointer;
-    border-radius: 20px;
     font-size: 20px;
     color: var(--font_color);
     background: var(--beige);
-
+    border-radius: 5px;
     font-family: var(--font_style_korea);
 }
 
@@ -182,8 +181,15 @@ h1, p, h3 {
     background: var(--beige);
 }
 
-.first table {
-    width: 100%;    
+.first .calendar__table {
+    width: 100%;
+    position: absolute;
+    bottom: 5;    
+    margin-bottom: 30px;
+}
+
+.first .calendar__table table{
+    width: 95%;
 }
 
 .first tr {
@@ -261,7 +267,7 @@ h1, p, h3 {
 
 .second button{
     height: 30px;
-    border-radius: 0;
+    border-radius: 5px;
     font-size: 15px;
 }
 
@@ -293,8 +299,7 @@ h1, p, h3 {
     font-size: 20px;
     position: fixed;
     top: 0;
-    left: 0;
-    padding: 10px;
+    left: 0;    
     background: rgba(255, 248, 212, 0.8);
     transition: height 0.5s ease-in-out;
 
@@ -360,6 +365,17 @@ h1, p, h3 {
     margin-top: 10px;
     width: 100%;
     padding-left: 10px;
+    color: var(--font_color);
+}
+
+.third .question .time {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.third .question p{
+    margin: 0;
+    color: var(--purple);
 }
 
 .third .answer {
@@ -369,11 +385,12 @@ h1, p, h3 {
 
 .third .answer input{
     border: none;
-    border-bottom: 1px solid black;
-    width: 80%;
-    height: 40px;
-    background: var(--point);
-    font-size: 15px;
+    border-bottom: 1px solid var(--font_color);
+    width: 100%;
+    height: 30px;
+    font-size: 16px;
+    background: none;
+    padding-left: 10px;
     
 }
 
@@ -388,7 +405,7 @@ h1, p, h3 {
 	margin:0px;
     background-color:var(--beige);
     border-radius:5px;
-    border: 1px solid var(--font_color);
+    border: 1px solid var(--yellow);
     overflow:auto;    
     margin-top: 5px;
 }
@@ -396,7 +413,7 @@ h1, p, h3 {
 .third form #radio label span {
     text-align:center;
     font-size: 16px;
-    padding:10px 0px;
+    padding: 5px 0px;
     display:block;
 }
 
@@ -454,19 +471,26 @@ h1, p, h3 {
 
 .delivery_info label{
     padding-left: 10px;
-    margin-top: 15px;
+    margin-top: 5px;
+    height: 25px;
 }
 
 .delivery_info input{
     margin-left: 10px;
-    height: 20px;
+    padding-left: 10px;
+    margin-top: 5px;
+    height: 25px;
+    width: 150px;
+    border-radius: 5px;
+    border: 1px solid var(--font_color);
 }
 
 .delivery_info button{
     margin-top: 10px;
     width: 100%;
-    border-radius: 0;
+    border-radius: 5px;
     height: 30px;
+    font-size: 16px;    
 }
 
 #delivery_fee {
@@ -481,6 +505,68 @@ h1, p, h3 {
     display: none;
 }
 
+#delivery_error {
+    text-align: center;
+    position: relative;
+    display: none;
+}
+
+.fourth {
+    width: 100%;
+    height: 100%;
+    display: none;
+    overflow: auto;
+    position: relative;
+    transition: all 0.5s ease-in;
+    padding: 10px;
+
+    -webkit-animation-name: fadeIn;
+	-webkit-animation-duration: 0.5s;
+	animation-name: fadeIn;
+	animation-duration: 0.5s;
+}
+
+.fourth h1{
+    font-size: 20px;
+    margin: 0;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.fourth p {
+    font-size: 15px;
+    margin: 10px;;
+}
+
+.fourth table {
+    font-family: var(--font_style_korea);
+}
+
+.fourth table #head{
+    text-align: center;
+}
+
+.fourth table td{
+    height: 30px;
+}
+
+.fourth table input{
+    background: var(--beige);
+    border-radius: 5px;
+    padding-left: 10px;
+    border: none;
+    color: var(--font_color);
+    font-size: 15px;
+}
+
+.fourth tr{
+    width: 100%;
+}
+
+.fourth .confirmation_order input{
+    width: 100%;
+    text-align: center;
+}
 
 
 .modal {
@@ -503,9 +589,11 @@ h1, p, h3 {
   
   /* Modal Content/Box */
   .modal__content {
-    background-color: white;
+    background-color: rgba(255, 248, 212, 0.9);
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border-radius: 20px;
     width: 80%; /* Could be more or less, depending on screen size */
+    font-family: var(--font_style_korea);
+    text-align: center;
   }

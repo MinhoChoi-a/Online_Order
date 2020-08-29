@@ -3,7 +3,7 @@
         "type": "cake",
         "item_name": "SSook",
         "price": 73.9,
-        "close_date": 1027,
+        "close_date": 20201027,
         "image": "blue.jpg"
     },
 
@@ -11,7 +11,7 @@
         "type": "cake",
         "item_name": "Flower_Rice",
         "price": 53.6,
-        "close_date": 1025,
+        "close_date": 20201025,
         "image": "blue.jpg"
     },
 
@@ -19,7 +19,7 @@
         "type": "dacq",
         "item_name": "black",
         "price": 3.9,
-        "close_date": 927,
+        "close_date": 2020927,
         "image": "blue.jpg"
     },
 
@@ -27,7 +27,7 @@
         "type": "dacq",
         "item_name": "matcha",
         "price": 3.6,
-        "close_date": 1027,
+        "close_date": 20201027,
         "image": "blue.jpg"
     },
 
@@ -35,7 +35,7 @@
         "type": "dacq",
         "item_name": "lemon",
         "price": 3.5,
-        "close_date": 1020,
+        "close_date": 20201020,
         "image": "blue.jpg"
     }
 

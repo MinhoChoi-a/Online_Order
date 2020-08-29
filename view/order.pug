@@ -23,106 +23,107 @@ body
       h3 무료 딜리버리 서비스는 $50 이상 구매 하셨을 때 목금토에만 가능합니다
       h3 거리가 너무 먼 경우, 추가 딜리버리 요금이 있습니다.
       h3 요일 마다 주문 가능한 수량이 일부 다릅니다.
-      h1.month September
-      table.calendar
-        tr.day
-          td Sun
-          td Mon
-          td Tue
-          td Wed
-          td Thu
-          td Fri
-          td Sat
-        tr.week
-          td
-            button#0830.date 30
-          td
-            button#0831.date 31
-          td
-            button#0901.date 1
-          td
-            button#0902.date 2
-          td
-            button#0903.date 3
-          td
-            button#0904.date 4
-          td
-            button#0905.date 5
-        tr.week
-          td
-            button#0906.date 6
-          td
-            button#0907.date 7
-          td
-            button#0908.date 8
-          td
-            button#0909.date 9
-          td
-            button#0910.date 10
-          td
-            button#0911.date 11
-          td
-            button#0912.date 12
-        tr.week
-          td
-            button#0913.date 13
-          td
-            button#0914.date 14
-          td
-            button#0915.date 15
-          td
-            button#0916.date 16
-          td
-            button#0917.date 17
-          td
-            button#0918.date 18
-          td
-            button#0919.date 19
-        tr.week
-          td
-            button#0920.date 20
-          td
-            button#0921.date 21
-          td
-            button#0922.date 22
-          td
-            button#0923.date 23
-          td
-            button#0924.date 24
-          td
-            button#0925.date 25
-          td
-            button#0926.date 26
-        tr.week
-          td
-            button#0927.date 27
-          td
-            button#0928.date 28
-          td
-            button#0929.date 29
-          td
-            button#0930.date 30
-          td
-            button#1001.date 1
-          td
-            button#1002.date 2
-          td
-            button#1003.date 3
-        tr.week
-          td
-            button#1004.date 4
-          td
-            button#1005.date 5
-          td
-            button#1006.date 6
-          td
-            button#1007.date 7
-          td
-            button#1008.date 8
-          td
-            button#1009.date 9
-          td
-            button#1010.date 10
+      div.calendar__table
+        h1.month September
+        table.calendar
+          tr.day
+            td Sun
+            td Mon
+            td Tue
+            td Wed
+            td Thu
+            td Fri
+            td Sat
+          tr.week
+            td
+              button#20200830.date 30
+            td
+              button#20200831.date 31
+            td
+              button#20200901.date 1
+            td
+              button#20200902.date 2
+            td
+              button#20200903.date 3
+            td
+              button#20200904.date 4
+            td
+              button#20200905.date 5
+          tr.week
+            td
+              button#20200906.date 6
+            td
+              button#20200907.date 7
+            td
+              button#20200908.date 8
+            td
+              button#20200909.date 9
+            td
+              button#20200910.date 10
+            td
+              button#20200911.date 11
+            td
+              button#20200912.date 12
+          tr.week
+            td
+              button#20200913.date 13
+            td
+              button#20200914.date 14
+            td
+              button#20200915.date 15
+            td
+              button#20200916.date 16
+            td
+              button#20200917.date 17
+            td
+              button#20200918.date 18
+            td
+              button#20200919.date 19
+          tr.week
+            td
+              button#20200920.date 20
+            td
+              button#20200921.date 21
+            td
+              button#20200922.date 22
+            td
+              button#20200923.date 23
+            td
+              button#20200924.date 24
+            td
+              button#20200925.date 25
+            td
+              button#20200926.date 26
+          tr.week
+            td
+              button#20200927.date 27
+            td
+              button#20200928.date 28
+            td
+              button#20200929.date 29
+            td
+              button#20200930.date 30
+            td
+              button#20201001.date 1
+            td
+              button#20201002.date 2
+            td
+              button#20201003.date 3
+          tr.week
+            td
+              button#20201004.date 4
+            td
+              button#20201005.date 5
+            td
+              button#20201006.date 6
+            td
+              button#20201007.date 7
+            td
+              button#20201008.date 8
+            td
+              button#20201009.date 9
+            td
+              button#20201010.date 10
 
     section.second
       .total_check
@@ -141,11 +142,11 @@ body
           li(class="answer")
             input(type="text" id="cust_name" name="name")
           li(class="question")
-            label(for="insta") Instagram ID
+            label(for="insta") Instagram ID or Email
           li(class="answer")
             input(type="text" id="insta" name="insta") 
           li(class="question")
-            label(for="phone") Phone Number or Email
+            label(for="phone") Phone Number
           li(class="answer")
             input(type="text" id="phone" name="phone")
           li(class="question")
@@ -154,6 +155,9 @@ body
             input(type="text" id="allergy" name="allergy")
           li(class="question")
             | Select Delviery
+            div.time
+              p - Pickup is avaiable after 2 PM
+              p - Delivery is avaialble between 5 to 7 PM
           li(id="radio")
             label
               input(type='radio' id='pick' name='pickup' value='pick-up')
@@ -166,15 +170,30 @@ body
             label(for='address') Put your Postal Code
             input(type='text' id= 'postal' name='address')
             button(type='button' id="address_check") Check address
-            div(id="delivery_fee") 
-              p additional $ 5
+            div(id="delivery_fee")               
             div(id="delivery_free") 
               p free delivery service
+            div(id="delivery_error")
+              p please put the right postal code   
           
       .nav
         button#prev__items Previous
-        button#next_check Next
+        button#next_check Check Out
     
+    section.fourth
+      
+      h1 Check Order
+      p if you want to change something, you can go to the prior menu with previous button
+
+      form(method='POST' action="")
+        div(class='form-group')
+          table.confirmation_customer
+          table.confirmation_order
+        
+        .nav
+          button(type="button")#prev__customer Previous
+          button(type="submit" onsubmit="return onSubmit()")#next_check Confirmation
+          
     .modal
       .modal__content
 

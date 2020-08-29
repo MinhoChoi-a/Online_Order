@@ -8,8 +8,13 @@
     "serverstart": "DEBUG=test_rental:* npm run devstart"
   },
   "dependencies": {
+    "async": "^3.2.0",
+    "body-parser": "^1.19.0",
+    "csv-parser": "^2.3.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.10.2",
     "pug": "^3.0.0"
   },
   "devDependencies": {

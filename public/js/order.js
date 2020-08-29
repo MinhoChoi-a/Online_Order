@@ -6,13 +6,16 @@ var today__num = today.getDay();
 var nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
 var fullDate = nextWeek.toISOString().slice(0,10);
 var date = fullDate.split('-');
-const availalbeDate = date[1]+date[2];
+console.log(date);
+const availalbeDate = date[0]+date[1]+date[2];
 
 const calendar = document.querySelector('.calendar');
 const schedule__date = document.querySelectorAll('.date');
 
 const sales__limit = document.querySelector('.data').value;
 var limit = JSON.parse(sales__limit);
+
+console.log(limit);
 
 const sold_out_date = [];
 
@@ -21,7 +24,7 @@ window.onload=updateSchedule;
 function updateSchedule() {
 
     for(var i =0; i <limit.length; i++) {
-        if(limit[i].dac_limit == 0 && limit[i].cake_limit == 0) {
+        if(limit[i].dacq_limit == 0 && limit[i].cake_limit == 0) {
             sold_out_date.push(limit[i].date);
         }
     }
@@ -37,11 +40,11 @@ function updateSchedule() {
             }
         }
 
-        if( parseInt((schedule__date[i].id).substr(0,2)) == parseInt(availalbeDate.substr(0,2))) {
+        if( parseInt((schedule__date[i].id).substring(4,6)) == parseInt(availalbeDate.substring(4,6))) {
             schedule__date[i].style.background = '#e6dae8';            
         }
 
-        if( parseInt((schedule__date[i].id).substr(0,2)) == 1 + parseInt(availalbeDate.substr(0,2))) {
+        if( parseInt((schedule__date[i].id).substring(4,6)) == 1 + parseInt(availalbeDate.substring(4,6))) {
             schedule__date[i].style.background = '#fff8d4';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
@@ -74,6 +77,7 @@ xmlhttp.send();
 
 var today_limit = '';
 var order_day_num = ''
+var order_day = '';
 
 calendar.addEventListener('click', e => {
     
@@ -88,16 +92,22 @@ calendar.addEventListener('click', e => {
     today_limit = '';
 
     const targetWork = e.target.closest('button');
+    order_day = targetWork.id;
 
     var check = true;
     var i=0;
     
+    console.log(limit[i].date);
+
     while(check) {
-        if(limit[i].date == targetWork.id) {
+        if(parseInt(limit[i].date) == parseInt(targetWork.id)) {
             check = false;
             today_limit = limit[i];
             order_day_num = limit[i].day_num;
         }
+        console.log(limit[i].date);
+        console.log(targetWork.id);
+        console.log(i);
         i++;
     }
     
@@ -203,10 +213,13 @@ function getSumOrder() {
     console.log(orderObjectArray);
 
     for(var i =1; i < orderObjectArray.length; i++) {
-        sum += orderObjectArray[i].amount * orderObjectArray[i].price;
+        sum += (orderObjectArray[i].amount) * (orderObjectArray[i].price);
+        console.log(sum);
     }
 
-    return sum;
+    console.log(sum);
+
+    return parseFloat(sum.toFixed(1));
 }
 
 const total__check = document.querySelector('.total_check');
@@ -222,7 +235,7 @@ function addCart(p) {
     const amount_class = p.previousElementSibling;
     const title = amount_class.previousElementSibling.innerHTML;
     const price_array = (amount_class.firstElementChild.innerHTML).split(' ');
-    const price = price_array[1];
+    const price = parseFloat(price_array[1]).toFixed(2);
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
     
@@ -248,7 +261,7 @@ function addCart(p) {
             var cartButton = document.querySelector(`#button_${title}`);
             cartButton.style.display = "none";
 
-            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price);
+            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price).toFixed(1);
 
             var fixCartButton = document.querySelector(`#fixCart_${title}`);
             fixCartButton.style.display = "block";
@@ -281,7 +294,7 @@ function addCart(p) {
             var cartButton = document.querySelector(`#button_${title}`);
             cartButton.style.display = "none";
             
-            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price);
+            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price).toFixed(1);
 
             var fixCartButton = document.querySelector(`#fixCart_${title}`);
             fixCartButton.style.display = "block";
@@ -334,7 +347,7 @@ function fixCart(p) {
 
                     else {
                         orderObjectArray[i].amount = amount;
-                        amount_class.firstElementChild.innerHTML = "$ "+ (orderObjectArray[i].amount * orderObjectArray[i].price);
+                        amount_class.firstElementChild.innerHTML = "$ "+ (orderObjectArray[i].amount * orderObjectArray[i].price).toFixed(1);
 
                         var sum = getSumOrder()
             
@@ -371,7 +384,7 @@ function fixCart(p) {
 
                 else {
                     orderObjectArray[i].amount = amount;
-                    amount_class.firstElementChild.innerHTML = "$ "+ (orderObjectArray[i].amount * orderObjectArray[i].price);
+                    amount_class.firstElementChild.innerHTML = "$ "+ (orderObjectArray[i].amount * orderObjectArray[i].price).toFixed(1);
 
                     var sum = getSumOrder()
             
@@ -406,14 +419,29 @@ const delivery_info = document.querySelector('.delivery_info');
 
 next_customer_button.addEventListener('click', e => {
 
-    item_section.style.display = 'none';
-    customer_section.style.display = 'block';
-
     var sumOrder = getSumOrder();
+
+    console.log(sumOrder);
+
+    if(sumOrder == null || sumOrder == '' || sumOrder == 0) {
+    
+        var content = "You selected nothing"
+        modal_content.innerHTML = content;   
+        modal.style.display = "flex";
+
+    }
+
+    else {
 
     if (sumOrder < 50) {
         delivery_button.checked = false;
         delivery_info.style.display = "none";
+    }
+
+        item_section.style.display = 'none';
+        customer_section.style.display = 'block';
+
+
     }
 
 })
@@ -498,12 +526,22 @@ const address_check = document.querySelector('#address_check');
 const post_code = document.querySelector('#postal');
 const delivery_fee = document.querySelector('#delivery_fee');
 const delivery_free = document.querySelector('#delivery_free');
+const delivery_error = document.querySelector('#delivery_error');
+
+var address_check_validation = true;
+
+post_code.addEventListener('focus', e=> {
+    address_check_validation = false;
+});
 
 address_check.addEventListener('click', e=> {
     e.preventDefault;
 
+    address_check_validation = true;
+
     delivery_free.style.display = 'none';
     delivery_fee.style.display = 'none';
+    delivery_error.style.display = 'none';
 
     var code = post_code.value;
 
@@ -539,12 +577,14 @@ address_check.addEventListener('click', e=> {
             var city = data.results[0].address_components[2].short_name;
             //might need so do split ex) Northwest Calgary
             
+            city = city.split(' ');
+
             var content = '';
 
             console.log(distance);
 
-            if(distance > 7500) {
-                if(city != 'Calgary') {
+            if(distance > 5000) {
+                if(!city.includes('Calgary')) {
                     
                     content = "Sorry this place is not available";
                     post_code.value = null;
@@ -554,10 +594,38 @@ address_check.addEventListener('click', e=> {
    
                 }
 
-                else {
+                else if(distance < 10000) {
+                    delivery_fee.innerHTML = "<p> $3 additional charge </p>" ;
+                    delivery_fee.style.display = 'block';
+                    customer_delivery_fee = 3;
+                }
+
+                else if(distance < 15000) {
+                    delivery_fee.innerHTML = "<p> $5 additional charge </p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 5;
                 }
+
+                else if(distance < 20000) {
+                    delivery_fee.innerHTML = "<p> $7 additional charge </p>";
+                    delivery_fee.style.display = 'block';
+                    customer_delivery_fee = 7;
+                }
+
+                else if(distance < 25000) {
+                    delivery_fee.innerHTML = "<p> $10 additional charge </p>";
+                    delivery_fee.style.display = 'block';
+                    customer_delivery_fee = 10;
+                }
+
+                else {
+                    content = "Sorry this place is not available";
+                    post_code.value = null;
+                    modal_content.innerHTML = content;   
+                    modal.style.display = "flex";
+                    customer_delivery_fee = 0;
+                }
+
             }
 
             else {
@@ -566,8 +634,11 @@ address_check.addEventListener('click', e=> {
                 customer_delivery_fee = 0;
             }
         })
-
-      
+    })
+    .catch(error => {
+        post_code.value = null;
+        delivery_error.style.display = 'block';
+        customer_delivery_fee = 0;
     });
 })
 
@@ -589,6 +660,7 @@ var customer_info = {
     address: '',
 }
 
+const confirmation_section = document.querySelector('.fourth');
 
 next_check_button.addEventListener('click', e =>{
 
@@ -614,6 +686,12 @@ next_check_button.addEventListener('click', e =>{
         if(post_code.value != null && post_code.value != '') {
             delivery = 'delivery';
             address = post_code.value;
+
+            if(!address_check_validation) {
+                error_check.check = true;
+                error_check.message = 'you should click check address button';    
+            }
+
         }
 
         else {
@@ -631,23 +709,20 @@ next_check_button.addEventListener('click', e =>{
     console.log(name);
     console.log(phone);
 
-    if(name == null || phone == null || name == '' || phone == '' || name == 0 || phone == 0) {
+    if(name == null || phone == null || name == '' || phone == '' || name == 0 || phone == 0 ||
+        insta == null || insta == '' || allergy == null || allergy == '') {
         error_check.check = true;
-        error_check.message = "name and phone should not be empty";
+        error_check.message = "please write all information";
     }
 
     if(error_check.check == false) {
 
         customer_info = {name, insta, phone, allergy, delivery, address};
 
-        console.log(customer_info);
-        console.log(orderObjectArray);
-        console.log(customer_delivery_fee);
-
-        //what if users type the address, but didn't click the 'check address'
-        //if postal code 'focus' => check address unactivated
-        //check address button should be activated
-
+        customer_section.style.display = 'none';
+        confirmation_section.style.display = 'block';
+        confirmation(customer_info, orderObjectArray, customer_delivery_fee);
+        
     }
 
     else {
@@ -660,12 +735,60 @@ next_check_button.addEventListener('click', e =>{
 
 })
 
+var day_list = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-//show summary of order
-//can change the number of items under today_limit
-//nav => previous / confirm
+const customer_table = document.querySelector('.confirmation_customer');
+const order_table = document.querySelector('.confirmation_order');
 
-//press confirm
-//send e-mail
-//make end_modal
-//Thank you => click button => main page or baking bunny insta
+const prev_custom_button = document.querySelector('#prev__customer');
+
+function confirmation(cust, ord, deliv) {
+
+    var order_schedule = order_day.substring(4,6) + " / " + order_day.substring(6,8) + " "+ day_list[order_day_num - 1];
+
+    var cust_info = 
+    `<tr><td id="head">Schedule</td><td id="content"><input type="text" name="schedule" value="${order_schedule}" readonly/></td>`+
+    `<tr><td id="head">Name</td><td id="content"><input type="text" name="name" value="${cust.name}" readonly/></td>`+
+    `<tr><td id="head">Insta ID / Email</td><td id="content"><input type="text" name="insta" value="${cust.insta}" readonly/></td>`+
+    `<tr><td id="head">Phone Number</td><td id="content"><input type="text" name="phone" value="${cust.phone}" readonly/></td>`+
+    `<tr><td id="head">Allergy</td><td id="content"><input type="text" name="allergy" value="${cust.allergy}" readonly/></td>`+
+    `<tr><td id="head">Delivery Option</td><td id="content"><input type="text" name="deliveryOption" value="${cust.delivery}" readonly/></td>`;
+
+    if(cust.delivery == 'delivery') {
+        cust_info += `<tr><td id="head">Address</td><td id="content"><input type="text" name="address" value="${cust.address}" readonly/></td>`;
+    }
+
+    customer_table.innerHTML = cust_info;
+
+    var order_info = "<tr><td id='head'>Product</td><td id='head'>Quantity</td><td id='head'>Price</td>";
+
+    for(var i =1; i<ord.length; i++) {
+
+        var div = 
+        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${ord[i].price*ord[i].amount}" readonly/></td>`;
+
+        order_info += div;
+    }
+
+    var total_sum = getSumOrder();
+
+    if(deliv > 0) {
+        order_info +=
+        `<tr><td id="head" colspan=2>Delivery Fee</td><td id="price"><input type="text" name="delivery_fee" value="${deliv}" readonly/></td>`;
+
+        total_sum += parseInt(deliv);
+    }
+
+    order_info += `<tr><td id="head" colspan=2>Total($)</td><td id="price"><input type="text" name="total_sum" value="${total_sum}" readonly/></td>`;
+
+    order_table.innerHTML = order_info;   
+
+}
+
+prev_custom_button.addEventListener('click', e=> {
+    
+    confirmation_section.style.display = 'none';
+    customer_section.style.display = 'block';
+});
+
+
