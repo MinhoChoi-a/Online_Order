@@ -30,29 +30,40 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const Limit = require('./models/limit');
 const Customer = require('./models/customer');
 const Sales = require('./models/sales');
+const { Console } = require('console');
 
 app.use('/', router);
 
-var cake_list = [];
-var dacq_list = [];
 var cake_num = 0;
 var dacq_num = 0;
 
-for(var i =0; i < item_list.length; i++) {
-  if(item_list[i].type == 'cake') {
-    cake_list.push(item_list[i].item_name);
-  }
-
-  else if(item_list[i].type == 'dacq') {
-    dacq_list.push(item_list[i].item_name);
-  }
-}
-
+var cake_list = [];
+var dacq_list = [];
 
 //mongoose get array which dac and cake limit are 0
 
 router.get('/', function (req, res) {
+  
+  cake_list = [];
+  dacq_list = [];
+
+  for(var i =0; i < item_list.length; i++) {
+    if(item_list[i].type == 'cake') {
+      cake_list.push(item_list[i].item_name);
+    }
+  
+    else if(item_list[i].type == 'dacq') {
+      dacq_list.push(item_list[i].item_name);
+    }
+  }
+  
   res.render('index');
+});
+
+router.get('/end', function (req, res) {
+
+  res.render('end');
+
 });
 
 router.get('/order', function (req, res) {
@@ -81,9 +92,14 @@ router.get('/order', function (req, res) {
 
 router.post('/order', async function (req, res) {
 
+  cake_num = 0;
+  dacq_num = 0;
+
   var date = req.body.schedule;
   date = date.split(' ');
-  date = date[0]+date[2];
+  date = '2020'+date[0]+date[2];
+
+  console.log(date);
 
   try{
     let order_info = [];
@@ -114,21 +130,21 @@ router.post('/order', async function (req, res) {
 
         while(i < order_info.length-2) {
           let item = {
-            name: order_info[i],
+            product: order_info[i],
             amount: order_info[++i],
             price: order_info[++i],
           }
 
-          if(dacq_list.includes(item.name)) {
-            dacq_num += item.amount;
+          if(dacq_list.includes(item.product)) {
+            dacq_num += parseInt(item.amount);
           }
 
-          if(cake_list.includes(item.name)) {
-            cake_num += item.amount;
+          if(cake_list.includes(item.product)) {
+            cake_num += parseInt(item.amount);
           }
 
           sold_content +=
-          `<tr><td>${item.name}</td><td>${item.amount}</td><td>${item.price}</td></tr>`;
+          `<tr><td>${item.product}</td><td>${item.amount}</td><td>${item.price}</td></tr>`;
 
           sold_items.push(item);
 
@@ -160,21 +176,21 @@ router.post('/order', async function (req, res) {
 
         while(i < order_info.length-1) {
           let item = {
-            name: order_info[i],
+            product: order_info[i],
             amount: order_info[++i],
             price: order_info[++i],
           }
 
-          if(dacq_list.includes(item.name)) {
-            dacq_num += item.amount;
+          if(dacq_list.includes(item.product)) {
+            dacq_num += parseInt(item.amount);
           }
 
-          if(cake_list.includes(item.name)) {
-            cake_num += item.amount;
+          if(cake_list.includes(item.product)) {
+            cake_num += parseInt(item.amount);
           }
 
           sold_content +=
-          `<tr><td>${item.name}</td><td>${item.amount}</td><td>${item.price}</td></tr>`;
+          `<tr><td>${item.product}</td><td>${item.amount}</td><td>${item.price}</td></tr>`;
 
           sold_items.push(item);
 
@@ -187,7 +203,6 @@ router.post('/order', async function (req, res) {
       }
 
   let final_content = email_content + sold_content + "</div></body>";
-
   
   const comeback_user = await Customer.findOne({$and: [{name: order_info[1]},{phone: order_info[3]}]});
 
@@ -200,22 +215,82 @@ router.post('/order', async function (req, res) {
             allergy: order_info[4]            
           }
 
-          console.log(customer_info);
-
           var new_customer = new Customer(customer_info);
-              //save on mongo
-							new_customer.save(function (err) {
+              new_customer.save(function (err) {
 							if(!err) {
                 console.log(new_customer._id);
-                console.log("mongo success");
-                res.render('end', {content: final_content});
-						  	}
+                console.log("new customer info added");
+                
+                var sales_info = {
+                  customer: new_customer._id,
+                  order_date: new Date(),
+                  purchase: sold_items
+                }
+                
+                var new_sales = new Sales(sales_info);
+                new_sales.save(function (err) {
+                  if(!err) {
+                    console.log(new_sales._id);
+                    console.log("sales info added");
+
+                    console.log(date);
+
+                    async.parallel({
+                      
+                      limit: function(callback) {
+                      
+                        Limit.find({date: date})
+                            .exec(callback)
+                      }}, async (err, results) => {
+                        if(err) {console.log(err.message);}
+                        else{
+                          console.log(results);
+                          
+                          console.log(cake_num);
+                          console.log(dacq_num);
+
+                          var cake_limit = results.limit[0].cake_limit - cake_num;
+                          var dacq_limit = results.limit[0].dacq_limit - dacq_num;
+
+                          console.log(dacq_limit);
+                          console.log(cake_limit);
+
+                          results.limit[0].cake_limit = cake_limit;
+                          results.limit[0].dacq_limit = dacq_limit;
+
+                          console.log(results.limit[0].dacq_limit);
+
+                          let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
+                          
+                          res.redirect('/end');
+                        }
+                      })
+                  }                  
+                })
+                }
               });
-        }    
-   
-  } catch(err) {
-    console.log(err.message);
+          }    
+  
+  else {
+      var sales_info = {
+        customer: comeback_user._id,
+        order_date: new Date(),
+        purchase: sold_items
+      }
+      
+      var new_sales = new Sales(sales_info);
+      new_sales.save(function (err) {
+        if(!err) {
+          console.log(new_sales._id);
+          console.log("comeback customer");
+          console.log("sales info added");         
+        }
+     });   
   }
+
+} catch(err) {
+    console.log(err.message);
+}
   
   
 });
@@ -267,18 +342,6 @@ router.post('/management', (req,res) => {
           
 		})				
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // catch 404 and forward to error handler

@@ -226,6 +226,16 @@ h1, p, h3 {
 }
 
 .second .item__list {
+    margin-bottom: 50px;
+    margin-top: 5px;    
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(1, 1fr);
+    
+}
+
+.second .cake_list, .second .dacq_list {
+    position: relative;
     width: 100%;
     display: grid;
     grid-gap: 5px;
@@ -283,6 +293,7 @@ h1, p, h3 {
 .second .item #amount {
     display: flex;
     flex-direction: row;    
+    text-align: center;
 }
 
 .second .item #amount input {
@@ -290,6 +301,58 @@ h1, p, h3 {
     text-align: center;
     width: 150px;    
 }
+
+.second .dessert_nav_modal_button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 248, 212, 0.7);
+    border-radius: 5px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin-top: 10px;
+    margin-right: 20px;
+    color: var(--font_color);
+}
+
+.second .dessert_nav_modal {
+    display: flex; /* Hidden by default */
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin:0;
+    padding:0;
+    position: fixed; /* Stay in place */
+    z-index: 99; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 0vh; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    transition: 1s ease-in-out;
+
+}
+
+.second .dessert_modal_content {
+    display: flex; /* Hidden by default */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 248, 212, 0.9);
+    width: 100vh; /* Could be more or less, depending on screen size */
+    height: 100vh;
+    font-family: var(--font_style_korea);
+    text-align: center;
+    
+}
+
+
 
 .total_check {
     display: block;
@@ -592,8 +655,7 @@ h1, p, h3 {
     background-color: rgba(255, 248, 212, 0.9);
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
-    border-radius: 20px;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 100%; /* Could be more or less, depending on screen size */
     font-family: var(--font_style_korea);
     text-align: center;
   }

@@ -63,6 +63,8 @@ const calendar_section = document.querySelector('.first');
 
 const item_section = document.querySelector('.second');
 const item_list = document.querySelector('.second .item__list');
+const cake_list = document.querySelector('.second .cake_list');
+const dacq_list = document.querySelector('.second .dacq_list');
 
 const xmlhttp = new XMLHttpRequest();
 const url = "../db/items.json";
@@ -123,31 +125,33 @@ calendar.addEventListener('click', e => {
 
     var available_data = [];
 
-    if(today_limit.dac_limit != 0)
+    if(today_limit.dacq_limit != 0) //might need to delete this condition to show every products
     {
         for(var i=0; i < dac_items.length; i++) {
-            if(parseInt(targetWork.id) <= dac_items[i].close_date){
+            if(dac_items[i].available_date.includes(parseInt(targetWork.id))){
                 available_data.push(dac_items[i]);
             }
         }
     }   
 
-    if(today_limit.cake_limit != 0)
+    if(today_limit.cake_limit != 0) //might need to delete this condition to show every products
     {
         for(var i=0; i < cake_items.length; i++) {
-            if(parseInt(targetWork.id) <= cake_items[i].close_date){
+            if(cake_items[i].available_date.includes(parseInt(targetWork.id))){
                 available_data.push(cake_items[i]);
             }
         }
     }   
     
     var div = '';
+    var cake_div = '';
+    var dacq_div = '';
     
     for(var i=0; i<available_data.length; i++) {
         
         if(available_data[i].type == 'cake') {
 
-        var content = 
+        var cake_content = 
             `<ul class="item" id=${available_data[i].type}>
                 <li id="image">
                     <img src="/img/${available_data[i].image}"/>
@@ -163,12 +167,14 @@ calendar.addEventListener('click', e => {
                 <li class="fix_button" id="fixCart_${available_data[i].item_name}">
                     <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                 </li>
-            </ul>`;    
+            </ul>`;
+            
+            cake_div += cake_content;
         }
 
         else {
          
-        var content = 
+        var dacq_content = 
             `<ul class="item" id=${available_data[i].type}>
                 <li id="image">
                     <img src="/img/${available_data[i].image}"/>
@@ -176,7 +182,7 @@ calendar.addEventListener('click', e => {
                 <li id="name">${available_data[i].item_name}</li>
                 <li id="amount">
                     <p>$ ${available_data[i].price}</p>
-                    <input type='number' value=1 min=0 max='${today_limit.dac_limit}'/>       
+                    <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
                 </li>
                 <li class="add_button" id="button_${available_data[i].item_name}">
                     <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
@@ -184,15 +190,19 @@ calendar.addEventListener('click', e => {
                 <li class="fix_button" id="fixCart_${available_data[i].item_name}">
                     <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                 </li>
-            </ul>`;    
+            </ul>`;
+            
+            dacq_div += dacq_content;
         }
         
-        div += content;
+        
         }
 
         calendar_section.style.display = 'none';
 
-        item_list.innerHTML = div;
+        //item_list.innerHTML = div;
+        cake_list.innerHTML = cake_div;
+        dacq_list.innerHTML = dacq_div;
 
         item_section.style.display = 'block';
     });
@@ -223,6 +233,10 @@ function getSumOrder() {
 }
 
 const total__check = document.querySelector('.total_check');
+
+const menu_modal = document.querySelector('.dessert_nav_modal');
+const menu_modal_button = document.querySelector('.dessert_nav_modal_button');
+//menu select
 
 const modal = document.querySelector(".modal");
 const modal_content = document.querySelector(".modal__content");
@@ -277,8 +291,8 @@ function addCart(p) {
     else if(type.id == 'dacq') {
         dacq_total += amount;
 
-        if(dacq_total > today_limit.dac_limit) {
-            content = `Sorry, You cannot put dacq more than ${today_limit.dac_limit}`;
+        if(dacq_total > today_limit.dacq_limit) {
+            content = `Sorry, You cannot put dacq more than ${today_limit.dacq_limit}`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = dacq_total;
         }
@@ -313,11 +327,42 @@ function addCart(p) {
 
 }
 
+const nav_all_button = document.querySelector('.nav_all');
+const nav_cake_button = document.querySelector('.nav_cake');
+const nav_dacq_button = document.querySelector('.nav_dacq');
+
 window.onclick = function(e) {
     if(e.target == modal) {
     modal.style.display = "none";
     }
+
+    if(e.target == menu_modal || e.target == menu_modal.firstElementChild) {
+    menu_modal.style.height = '0vh';
+    }
 }
+
+menu_modal_button.addEventListener('click', e => {
+    menu_modal.style.height = '100vh';
+})
+
+nav_all_button.addEventListener('click', e=> {
+    menu_modal.style.height = '0vh';
+    cake_list.style.display = 'grid';
+    dacq_list.style.display = 'grid';
+})
+
+nav_cake_button.addEventListener('click', e => {
+    menu_modal.style.height = '0vh';
+    cake_list.style.display = 'grid';
+    dacq_list.style.display = 'none';
+})
+
+nav_dacq_button.addEventListener('click', e => {
+    menu_modal.style.height = '0vh';
+    dacq_list.style.display = 'grid';
+    cake_list.style.display = 'none';
+})
+
 
 function fixCart(p) {
 
@@ -374,8 +419,8 @@ function fixCart(p) {
                 dacq_total += difference;
                 check = true;
 
-                if(dacq_total > today_limit.dac_limit) {
-                    content = `Sorry, You cannot put cake more than ${today_limit.dac_limit}`;
+                if(dacq_total > today_limit.dacq_limit) {
+                    content = `Sorry, You cannot put cake more than ${today_limit.dacq_limit}`;
                     dacq_total -= difference;
                     amount_class.firstElementChild.nextElementSibling.value = dacq_total;
 

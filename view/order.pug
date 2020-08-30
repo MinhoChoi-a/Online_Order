@@ -128,6 +128,18 @@ body
     section.second
       .total_check
       .item__list
+        .dacq_list
+        .cake_list
+
+      button.dessert_nav_modal_button(type="button")
+        .icon MENU
+
+      .dessert_nav_modal
+        .dessert_modal_content 
+          button.nav_all(type='button') All
+          button.nav_cake(type="button") Cake
+          button.nav_dacq(type="button") Dacquoise
+
       .nav
         a(href='/order')
           button#prev__schedule Previous
