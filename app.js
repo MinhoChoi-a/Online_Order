@@ -30,33 +30,29 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const Limit = require('./models/limit');
 const Customer = require('./models/customer');
 const Sales = require('./models/sales');
-const { Console } = require('console');
+
+const nodemailer = require('nodemailer');
+let transporter = nodemailer.createTransport({
+    service: 'gmail', //https://myaccount.google.com/lesssecureapps
+    auth: {
+      user: process.env.mail_account,
+      pass: process.env.mail_pass
+    }
+});
+
+let mailOptions = {
+  from: process.env.mail_account,
+  to: 'hyree00@gmail.com',
+  subject: '',
+  html: ''
+}
+
+let cake_list = [];
+let dacq_list = [];
 
 app.use('/', router);
 
-var cake_num = 0;
-var dacq_num = 0;
-
-var cake_list = [];
-var dacq_list = [];
-
-//mongoose get array which dac and cake limit are 0
-
 router.get('/', function (req, res) {
-  
-  cake_list = [];
-  dacq_list = [];
-
-  for(var i =0; i < item_list.length; i++) {
-    if(item_list[i].type == 'cake') {
-      cake_list.push(item_list[i].item_name);
-    }
-  
-    else if(item_list[i].type == 'dacq') {
-      dacq_list.push(item_list[i].item_name);
-    }
-  }
-  
   res.render('index');
 });
 
@@ -67,6 +63,19 @@ router.get('/end', function (req, res) {
 });
 
 router.get('/order', function (req, res) {
+
+  cake_list = [];
+  dacq_list = [];
+
+  for(var i =0; i < item_list.length; i++) {
+    if(item_list[i].type == 'cake') {
+      cake_list.push(item_list[i].item_name);
+    }
+  
+    else if(item_list[i].type == 'dacqouise') {
+      dacq_list.push(item_list[i].item_name);
+    }
+  }
 
   async.parallel({
         
@@ -92,8 +101,8 @@ router.get('/order', function (req, res) {
 
 router.post('/order', async function (req, res) {
 
-  cake_num = 0;
-  dacq_num = 0;
+  let cake_num = 0;
+  let dacq_num = 0;
 
   var date = req.body.schedule;
   date = date.split(' ');
@@ -109,10 +118,12 @@ router.post('/order', async function (req, res) {
       order_info.push(req.body[prop]);
     }
 
+    console.log(order_info);
+
     let email_content =
     "<body><div class='order_confirm'>"+
-       "<h3>Order</h3>"+
-       "<table>"+
+       "<h3>Order Confirmation</h3>"+
+       "<table style='background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;'>"+
          `<tr><td>Schedule</td><td>${order_info[0]}</td></tr>`+
          `<tr><td>Name</td><td>${order_info[1]}</td></tr>`+
          `<tr><td>insta/email</td><td>${order_info[2]}</td></tr>`+
@@ -120,7 +131,7 @@ router.post('/order', async function (req, res) {
          `<tr><td>Allergy</td><td>${order_info[4]}</td></tr>`+
          `<tr><td>Delivery Option</td><td>${order_info[5]}</td></tr>`;
     
-    let sold_content = '<table><tr><td>Product</td><td>Amount</td><td>Price</td></tr>';     
+    let sold_content = '<table style="margin-top:10px; background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;"><tr><td>Product</td><td style="text-align:center">Amount</td><td style="text-align:center">Price</td></tr>';     
 
     if(order_info[5] == "delivery")  {
       email_content +=
@@ -135,16 +146,20 @@ router.post('/order', async function (req, res) {
             price: order_info[++i],
           }
 
-          if(dacq_list.includes(item.product)) {
+          let item_exact_name = item.product.split(' ');
+
+          console.log(item_exact_name);
+
+          if(dacq_list.includes(item_exact_name[0])) {
             dacq_num += parseInt(item.amount);
           }
 
-          if(cake_list.includes(item.product)) {
+          if(cake_list.includes(item_exact_name[0])) {
             cake_num += parseInt(item.amount);
           }
 
           sold_content +=
-          `<tr><td>${item.product}</td><td>${item.amount}</td><td>${item.price}</td></tr>`;
+          `<tr><td>${item.product}</td><td style="text-align:center">${item.amount}</td><td style="text-align:center">${item.price}</td></tr>`;
 
           sold_items.push(item);
 
@@ -165,8 +180,8 @@ router.post('/order', async function (req, res) {
         }
                 
         sold_content +=
-        `<tr><td colspan=2>Delivery Fee</td><td>${delivery_fee}</td>`+
-        `<tr><td colspan=2>Total Sum</td><td>${total_sum}</td></tr></table>`;
+        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${delivery_fee}</td>`+
+        `<tr><td colspan=2>Total Sum</td><td style="text-align:center">${total_sum}</td></tr></table>`;
       }
 
     else {
@@ -181,11 +196,15 @@ router.post('/order', async function (req, res) {
             price: order_info[++i],
           }
 
-          if(dacq_list.includes(item.product)) {
+          let item_exact_name = item.product.split(' ');
+
+          console.log(item_exact_name);
+
+          if(dacq_list.includes(item_exact_name[0])) {
             dacq_num += parseInt(item.amount);
           }
 
-          if(cake_list.includes(item.product)) {
+          if(cake_list.includes(item_exact_name[0])) {
             cake_num += parseInt(item.amount);
           }
 
@@ -262,7 +281,18 @@ router.post('/order', async function (req, res) {
 
                           let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                           
-                          res.redirect('/end');
+                          mailOptions.subject = 'Baking Bunny Order';
+                          mailOptions.html = final_content;
+
+                          transporter.sendMail(mailOptions, function() {
+                            if(err) {console.log(err.meesage);}
+                            
+                            else {
+                              console.log('Success Email');
+                              res.redirect('/end');
+                            }
+                          
+                          });
                         }
                       })
                   }                  
@@ -283,16 +313,55 @@ router.post('/order', async function (req, res) {
         if(!err) {
           console.log(new_sales._id);
           console.log("comeback customer");
-          console.log("sales info added");         
-        }
-     });   
-  }
+          console.log("sales info added");
+          
+          async.parallel({
+                      
+            limit: function(callback) {
+            
+              Limit.find({date: date})
+                  .exec(callback)
+            }}, async (err, results) => {
+              if(err) {console.log(err.message);}
+              else{
+                console.log(results);
+                
+                console.log(cake_num);
+                console.log(dacq_num);
 
-} catch(err) {
+                var cake_limit = results.limit[0].cake_limit - cake_num;
+                var dacq_limit = results.limit[0].dacq_limit - dacq_num;
+
+                console.log(dacq_limit);
+                console.log(cake_limit);
+
+                results.limit[0].cake_limit = cake_limit;
+                results.limit[0].dacq_limit = dacq_limit;
+
+                console.log(results.limit[0].dacq_limit);
+
+                let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
+                
+                mailOptions.subject = 'Baking Bunny Order comeback user';
+                mailOptions.html = final_content;
+
+                transporter.sendMail(mailOptions, function() {
+                  if(err) {console.log(err.meesage);}
+                  
+                  else {
+                    console.log('Success Email');
+                    res.redirect('/end');
+                  }
+                          
+                });
+              }
+            })
+        }                  
+      })
+    }
+  } catch(err) {
     console.log(err.message);
-}
-  
-  
+  }
 });
 
 

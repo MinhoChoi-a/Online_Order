@@ -1,8 +1,7 @@
 :root {
     --button: #f4efec;
     --font_color: #05386b;
-    --font_style_korea: 'Gamja Flower', cursive;
-    --font_style_english: 'Balsamiq Sans', cursive;
+    --font_style: 'Courgette', cursive;
     --beige: #f8e3de;
     --point: #fff8d4;   
     --purple: #e6dae8;
@@ -49,7 +48,7 @@ button {
     color: var(--font_color);
     background: var(--beige);
     border-radius: 5px;
-    font-family: var(--font_style_korea);
+    font-family: var(--font_style);
 }
 
 ul, ul li{
@@ -62,7 +61,7 @@ ul, ul li{
 
 h1, p, h3 {
     color: var(--font_color);
-    font-family: var(--font_style_korea), Arial, Helvetica, sans-serif;
+    font-family: var(--font_style);
 }
 
 ::-webkit-scrollbar {
@@ -121,7 +120,7 @@ h1, p, h3 {
     .container {
         margin:0;
         width: 100%;
-        height: 100vh;
+        height: 100%;
     }
 }
 
@@ -153,7 +152,7 @@ h1, p, h3 {
 
 
 .first {
-    width: 100%;
+    width: 100vh;
     height: 100%;
     display: block;
     position: relative;
@@ -163,8 +162,7 @@ h1, p, h3 {
 	-webkit-animation-duration: 0.5s;
 	animation-name: fadeIn;
     animation-duration: 0.5s;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 10px;    
 }
 
 .first h3 {
@@ -179,34 +177,45 @@ h1, p, h3 {
 
 .first button {
     background: var(--beige);
+    font-size: 12px;
+    max-width: 50px;
+    
 }
 
 .first .calendar__table {
     width: 100%;
-    position: absolute;
-    bottom: 5;    
+    margin-top: 15px;
+    position: relative;
     margin-bottom: 30px;
 }
 
-.first .calendar__table table{
-    width: 95%;
+.first .calendar__table .calendar{
+    width: 100%;
 }
 
-.first tr {
+.first .day, .first .week {
     width: 100%;
+    position: relative;
     display: grid;
-    grid-gap: 5px;
+    grid-gap: 2px;
     grid-template-columns: repeat(7, 1fr);
 }
 
-.first .day td {
-    height: 30px;
-    text-align: center;
-    font-family: var(--font_style_korea);
+.first .week {
+    margin-bottom: 2px;
 }
 
-.first .week td {
+
+.first .day #td {
+    height: 30px;
+    margin: 0;
+    text-align: center;
+    font-family: var(--font_style);    
+}
+
+.first .week #td {
     height: 60px;
+    margin: 0;    
 }
 
 .second {
@@ -216,21 +225,20 @@ h1, p, h3 {
     overflow: auto;
     position: relative;
     transition: all 0.5s ease-in;
-
+    
     -webkit-animation-name: fadeIn;
 	-webkit-animation-duration: 0.5s;
 	animation-name: fadeIn;
     animation-duration: 0.5s;
-    padding: 10px;
-
 }
 
 .second .item__list {
     margin-bottom: 50px;
-    margin-top: 5px;    
-    display: grid;
-    grid-gap: 5px;
+    margin-top: 20px;
+    display: grid;    
     grid-template-columns: repeat(1, 1fr);
+    padding-left: 5px;
+    padding-right: 5px;
     
 }
 
@@ -238,32 +246,54 @@ h1, p, h3 {
     position: relative;
     width: 100%;
     display: grid;
-    grid-gap: 5px;
+    grid-gap: 2px;
     grid-template-columns: repeat(2, 1fr);
     padding: 0;
-    margin:0;
-    font-family: var(--font_style_korea);    
+    margin-top: 20px;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    font-family: var(--font_style);    
 }
 
 .second .item__list ul{
     margin: 0;
-    left: 0;    
     text-align: center;
-    list-style: none;
-    padding:0;
+    list-style: none;    
 }
 
-.second .item__list ul li #name, .second .item__list ul li #amount{
-    height:25px;
-    padding: 5px
+.second .item__list li{
+    margin: 0;
+    margin-top: 3px;   
 }
 
 .second .item__list img {
     width: 100%;
 }
 
-.second .item__list p {
+.second .item__list #type {
+    padding: 2px 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+    background: rgba(248, 227, 222, 0.6);
+    position: absolute;
+    border-radius: 5px;
+    z-index: 2;
     font-size: 12px;
+}
+
+.second button {
+    height: 30px;
+    font-size: 20px;    
+}
+
+.second .item__list #name button {
+    font-size: 12px;
+    height: 20px;
+}
+
+.second .item__list p {
+    font-size: 15px;
     width: 100%;
     height: 100%;
     color: var(--font_color);
@@ -271,14 +301,9 @@ h1, p, h3 {
     padding: 0;
 }
 
+
 .second .add_button {
     display: block;    
-}
-
-.second button{
-    height: 30px;
-    border-radius: 5px;
-    font-size: 15px;
 }
 
 .second .fix_button {
@@ -316,11 +341,11 @@ h1, p, h3 {
     top: 0;
     right: 0;
     margin-top: 10px;
-    margin-right: 20px;
+    margin-right: 10px;
     color: var(--font_color);
 }
 
-.second .dessert_nav_modal {
+.second .dessert_nav_modal, .second .cake_size_modal {
     display: flex; /* Hidden by default */
     flex-direction: row;
     justify-content: center;
@@ -339,7 +364,7 @@ h1, p, h3 {
 
 }
 
-.second .dessert_modal_content {
+.second .dessert_modal_content, .second .cake_size_modal_content {
     display: flex; /* Hidden by default */
     flex-direction: column;
     justify-content: center;
@@ -347,7 +372,7 @@ h1, p, h3 {
     background-color: rgba(255, 248, 212, 0.9);
     width: 100vh; /* Could be more or less, depending on screen size */
     height: 100vh;
-    font-family: var(--font_style_korea);
+    font-family: var(--font_style);
     text-align: center;
     
 }
@@ -361,6 +386,9 @@ h1, p, h3 {
     width: 100%;
     font-size: 20px;
     position: fixed;
+
+    z-index: 19;
+
     top: 0;
     left: 0;    
     background: rgba(255, 248, 212, 0.8);
@@ -419,9 +447,9 @@ h1, p, h3 {
 }
 
 .third form{
-    height: 100vh;
+    height: 100%;
     padding: 10px;
-    font-family: var(--font_style_korea);    
+    font-family: var(--font_style);    
 }
 
 .third .question {
@@ -438,7 +466,7 @@ h1, p, h3 {
 
 .third .question p{
     margin: 0;
-    color: var(--purple);
+    color: var(--font_color);
 }
 
 .third .answer {
@@ -459,7 +487,7 @@ h1, p, h3 {
 
 .third form #radio {
     width: 100%;
-    height: 50px;
+    height: 40px;
 }
 
 .third form #radio label {
@@ -602,7 +630,7 @@ h1, p, h3 {
 }
 
 .fourth table {
-    font-family: var(--font_style_korea);
+    font-family: var(--font_style);
 }
 
 .fourth table #head{
@@ -610,7 +638,7 @@ h1, p, h3 {
 }
 
 .fourth table td{
-    height: 30px;
+    height: 35px;
 }
 
 .fourth table input{
@@ -631,6 +659,14 @@ h1, p, h3 {
     text-align: center;
 }
 
+.fourth table #item {
+    width: 180px;
+}
+
+.fourth table #amount {
+    width: 50px;
+}
+
 
 .modal {
     display: none; /* Hidden by default */
@@ -640,13 +676,13 @@ h1, p, h3 {
     align-items: center;
 
     position: fixed; /* Stay in place */
-    z-index: 9; /* Sit on top */
+    z-index: 99; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
     transition: 1s ease-in-out;
   }
   
@@ -656,6 +692,14 @@ h1, p, h3 {
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     width: 100%; /* Could be more or less, depending on screen size */
-    font-family: var(--font_style_korea);
+    font-family: var(--font_style);
     text-align: center;
   }
+
+.end {
+    width: 100%;
+    height: 100%;
+    display: block;
+    text-align: center;
+    padding: 10px;   
+}

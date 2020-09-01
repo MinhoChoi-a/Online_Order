@@ -1,15 +1,18 @@
 head
   meta(charset='utf-8')
   meta(name='viewport' content='width=device-width, initial-scale=1')
+  
+  link(rel="icon" href="img/favicon.ico" type="image/x-icon")
+  
   link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
-  link(href='https://fonts.googleapis.com/css2?family=Fredoka+One&family=Lato&display=swap' rel='stylesheet')
+  link(href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet")
   
   script(
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY"
       defer)
     
   link(rel='stylesheet' href='/order.css')
-  meta(name='description' content='Web site')
+  meta(name='Baking bunny' content='Fresh & Sweet Dessert')
   title Baking Bunny
 
 input.data(type='text' style='display:none' value=limit_data)
@@ -19,110 +22,110 @@ body
   .container
 
     section.first
-      h3 주문하고 싶은 날짜를 골라주세요
-      h3 무료 딜리버리 서비스는 $50 이상 구매 하셨을 때 목금토에만 가능합니다
-      h3 거리가 너무 먼 경우, 추가 딜리버리 요금이 있습니다.
-      h3 요일 마다 주문 가능한 수량이 일부 다릅니다.
+      h3 Select the date when you want to take.
+      h3 Free delivery service is available only for more than $ 50 purchase on Thursday, Friday, and Saturday.
+      h3 If the distance is too far, there will be an additional charge.
+      h3 
       div.calendar__table
         h1.month September
-        table.calendar
-          tr.day
-            td Sun
-            td Mon
-            td Tue
-            td Wed
-            td Thu
-            td Fri
-            td Sat
-          tr.week
-            td
+        .calendar
+          .day
+            .div(id="td") Sun
+            .div(id="td") Mon
+            .div(id="td") Tue
+            .div(id="td") Wed
+            .div(id="td") Thu
+            .div(id="td") Fri
+            .div(id="td") Sat
+          .week
+            .div(id="td")
               button#20200830.date 30
-            td
+            .div(id="td")
               button#20200831.date 31
-            td
+            .div(id="td")
               button#20200901.date 1
-            td
+            .div(id="td")
               button#20200902.date 2
-            td
+            .div(id="td")
               button#20200903.date 3
-            td
+            .div(id="td")
               button#20200904.date 4
-            td
+            .div(id="td")
               button#20200905.date 5
-          tr.week
-            td
+          .week
+            .div(id="td")
               button#20200906.date 6
-            td
+            .div(id="td")
               button#20200907.date 7
-            td
+            .div(id="td")
               button#20200908.date 8
-            td
+            .div(id="td")
               button#20200909.date 9
-            td
+            .div(id="td")
               button#20200910.date 10
-            td
+            .div(id="td")
               button#20200911.date 11
-            td
+            .div(id="td")
               button#20200912.date 12
-          tr.week
-            td
+          .week
+            .div(id="td")
               button#20200913.date 13
-            td
+            .div(id="td")
               button#20200914.date 14
-            td
+            .div(id="td")
               button#20200915.date 15
-            td
+            .div(id="td")
               button#20200916.date 16
-            td
+            .div(id="td")
               button#20200917.date 17
-            td
+            .div(id="td")
               button#20200918.date 18
-            td
+            .div(id="td")
               button#20200919.date 19
-          tr.week
-            td
+          .week
+            .div(id="td")
               button#20200920.date 20
-            td
+            .div(id="td")
               button#20200921.date 21
-            td
+            .div(id="td")
               button#20200922.date 22
-            td
+            .div(id="td")
               button#20200923.date 23
-            td
+            .div(id="td")
               button#20200924.date 24
-            td
+            .div(id="td")
               button#20200925.date 25
-            td
+            .div(id="td")
               button#20200926.date 26
-          tr.week
-            td
+          .week
+            .div(id="td")
               button#20200927.date 27
-            td
+            .div(id="td")
               button#20200928.date 28
-            td
+            .div(id="td")
               button#20200929.date 29
-            td
+            .div(id="td")
               button#20200930.date 30
-            td
+            .div(id="td")
               button#20201001.date 1
-            td
+            .div(id="td")
               button#20201002.date 2
-            td
+            .div(id="td")
               button#20201003.date 3
-          tr.week
-            td
+          .week
+            .div(id="td")
               button#20201004.date 4
-            td
+            .div(id="td")
               button#20201005.date 5
-            td
+            .div(id="td")
               button#20201006.date 6
-            td
+            .div(id="td")
               button#20201007.date 7
-            td
+            .div(id="td")
               button#20201008.date 8
-            td
+            .div(id="td")
               button#20201009.date 9
-            td
+            .div(id="td")
               button#20201010.date 10
 
     section.second
@@ -139,6 +142,11 @@ body
           button.nav_all(type='button') All
           button.nav_cake(type="button") Cake
           button.nav_dacq(type="button") Dacquoise
+
+      .cake_size_modal
+        .cake_size_modal_content(value='') 
+          button(type="button" value=1 onclick="sizeValue(this.value, this.parentElement.value)") 6 inch
+          button(type="button" value=1.2 onclick="sizeValue(this.value, this.parentElement.value)") 8 inch
 
       .nav
         a(href='/order')
@@ -168,7 +176,7 @@ body
           li(class="question")
             | Select Delviery
             div.time
-              p - Pickup is avaiable after 2 PM
+              p - Pickup is avaiable between 5 to 7 PM
               p - Delivery is avaialble between 5 to 7 PM
           li(id="radio")
             label

@@ -1,13 +1,32 @@
 /* Schedule Section*/
+var holiday = [
+    20200831,
+    20200907,
+    20200914,
+    20200921,
+    20200928,
+    20201005
+];
 
 var today = new Date();
 var today__num = today.getDay();
+var availableDate = '';
 
-var nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
-var fullDate = nextWeek.toISOString().slice(0,10);
-var date = fullDate.split('-');
-console.log(date);
-const availalbeDate = date[0]+date[1]+date[2];
+
+if(today__num == 7) {
+    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+8);
+    let fullDate = closeDate.toISOString().slice(0,10);
+    let date = fullDate.split('-');
+    availalbeDate = date[0]+date[1]+date[2];
+}
+
+else {
+    let available_day_duration = 7 - today__num;
+    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + available_day_duration+1);
+    let fullDate = closeDate.toISOString().slice(0,10);
+    let date = fullDate.split('-');
+    availalbeDate = date[0]+date[1]+date[2];
+}
 
 const calendar = document.querySelector('.calendar');
 const schedule__date = document.querySelectorAll('.date');
@@ -33,27 +52,32 @@ function updateSchedule() {
 
     for(var i = 0; i < schedule__date.length; i++ ) {
         
-        if(today__num == 7) {
-                if(schedule__date[i].id < availalbeDate) {
-                schedule__date[i].style.background = 'grey';
-                schedule__date[i].setAttribute('disabled', 'disabled');
-            }
-        }
-
         if( parseInt((schedule__date[i].id).substring(4,6)) == parseInt(availalbeDate.substring(4,6))) {
             schedule__date[i].style.background = '#e6dae8';            
         }
 
         if( parseInt((schedule__date[i].id).substring(4,6)) == 1 + parseInt(availalbeDate.substring(4,6))) {
-            schedule__date[i].style.background = '#fff8d4';
-            schedule__date[i].setAttribute('disabled', 'disabled');
+            schedule__date[i].style.background = '#fff8d4';            
         }
 
-        if(sold_out_date.includes(schedule__date[i].id)) {
+        if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = 'grey';
+            schedule__date[i].innerHTML = 'X';
+            schedule__date[i].setAttribute('disabled', 'disabled');
+        }
+        
+        if(sold_out_date.includes(parseInt(schedule__date[i].id))) {
+            schedule__date[i].style.background = 'grey';
+            schedule__date[i].innerHTML = 'sold out';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
 
+        if(holiday.includes(parseInt(schedule__date[i].id))) {
+            schedule__date[i].style.background = 'white';
+            schedule__date[i].innerHTML = 'X';
+            schedule__date[i].setAttribute('disabled', 'disabled');
+        }
+      
     }
 }
 
@@ -81,6 +105,8 @@ var today_limit = '';
 var order_day_num = ''
 var order_day = '';
 
+var cake_name_list = [];
+
 calendar.addEventListener('click', e => {
     
     //make every input as default value
@@ -95,6 +121,8 @@ calendar.addEventListener('click', e => {
 
     const targetWork = e.target.closest('button');
     order_day = targetWork.id;
+
+    order_month = order_day.substring(4,6);
 
     var check = true;
     var i=0;
@@ -118,7 +146,7 @@ calendar.addEventListener('click', e => {
             cake_items.push(items[t]);
         }
         
-        else if(items[t].type == 'dacq') {
+        else if(items[t].type == 'dacqouise') {
             dac_items.push(items[t]);
         }
     }
@@ -143,22 +171,38 @@ calendar.addEventListener('click', e => {
         }
     }   
     
-    var div = '';
     var cake_div = '';
     var dacq_div = '';
     
     for(var i=0; i<available_data.length; i++) {
         
         if(available_data[i].type == 'cake') {
+        
+        cake_name_list.push(available_data[i].item_name);
+        
+        var cake_type = available_data[i].type;
+        var cake_price = available_data[i].price;
+        
+        console.log(available_data[i].special);
+        console.log(order_month);
+
+        if(available_data[i].special == order_month) {
+            cake_type = "monthly special cake";
+            cake_price = available_data[i].price * 0.8;
+        }
 
         var cake_content = 
             `<ul class="item" id=${available_data[i].type}>
+                <li id="type">${cake_type}</li>
                 <li id="image">
-                    <img src="/img/${available_data[i].image}"/>
+                    <img src="/img/${available_data[i].image}"/>    
                 </li>
-                <li id="name">${available_data[i].item_name}</li>
+                <li id="name">
+                    <div id="cake_name">${available_data[i].item_name}</div>
+                    <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
+                </li>
                 <li id="amount">
-                    <p>$ ${available_data[i].price}</p>
+                    <p>$ ${cake_price}</p>
                     <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                 </li>
                 <li class="add_button" id="button_${available_data[i].item_name}">
@@ -176,10 +220,13 @@ calendar.addEventListener('click', e => {
          
         var dacq_content = 
             `<ul class="item" id=${available_data[i].type}>
+                <li id="type">${available_data[i].type}</li>
                 <li id="image">
                     <img src="/img/${available_data[i].image}"/>
                 </li>                
-                <li id="name">${available_data[i].item_name}</li>
+                <li id="name">
+                    <div id="dacq_name">${available_data[i].item_name}</div>
+                    <div id="dacq_size" style="display:none;"></div></li>
                 <li id="amount">
                     <p>$ ${available_data[i].price}</p>
                     <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
@@ -214,6 +261,7 @@ let orderObjectArray = [{
     item_name: '',
     amount: '',
     price: '',
+    set_value: ''
 }];
 
 function getSumOrder() {
@@ -223,7 +271,7 @@ function getSumOrder() {
     console.log(orderObjectArray);
 
     for(var i =1; i < orderObjectArray.length; i++) {
-        sum += (orderObjectArray[i].amount) * (orderObjectArray[i].price);
+        sum += (orderObjectArray[i].amount) * (orderObjectArray[i].price) * (orderObjectArray[i].set_value);
         console.log(sum);
     }
 
@@ -241,13 +289,37 @@ const menu_modal_button = document.querySelector('.dessert_nav_modal_button');
 const modal = document.querySelector(".modal");
 const modal_content = document.querySelector(".modal__content");
 
+const size_modal = document.querySelector(".cake_size_modal");
+const size_modal_content = document.querySelector(".cake_size_modal_content");
+
+
+cake_list.addEventListener('click', e => {
+
+    if(e.target.innerHTML == "size select") {
+        size_modal_content.value = e.target.id;
+        size_modal.style.height = '100vh';
+    }
+}
+)
+
+function sizeValue(value, id) {
+    
+    console.log(value);
+    console.log(id);
+
+    document.querySelector(`#${id}`).value = value;
+
+    size_modal.style.height = 0;
+}
+
 var cake_total = 0;
 var dacq_total = 0;
 
 function addCart(p) {
 
     const amount_class = p.previousElementSibling;
-    const title = amount_class.previousElementSibling.innerHTML;
+    const title = amount_class.previousElementSibling.firstElementChild.innerHTML;
+    const cake_set = amount_class.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild;
     const price_array = (amount_class.firstElementChild.innerHTML).split(' ');
     const price = parseFloat(price_array[1]).toFixed(2);
     const type = p.parentElement;
@@ -261,21 +333,31 @@ function addCart(p) {
         if(cake_total > today_limit.cake_limit) {
             content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
             cake_total -= amount;
-            amount_class.firstElementChild.nextElementSibling.value = cake_total;
+            amount_class.firstElementChild.nextElementSibling.value = 1;
+        }
+
+        else if(cake_set.value == "none" || cake_set.value == undefined) {
+            
+            content = "Please select the cake size first";
+            cake_total -= amount;
+            modal_content.innerHTML = content;   
+            modal.style.display = "flex";
         }
 
         else{
+            
             var newItem = {
                 item_name: title,
                 amount: amount,
-                price: price
+                price: price,
+                set_value: cake_set.value
             }
             orderObjectArray.push(newItem); 
 
             var cartButton = document.querySelector(`#button_${title}`);
             cartButton.style.display = "none";
 
-            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price).toFixed(1);
+            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price * newItem.set_value).toFixed(1);
 
             var fixCartButton = document.querySelector(`#fixCart_${title}`);
             fixCartButton.style.display = "block";
@@ -288,20 +370,21 @@ function addCart(p) {
         }
     }
 
-    else if(type.id == 'dacq') {
+    else if(type.id == 'dacqouise') {
         dacq_total += amount;
 
         if(dacq_total > today_limit.dacq_limit) {
             content = `Sorry, You cannot put dacq more than ${today_limit.dacq_limit}`;
             dacq_total -= amount;
-            amount_class.firstElementChild.nextElementSibling.value = dacq_total;
+            amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else{
             var newItem = {
                 item_name: title,
                 amount: amount,
-                price: price
+                price: price,
+                set_value: 1
             }
             orderObjectArray.push(newItem); 
 
@@ -331,8 +414,21 @@ const nav_all_button = document.querySelector('.nav_all');
 const nav_cake_button = document.querySelector('.nav_cake');
 const nav_dacq_button = document.querySelector('.nav_dacq');
 
+modal.addEventListener('click', e => {
+    modal.style.display = "none";
+})
+
+modal_content.addEventListener('click', e=> {
+    modal.style.display = "none";
+})
+
+
 window.onclick = function(e) {
     if(e.target == modal) {
+    modal.style.display = "none";
+    }
+
+    if(e.target == modal_content) {
     modal.style.display = "none";
     }
 
@@ -367,9 +463,12 @@ nav_dacq_button.addEventListener('click', e => {
 function fixCart(p) {
 
     const amount_class = (p.previousElementSibling).previousElementSibling;
-    const title = amount_class.previousElementSibling.innerHTML;
+    const title = amount_class.previousElementSibling.firstElementChild.innerHTML;
+    const cake_set = amount_class.previousElementSibling.firstElementChild.nextElementSibling.firstElementChild;
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
+
+    console.log(title);
 
     var content = `Succesfully fixed, you can add other items more, otherwise click the next button below`;
 
@@ -387,12 +486,13 @@ function fixCart(p) {
                     if(cake_total > today_limit.cake_limit) {
                         content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
                         cake_total -= difference;
-                        amount_class.firstElementChild.nextElementSibling.value = cake_total;
+                        amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
                     }
 
                     else {
                         orderObjectArray[i].amount = amount;
-                        amount_class.firstElementChild.innerHTML = "$ "+ (orderObjectArray[i].amount * orderObjectArray[i].price).toFixed(1);
+                        orderObjectArray[i].set_value = cake_set.value;
+                        amount_class.firstElementChild.innerHTML = "$ "+ (orderObjectArray[i].amount * orderObjectArray[i].price *orderObjectArray[i].set_value).toFixed(1);
 
                         var sum = getSumOrder()
             
@@ -405,10 +505,10 @@ function fixCart(p) {
             }
         }
     
-    else if(type.id == 'dacq') {
+    else if(type.id == 'dacqouise') {
         
         var check = false;
-        var  i = 0;
+        var  i = 1;
 
         while(!check) {
             if(orderObjectArray[i].item_name === title) {
@@ -422,7 +522,7 @@ function fixCart(p) {
                 if(dacq_total > today_limit.dacq_limit) {
                     content = `Sorry, You cannot put cake more than ${today_limit.dacq_limit}`;
                     dacq_total -= difference;
-                    amount_class.firstElementChild.nextElementSibling.value = dacq_total;
+                    amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
 
                     console.log(amount_class.firstElementChild.nextElementSibling.value);
                 }
@@ -809,8 +909,22 @@ function confirmation(cust, ord, deliv) {
 
     for(var i =1; i<ord.length; i++) {
 
+        let size = ''
+
+        if(cake_name_list.includes(ord[i].item_name)) {
+
+        if(ord[i].set_value == 1) {
+            size = ' 6 inch';
+        }
+
+        else if(ord[i].set_value == 1.2) {
+            size = ' 8 inch';
+        }
+        
+        }
+
         var div = 
-        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${ord[i].price*ord[i].amount}" readonly/></td>`;
+        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
 
         order_info += div;
     }
