@@ -81,6 +81,7 @@ h1, p, h3, h2 {
     width: 100px;
     height: 100px;    
     margin: 10px;
+    margin-bottom: 50px;
 }
 
 .bunny_icon_small {
@@ -98,7 +99,12 @@ h1, p, h3, h2 {
     height: 100%;    
 }
 
-
+.hidden_block {
+    display: none;
+    position: relative;
+    height: 50px;
+    width: 100%;
+}
 
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
@@ -157,6 +163,10 @@ h1, p, h3, h2 {
         width: 100%;
         height: 100vh;
     }
+
+    .hidden_block {
+        display: block;
+    
 }
 
 .welcome {

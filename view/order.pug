@@ -130,6 +130,8 @@ body
             .div(id="td")
               button#20201010.date 10
       
+      .hidden_block
+
     section.second
       .total_check
       .item__list
@@ -149,12 +151,15 @@ body
         .cake_size_modal_content(value='') 
           button(type="button" value=1 onclick="sizeValue(this.value, this.parentElement.value)") 6 inch
           button(type="button" value=1.2 onclick="sizeValue(this.value, this.parentElement.value)") 8 inch
-
+      
+      .hidden_block 
+      
       .nav
         a(href='/order')
           button#prev__schedule Previous
         button#next_customer Next
-       
+      
+      
 
     section.third
       form(action="")
@@ -200,7 +205,9 @@ body
 
       .bunny_icon_small
         <img src="/img/logo_circle.png">
-    
+      
+      .hidden_block 
+
       .nav
         button#prev__items Previous
         button#next_check Check Out
@@ -221,7 +228,9 @@ body
 
       .bunny_icon_small
         <img src="/img/logo_circle.png">
-    
+
+      .hidden_block
+      
     .modal
       .modal__content
 
