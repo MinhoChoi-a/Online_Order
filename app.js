@@ -42,7 +42,7 @@ let transporter = nodemailer.createTransport({
 
 let mailOptions = {
   from: process.env.mail_account,
-  to: 'hyree00@gmail.com',
+  to: 'minhocalgary@gmail.com',
   subject: '',
   html: ''
 }
@@ -122,7 +122,7 @@ router.post('/order', async function (req, res) {
 
     let email_content =
     "<body><div class='order_confirm'>"+
-       "<h3>Order Confirmation</h3>"+
+       "<h3>Order Request</h3>"+
        "<table style='background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;'>"+
          `<tr><td>Schedule</td><td>${order_info[0]}</td></tr>`+
          `<tr><td>Name</td><td>${order_info[1]}</td></tr>`+
@@ -342,7 +342,7 @@ router.post('/order', async function (req, res) {
 
                 let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                 
-                mailOptions.subject = 'Baking Bunny Order comeback user';
+                mailOptions.subject = 'Baking Bunny Order - comeback customer';
                 mailOptions.html = final_content;
 
                 transporter.sendMail(mailOptions, function() {
@@ -412,6 +412,23 @@ router.post('/management', (req,res) => {
 		})				
 });
 
+router.post('/email', async function (req, res, next) {
+
+  console.log(req.body);
+
+  mailOptions.subject = 'Baking Bunny Inquiry from '+ req.body.name;
+  mailOptions.html =
+  `<h1> Inquiry Email </h1>`+
+  `<div id='text' style="margin-top:10px; background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px">` +
+  `<p>${req.body.Message}</p>`+
+  `<p> Email address: `+ `${req.body.email}</p></div>`;
+  
+  try {
+  await transporter.sendMail(mailOptions); } catch { console.log(err.message);}
+    
+  res.render('afterEmail', {text: 'Successfully sent E-mail.'});
+  
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

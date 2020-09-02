@@ -74,7 +74,7 @@ function updateSchedule() {
 
         if(holiday.includes(parseInt(schedule__date[i].id))) {
             schedule__date[i].style.background = 'white';
-            schedule__date[i].innerHTML = 'X';
+            schedule__date[i].innerHTML = '';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
       
@@ -107,7 +107,7 @@ var order_day = '';
 
 var cake_name_list = [];
 
-calendar.addEventListener('click', e => {
+calendar.addEventListener('click', async (e) => {
     
     //make every input as default value
     //make every button, div a default display
@@ -248,8 +248,8 @@ calendar.addEventListener('click', e => {
         calendar_section.style.display = 'none';
 
         //item_list.innerHTML = div;
-        cake_list.innerHTML = cake_div;
-        dacq_list.innerHTML = dacq_div;
+        cake_list.innerHTML = await cake_div;
+        dacq_list.innerHTML = await dacq_div;
 
         item_section.style.display = 'block';
     });
@@ -325,7 +325,7 @@ function addCart(p) {
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
     
-    var content = `Succesfully added, you can add other items more, otherwise click the next button below`;
+    var content = `Succesfully added, you can add other items more, otherwise click the next button below. if you want to change the amount, change it and click the Added button.`;
 
     if(type.id == 'cake') {
         cake_total += amount;
@@ -470,7 +470,7 @@ function fixCart(p) {
 
     console.log(title);
 
-    var content = `Succesfully fixed, you can add other items more, otherwise click the next button below`;
+    var content = `Succesfully fixed`;
 
     if(type.id == 'cake') {
         
@@ -623,7 +623,7 @@ pickup_button.addEventListener('click', e => {
     
       var office_address = document.createElement("div");
       office_address.classList.add("office_address");
-      const markup = "<h3>8st SW Calgary</h3>";
+      const markup = "<p>8st SW Calgary</p>";
       office_address.innerHTML = markup;
       pickup_info.appendChild(office_address);
    
