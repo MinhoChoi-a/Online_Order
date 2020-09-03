@@ -261,7 +261,7 @@ let orderObjectArray = [{
     item_name: '',
     amount: '',
     price: '',
-    set_value: ''
+    set_value: '' //set_size_value & set_custom_value
 }];
 
 function getSumOrder() {
