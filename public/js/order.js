@@ -151,6 +151,8 @@ calendar.addEventListener('click', async (e) => {
         }
     }
 
+    console.log(dac_items[1].type);
+
     var available_data = [];
 
     if(today_limit.dacq_limit != 0) //might need to delete this condition to show every products
