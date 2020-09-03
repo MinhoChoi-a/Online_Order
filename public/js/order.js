@@ -146,7 +146,7 @@ calendar.addEventListener('click', async (e) => {
             cake_items.push(items[t]);
         }
         
-        else if(items[t].type == 'dacqouise') {
+        else if(items[t].type == 'dacquoise') {
             dac_items.push(items[t]);
         }
     }
@@ -370,7 +370,7 @@ function addCart(p) {
         }
     }
 
-    else if(type.id == 'dacqouise') {
+    else if(type.id == 'dacquoise') {
         dacq_total += amount;
 
         if(dacq_total > today_limit.dacq_limit) {
@@ -505,7 +505,7 @@ function fixCart(p) {
             }
         }
     
-    else if(type.id == 'dacqouise') {
+    else if(type.id == 'dacquoise') {
         
         var check = false;
         var  i = 1;
