@@ -250,12 +250,12 @@ calendar.addEventListener('click', async (e) => {
         }
 
         calendar_section.style.display = 'none';
+        alret_modal.style.height = '100vh';
 
         //item_list.innerHTML = div;
         cake_list.innerHTML = await cake_div;
         dacq_list.innerHTML = await dacq_div;
-
-        alret_modal.style.height = '100vh';
+        
         item_section.style.display = 'block';
     });
 
