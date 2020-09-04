@@ -761,7 +761,7 @@ img.bunny_icon {
 }
 
 
-/* .office_address {
+.office_address {
     width: 100%;
     height: 30px;
     position: absolute;
@@ -778,7 +778,7 @@ img.bunny_icon {
 
 .office_address p {
     color: var(--button);
-} */
+}
 
 .delivery_info {
     position: relative;

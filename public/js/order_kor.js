@@ -729,11 +729,11 @@ pickup_button.addEventListener('click', e => {
         // }
       });   
     
-    //   var office_address = document.createElement("div");
-    //   office_address.classList.add("office_address");
-    //   const markup = "<p>8st SW Calgary</p>";
-    //   office_address.innerHTML = markup;
-    //   pickup_info.appendChild(office_address);
+    var office_address = document.createElement("div");
+    office_address.classList.add("office_address");
+    const markup = "<p>Pick-up location</p>";
+    office_address.innerHTML = markup;
+    pickup_info.appendChild(office_address);
    
 })
 
