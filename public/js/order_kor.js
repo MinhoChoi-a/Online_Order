@@ -386,20 +386,20 @@ function addCart(p) {
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
     
-    var content = `<p>Succesfully added, you can add other items more, otherwise click the next button below.</p><p>if you want to change the amount, change it and click the Added button.</p>`;
-        
+    var content = `<p id='kor'>추가되었습니다. 다른 메뉴를 더 선택하시거나, 하단의 Next 버튼을 누르시고 다음 단계로 가셔도 됩니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+
     if(type.id == 'cake') {
         cake_total += amount;
         
         if(cake_total > today_limit.cake_limit) {
-            content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
+            content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(cake_set.value == "none" || cake_set.value == undefined) {
             
-            content = "Please select the cake size first";
+            content = "<div id='kor'> 케익의 사이즈를 먼저 선택해 주세요 </div>";
             cake_total -= amount;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -435,18 +435,18 @@ function addCart(p) {
         cake_total += amount;
         
         content = 
-        `<p>Succesfully added, but this is not the final confirmation. I'll ask you further question to set design and favor after you finished to check out.</p>`+
-        `<p>You can add other items more, otherwise click the next button below.</p><p>if you want to change the amount, change it and click the Added button.</p>`;
+        `<p id='kor'>추가되었습니다. Custom Cake의 경우 디자인, Flavor 등 더 많은 정보가 필요하니, 주문을 완료하시고 나면 이메일로 추가 문의를 드릴 예정입니다.</p>`+
+        `<p id='kor'>다른 메뉴를 더 선택하시거나, 하단의 Next 버튼을 누르시고 다음 단계로 가셔도 됩니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
 
         if(cake_total > today_limit.cake_limit) {
-            content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
+            content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(cake_set.value == "none" || cake_set.value == undefined) {
             
-            content = "Please select the cake size first";
+            content = "<div id='kor'> 케익의 사이즈를 먼저 선택해 주세요 </div>";
             cake_total -= amount;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -482,7 +482,7 @@ function addCart(p) {
         dacq_total += amount;
 
         if(dacq_total > today_limit.dacq_limit) {
-            content = `Sorry, You cannot put dacq more than ${today_limit.dacq_limit}`;
+            content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
@@ -578,7 +578,7 @@ function fixCart(p) {
 
     console.log(title);
 
-    var content = `Succesfully fixed`;
+    var content = "<div id='kor'> 수정되었습니다. </div>";
 
     if(type.id == 'cake' || type.id == 'custom-cake') {
         
@@ -592,7 +592,7 @@ function fixCart(p) {
                     check = true;
 
                     if(cake_total > today_limit.cake_limit) {
-                        content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
+                        content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
                         cake_total -= difference;
                         amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
                     }
@@ -628,7 +628,7 @@ function fixCart(p) {
                 check = true;
 
                 if(dacq_total > today_limit.dacq_limit) {
-                    content = `Sorry, You cannot put cake more than ${today_limit.dacq_limit}`;
+                    content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
                     dacq_total -= difference;
                     amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
 
@@ -678,7 +678,7 @@ next_customer_button.addEventListener('click', e => {
 
     if(sumOrder == null || sumOrder == '' || sumOrder == 0) {
     
-        var content = "You selected nothing"
+        var content = "<div id='kor'>메뉴를 선택해주세요</div>"
         modal_content.innerHTML = content;   
         modal.style.display = "flex";
 
@@ -755,7 +755,7 @@ delivery_button.addEventListener('click', e => {
         }
 
         else {
-            var content = "Sorry delivery is avaiable only for Thursday ~ Saturday";
+            var content = "<div id='kor'> 죄송합니다. 딜리버리는 목요일에서 토요일까지만 가능합니다.</div>";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -764,7 +764,7 @@ delivery_button.addEventListener('click', e => {
     }
 
     else {
-        var content = "Sorry you should buy more than $ 50";
+        var content = "<div id='kor'> 죄송합니다. 딜리버리는 $ 50 이상 구매하셔야 가능합니다.</div>";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -839,7 +839,7 @@ address_check.addEventListener('click', e=> {
             if(distance > 5000) {
                 if(!city.includes('Calgary')) {
                     
-                    content = "Sorry this place is not available";
+                    content = "<div id='kor'> 죄송합니다. 이 지역은 딜리버리가 불가능합니다.</div>";
                     post_code.value = null;
                     modal_content.innerHTML = content;   
                     modal.style.display = "flex";
@@ -872,7 +872,7 @@ address_check.addEventListener('click', e=> {
                 }
 
                 else {
-                    content = "Sorry this place is not available";
+                    content = "<div id='kor'> 죄송합니다. 이 지역은 딜리버리가 불가능합니다.</div>";
                     post_code.value = null;
                     modal_content.innerHTML = content;   
                     modal.style.display = "flex";
@@ -942,20 +942,20 @@ next_check_button.addEventListener('click', e =>{
 
             if(!address_check_validation) {
                 error_check.check = true;
-                error_check.message = 'you should click check address button';    
+                error_check.message = "<div id='kor'>Check Address 버튼을 꼭 눌러주세요</div>";
             }
 
         }
 
         else {
             error_check.check = true;
-            error_check.message = 'address is empty';
+            error_check.message = "<div id='kor'>주소 칸이 비었습니다.</div>";
         }
     }
 
     else {
         error_check.check = true;
-        error_check.message = "didn't select the delivery option";
+        error_check.message = "<div id='kor'>딜리버리 옵션을 선택해주세요</div>";
     }
 
     console.log(post_code.value);
@@ -965,7 +965,7 @@ next_check_button.addEventListener('click', e =>{
     if(name == null || phone == null || name == '' || phone == '' || name == 0 || phone == 0 ||
         insta == null || insta == '' || allergy == null || allergy == '') {
         error_check.check = true;
-        error_check.message = "please write all information";
+        error_check.message = "<div id='kor'>모든 내용을 적어주셔야 합니다.</div>";
     }
 
     if(error_check.check == false) {
