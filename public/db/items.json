@@ -64,10 +64,9 @@
         "special": ""
     },
 
-
     {
-        "type": "cake",
-        "item_name": "Custom-Cake",
+        "type": "custom-cake",
+        "item_name": "Flower",
         "price": 85,
         "available_date": 
             [20200907, 20200908, 20200909, 20200910, 20200911, 20200912, 20200913,

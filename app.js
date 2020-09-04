@@ -68,11 +68,11 @@ router.get('/order', function (req, res) {
   dacq_list = [];
 
   for(var i =0; i < item_list.length; i++) {
-    if(item_list[i].type == 'cake') {
+    if(item_list[i].type == 'cake'|| item_list[i].type == 'custom-cake') {
       cake_list.push(item_list[i].item_name);
     }
   
-    else if(item_list[i].type == 'dacqouise') {
+    else if(item_list[i].type == 'dacquoise') {
       dacq_list.push(item_list[i].item_name);
     }
   }
@@ -209,7 +209,7 @@ router.post('/order', async function (req, res) {
           }
 
           sold_content +=
-          `<tr><td>${item.product}</td><td>${item.amount}</td><td>${item.price}</td></tr>`;
+          `<tr><td>${item.product}</td><td style="text-align:center">${item.amount}</td><td style="text-align:center">${item.price}</td></tr>`;
 
           sold_items.push(item);
 
@@ -217,7 +217,7 @@ router.post('/order', async function (req, res) {
         }
 
         sold_content +=
-        `<tr><td colspan=2>Total Sum</td><td>${order_info[i]}</td></tr></table>`;
+        `<tr><td colspan=2>Total Sum</td><td style="text-align:center">${order_info[i]}</td></tr></table>`;
 
       }
 

@@ -119,6 +119,8 @@ calendar.addEventListener('click', async (e) => {
 
     var dac_items= [];
     var cake_items= [];
+    var custom_cake_items= [];
+
     today_limit = '';
 
     const targetWork = e.target.closest('button');
@@ -147,6 +149,10 @@ calendar.addEventListener('click', async (e) => {
         if(items[t].type == 'cake') {
             cake_items.push(items[t]);
         }
+
+        else if(items[t].type == 'custom-cake') {
+            custom_cake_items.push(items[t]);
+        }
         
         else if(items[t].type == 'dacquoise') {
             dac_items.push(items[t]);
@@ -173,10 +179,18 @@ calendar.addEventListener('click', async (e) => {
                 available_data.push(cake_items[i]);
             }
         }
+
+        for(var i=0; i < custom_cake_items.length; i++) {
+            if(custom_cake_items[i].available_date.includes(parseInt(targetWork.id))){
+                available_data.push(custom_cake_items[i]);
+            }
+        }
+
     }   
     
     var cake_div = '';
     var dacq_div = '';
+    var custom_cake_div = '';
     
     for(var i=0; i<available_data.length; i++) {
         
@@ -220,6 +234,43 @@ calendar.addEventListener('click', async (e) => {
             cake_div += cake_content;
         }
 
+        else if(available_data[i].type == 'custom-cake') {
+        
+            cake_name_list.push(available_data[i].item_name);
+            
+            var cake_type = available_data[i].type;
+            var cake_price = available_data[i].price;
+            
+            if(available_data[i].special == order_month) {
+                cake_type = "monthly special cake";
+                cake_price = available_data[i].price * 0.8;
+            }
+    
+            var cake_content = 
+                `<ul class="item" id=${available_data[i].type}>
+                    <li id="type">${cake_type}</li>
+                    <li id="image">
+                        <img src="/img/${available_data[i].image}"/>    
+                    </li>
+                    <li id="name">
+                        <div id="cake_name">${available_data[i].item_name}</div>
+                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
+                    </li>
+                    <li id="amount">
+                        <p>$ ${cake_price}</p>
+                        <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
+                    </li>
+                    <li class="add_button" id="button_${available_data[i].item_name}">
+                        <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
+                    </li>
+                    <li class="fix_button" id="fixCart_${available_data[i].item_name}">
+                        <button type="button" onclick="fixCart(this.parentElement)">Added</button>
+                    </li>
+                </ul>`;
+                
+                custom_cake_div += cake_content;
+            }
+
         else {
          
         var dacq_content = 
@@ -254,6 +305,7 @@ calendar.addEventListener('click', async (e) => {
 
         //item_list.innerHTML = div;
         cake_list.innerHTML = await cake_div;
+        cake_list.innerHTML += await custom_cake_div;
         dacq_list.innerHTML = await dacq_div;
         
         item_section.style.display = 'block';
@@ -339,6 +391,53 @@ function addCart(p) {
     if(type.id == 'cake') {
         cake_total += amount;
         
+        if(cake_total > today_limit.cake_limit) {
+            content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
+            cake_total -= amount;
+            amount_class.firstElementChild.nextElementSibling.value = 1;
+        }
+
+        else if(cake_set.value == "none" || cake_set.value == undefined) {
+            
+            content = "Please select the cake size first";
+            cake_total -= amount;
+            modal_content.innerHTML = content;   
+            modal.style.display = "flex";
+        }
+
+        else{
+            
+            var newItem = {
+                item_name: title,
+                amount: amount,
+                price: price,
+                set_value: cake_set.value
+            }
+            orderObjectArray.push(newItem); 
+
+            var cartButton = document.querySelector(`#button_${title}`);
+            cartButton.style.display = "none";
+
+            cartButton.previousElementSibling.firstElementChild.innerHTML = "$ "+ (newItem.amount * newItem.price * newItem.set_value).toFixed(1);
+
+            var fixCartButton = document.querySelector(`#fixCart_${title}`);
+            fixCartButton.style.display = "block";
+            
+            var sum = getSumOrder()
+            
+            total__check.innerHTML = `<p>Total purchase ${sum}</p>`;
+            total__check.style.height = '30px';
+
+        }
+    }
+
+    else if(type.id == 'custom-cake') {
+        cake_total += amount;
+        
+        content = 
+        `<p>Succesfully added, but this is not the final confirmation. I'll ask you further question to set design and favor after you finished to check out.</p>`+
+        `<p>You can add other items more, otherwise click the next button below.</p><p>if you want to change the amount, change it and click the Added button.</p>`;
+
         if(cake_total > today_limit.cake_limit) {
             content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
             cake_total -= amount;
@@ -481,7 +580,7 @@ function fixCart(p) {
 
     var content = `Succesfully fixed`;
 
-    if(type.id == 'cake') {
+    if(type.id == 'cake' || type.id == 'custom-cake') {
         
             var check = false;
             var  i = 0;
