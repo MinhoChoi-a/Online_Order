@@ -1,0 +1,55 @@
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  
+  link(rel="icon" href="img/favicon.ico" type="image/x-icon")
+  
+  link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+  
+  script(src="https://code.jquery.com/jquery-2.1.3.min.js")
+
+  link(rel='stylesheet' href='/order.css')
+  meta(name='description' content='Web site')
+  title Baking Bunny
+
+
+body
+
+  .container
+    
+    section.end
+      .text  
+        h1 Thank You
+        p Please keep in mind that this is a request and not a confirmation.
+        p We will respond by email to let you know if your order has been accepted or not.
+        p If you have any other question, you can click the below Inquiry button.
+        p Have a good day :)
+      
+      button.inquiry(type='button') Inquiry
+      
+      img.bunny_icon(src="/img/logo_circle.png")
+
+
+    .inquiry_modal
+      .inquiry_modal__content
+        section.loading
+          .loading_text
+            p Now sending the E-mail...
+        
+        section.sent
+          .text_content
+          button.close_two(type='button') Close
+
+        form.contact_form(method='POST' action='')
+          input.name(type='text' name='name' placeholder='Name' required)
+          input.email(type='text' name='email' placeholder='E-mail' required)
+          .date
+            label(for="date") Needed Date
+            input.date_need(type='date' name='date')             
+          textarea.text(placeholder='Message' name='Message' rows='4' cols='50' required)
+          .button
+            button.send(type='submit') Send 
+            button.close_one(type='button') Close
+
+script(type='text/javascript' src='/js/inquiry.js')

@@ -32,6 +32,7 @@ const Customer = require('./models/customer');
 const Sales = require('./models/sales');
 
 const nodemailer = require('nodemailer');
+const { error } = require('console');
 let transporter = nodemailer.createTransport({
     service: 'gmail', //https://myaccount.google.com/lesssecureapps
     auth: {
@@ -56,13 +57,19 @@ router.get('/', function (req, res) {
   res.render('index');
 });
 
-router.get('/end', function (req, res) {
+router.get('/end/eng', function (req, res) {
 
-  res.render('end');
+  res.render('end_eng');
 
 });
 
-router.get('/order', function (req, res) {
+router.get('/end/kor', function (req, res) {
+
+  res.render('end_kor');
+
+});
+
+router.get('/order/eng', function (req, res) {
 
   cake_list = [];
   dacq_list = [];
@@ -94,12 +101,12 @@ router.get('/order', function (req, res) {
             return next(err);
         }
        
-    res.render('order', {limit_data: results.limits});
+    res.render('order_eng', {limit_data: results.limits});
   });
 });
 
 
-router.post('/order', async function (req, res) {
+router.post('/order/eng', async function (req, res) {
 
   let cake_num = 0;
   let dacq_num = 0;
@@ -289,7 +296,7 @@ router.post('/order', async function (req, res) {
                             
                             else {
                               console.log('Success Email');
-                              res.redirect('/end');
+                              res.redirect('/end/eng');
                             }
                           
                           });
@@ -350,7 +357,309 @@ router.post('/order', async function (req, res) {
                   
                   else {
                     console.log('Success Email');
-                    res.redirect('/end');
+                    res.redirect('/end/eng');
+                  }
+                          
+                });
+              }
+            })
+        }                  
+      })
+    }
+  } catch(err) {
+    console.log(err.message);
+  }
+});
+
+router.get('/order/kor', function (req, res) {
+
+  cake_list = [];
+  dacq_list = [];
+
+  for(var i =0; i < item_list.length; i++) {
+    if(item_list[i].type == 'cake'|| item_list[i].type == 'custom-cake') {
+      cake_list.push(item_list[i].item_name);
+    }
+  
+    else if(item_list[i].type == 'dacquoise') {
+      dacq_list.push(item_list[i].item_name);
+    }
+  }
+
+  async.parallel({
+        
+    limits: function(callback) {
+            Limit.find({})
+         .where('date')
+         .gte(20200801)
+         .lt(20201031)
+         .exec(callback);
+        },
+    }, function(err, results) {
+        if(err) {return next(err);}
+        if(results==null) {
+            var err = new Error('Limit not found');
+            err.status = 404;
+            return next(err);
+        }
+       
+    res.render('order_kor', {limit_data: results.limits});
+  });
+});
+
+
+router.post('/order/kor', async function (req, res) {
+
+  let cake_num = 0;
+  let dacq_num = 0;
+
+  var date = req.body.schedule;
+  date = date.split(' ');
+  date = '2020'+date[0]+date[2];
+
+  console.log(date);
+
+  try{
+    let order_info = [];
+    let sold_items = [];
+
+    for(var prop in req.body) {
+      order_info.push(req.body[prop]);
+    }
+
+    console.log(order_info);
+
+    let email_content =
+    "<body><div class='order_confirm'>"+
+       "<h3>Order Request</h3>"+
+       "<table style='background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;'>"+
+         `<tr><td>Schedule</td><td>${order_info[0]}</td></tr>`+
+         `<tr><td>Name</td><td>${order_info[1]}</td></tr>`+
+         `<tr><td>insta/email</td><td>${order_info[2]}</td></tr>`+
+         `<tr><td>Phone</td><td>${order_info[3]}</td></tr>`+
+         `<tr><td>Allergy</td><td>${order_info[4]}</td></tr>`+
+         `<tr><td>Delivery Option</td><td>${order_info[5]}</td></tr>`;
+    
+    let sold_content = '<table style="margin-top:10px; background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;"><tr><td>Product</td><td style="text-align:center">Amount</td><td style="text-align:center">Price</td></tr>';     
+
+    if(order_info[5] == "delivery")  {
+      email_content +=
+      `<tr><td>Address</td><td>${order_info[6]}</td></tr></table>`;
+
+        var i = 7;
+
+        while(i < order_info.length-2) {
+          let item = {
+            product: order_info[i],
+            amount: order_info[++i],
+            price: order_info[++i],
+          }
+
+          let item_exact_name = item.product.split(' ');
+
+          console.log(item_exact_name);
+
+          if(dacq_list.includes(item_exact_name[0])) {
+            dacq_num += parseInt(item.amount);
+          }
+
+          if(cake_list.includes(item_exact_name[0])) {
+            cake_num += parseInt(item.amount);
+          }
+
+          sold_content +=
+          `<tr><td>${item.product}</td><td style="text-align:center">${item.amount}</td><td style="text-align:center">${item.price}</td></tr>`;
+
+          sold_items.push(item);
+
+          i++;
+        }
+
+        let delivery_fee = '';
+        let total_sum = '';
+
+        if(order_info[i+1] == undefined){
+          delivery_fee = 0;
+          total_sum = order_info[i];
+        }
+
+        else {
+          total_sum = order_info[i+1];
+          delivery_fee = order_info[i];
+        }
+                
+        sold_content +=
+        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${delivery_fee}</td>`+
+        `<tr><td colspan=2>Total Sum</td><td style="text-align:center">${total_sum}</td></tr></table>`;
+      }
+
+    else {
+      email_content += "</table>"    
+      
+      var i = 6;
+
+        while(i < order_info.length-1) {
+          let item = {
+            product: order_info[i],
+            amount: order_info[++i],
+            price: order_info[++i],
+          }
+
+          let item_exact_name = item.product.split(' ');
+
+          console.log(item_exact_name);
+
+          if(dacq_list.includes(item_exact_name[0])) {
+            dacq_num += parseInt(item.amount);
+          }
+
+          if(cake_list.includes(item_exact_name[0])) {
+            cake_num += parseInt(item.amount);
+          }
+
+          sold_content +=
+          `<tr><td>${item.product}</td><td style="text-align:center">${item.amount}</td><td style="text-align:center">${item.price}</td></tr>`;
+
+          sold_items.push(item);
+
+          i++;
+        }
+
+        sold_content +=
+        `<tr><td colspan=2>Total Sum</td><td style="text-align:center">${order_info[i]}</td></tr></table>`;
+
+      }
+
+  let final_content = email_content + sold_content + "</div></body>";
+  
+  const comeback_user = await Customer.findOne({$and: [{name: order_info[1]},{phone: order_info[3]}]});
+
+  if(!comeback_user) {
+           
+          var customer_info = {
+            name: order_info[1],
+            insta_email: order_info[2],
+            phone: order_info[3],
+            allergy: order_info[4]            
+          }
+
+          var new_customer = new Customer(customer_info);
+              new_customer.save(function (err) {
+							if(!err) {
+                console.log(new_customer._id);
+                console.log("new customer info added");
+                
+                var sales_info = {
+                  customer: new_customer._id,
+                  order_date: new Date(),
+                  purchase: sold_items
+                }
+                
+                var new_sales = new Sales(sales_info);
+                new_sales.save(function (err) {
+                  if(!err) {
+                    console.log(new_sales._id);
+                    console.log("sales info added");
+
+                    console.log(date);
+
+                    async.parallel({
+                      
+                      limit: function(callback) {
+                      
+                        Limit.find({date: date})
+                            .exec(callback)
+                      }}, async (err, results) => {
+                        if(err) {console.log(err.message);}
+                        else{
+                          console.log(results);
+                          
+                          console.log(cake_num);
+                          console.log(dacq_num);
+
+                          var cake_limit = results.limit[0].cake_limit - cake_num;
+                          var dacq_limit = results.limit[0].dacq_limit - dacq_num;
+
+                          console.log(dacq_limit);
+                          console.log(cake_limit);
+
+                          results.limit[0].cake_limit = cake_limit;
+                          results.limit[0].dacq_limit = dacq_limit;
+
+                          console.log(results.limit[0].dacq_limit);
+
+                          let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
+                          
+                          mailOptions.subject = 'Baking Bunny Order';
+                          mailOptions.html = final_content;
+
+                          transporter.sendMail(mailOptions, function() {
+                            if(err) {console.log(err.meesage);}
+                            
+                            else {
+                              console.log('Success Email');
+                              res.redirect('/end/kor');
+                            }
+                          
+                          });
+                        }
+                      })
+                  }                  
+                })
+                }
+              });
+          }    
+  
+  else {
+      var sales_info = {
+        customer: comeback_user._id,
+        order_date: new Date(),
+        purchase: sold_items
+      }
+      
+      var new_sales = new Sales(sales_info);
+      new_sales.save(function (err) {
+        if(!err) {
+          console.log(new_sales._id);
+          console.log("comeback customer");
+          console.log("sales info added");
+          
+          async.parallel({
+                      
+            limit: function(callback) {
+            
+              Limit.find({date: date})
+                  .exec(callback)
+            }}, async (err, results) => {
+              if(err) {console.log(err.message);}
+              else{
+                console.log(results);
+                
+                console.log(cake_num);
+                console.log(dacq_num);
+
+                var cake_limit = results.limit[0].cake_limit - cake_num;
+                var dacq_limit = results.limit[0].dacq_limit - dacq_num;
+
+                console.log(dacq_limit);
+                console.log(cake_limit);
+
+                results.limit[0].cake_limit = cake_limit;
+                results.limit[0].dacq_limit = dacq_limit;
+
+                console.log(results.limit[0].dacq_limit);
+
+                let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
+                
+                mailOptions.subject = 'Baking Bunny Order - comeback customer';
+                mailOptions.html = final_content;
+
+                transporter.sendMail(mailOptions, function() {
+                  if(err) {console.log(err.meesage);}
+                  
+                  else {
+                    console.log('Success Email');
+                    res.redirect('/end/kor');
                   }
                           
                 });

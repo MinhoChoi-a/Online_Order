@@ -1,0 +1,244 @@
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  
+  link(rel="icon" href="img/favicon.ico" type="image/x-icon")
+  
+  link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
+  link(href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet")
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+
+  script(
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY"
+      defer)
+    
+  link(rel='stylesheet' href='/order.css')
+  meta(name='Baking bunny' content='Fresh & Sweet Dessert')
+  title Baking Bunny
+
+input.data(type='text' style='display:none' value=limit_data)
+
+body
+
+  .container
+    section.first
+      div.information
+        h2 Information
+        p - To order baking bunny's dessert, you should select the date when you want to take first.
+        p - Because, The available dessert is a little bit different from each day :)
+        p - Free delivery service is available only for more than $ 50 purchase on Thursday, Friday, and Saturday.
+        p - If the distance is too far, there will be an additional charge.
+      div.calendar__table
+        h2.month September
+        .calendar
+          .day
+            .div(id="td") Sun
+            .div(id="td") Mon
+            .div(id="td") Tue
+            .div(id="td") Wed
+            .div(id="td") Thu
+            .div(id="td") Fri
+            .div(id="td") Sat
+          .week
+            .div(id="td")
+              button#20200830.date 30
+            .div(id="td")
+              button#20200831.date 31
+            .div(id="td")
+              button#20200901.date 1
+            .div(id="td")
+              button#20200902.date 2
+            .div(id="td")
+              button#20200903.date 3
+            .div(id="td")
+              button#20200904.date 4
+            .div(id="td")
+              button#20200905.date 5
+          .week
+            .div(id="td")
+              button#20200906.date 6
+            .div(id="td")
+              button#20200907.date 7
+            .div(id="td")
+              button#20200908.date 8
+            .div(id="td")
+              button#20200909.date 9
+            .div(id="td")
+              button#20200910.date 10
+            .div(id="td")
+              button#20200911.date 11
+            .div(id="td")
+              button#20200912.date 12
+          .week
+            .div(id="td")
+              button#20200913.date 13
+            .div(id="td")
+              button#20200914.date 14
+            .div(id="td")
+              button#20200915.date 15
+            .div(id="td")
+              button#20200916.date 16
+            .div(id="td")
+              button#20200917.date 17
+            .div(id="td")
+              button#20200918.date 18
+            .div(id="td")
+              button#20200919.date 19
+          .week
+            .div(id="td")
+              button#20200920.date 20
+            .div(id="td")
+              button#20200921.date 21
+            .div(id="td")
+              button#20200922.date 22
+            .div(id="td")
+              button#20200923.date 23
+            .div(id="td")
+              button#20200924.date 24
+            .div(id="td")
+              button#20200925.date 25
+            .div(id="td")
+              button#20200926.date 26
+          .week
+            .div(id="td")
+              button#20200927.date 27
+            .div(id="td")
+              button#20200928.date 28
+            .div(id="td")
+              button#20200929.date 29
+            .div(id="td")
+              button#20200930.date 30
+            .div(id="td")
+              button#20201001.date 1
+            .div(id="td")
+              button#20201002.date 2
+            .div(id="td")
+              button#20201003.date 3
+          .week
+            .div(id="td")
+              button#20201004.date 4
+            .div(id="td")
+              button#20201005.date 5
+            .div(id="td")
+              button#20201006.date 6
+            .div(id="td")
+              button#20201007.date 7
+            .div(id="td")
+              button#20201008.date 8
+            .div(id="td")
+              button#20201009.date 9
+            .div(id="td")
+              button#20201010.date 10
+      
+      .hidden_block
+
+    section.second
+      .alret_modal
+        .alret_content 
+          h1 Before Select
+          p Menu items may contain or come into contact with wheat, eggs, peanuts, treenuts, and milk.
+          p Please let us know if you have any food allergies or restrictions when you place on order.
+          p If you read all, tap here :)
+
+      .total_check
+      .item__list
+        .dacq_list
+        .cake_list
+
+      button.dessert_nav_modal_button(type="button")
+        .icon MENU
+
+      .dessert_nav_modal
+        .dessert_modal_content 
+          button.nav_all(type='button') All
+          button.nav_cake(type="button") Cake
+          button.nav_dacq(type="button") Dacquoise
+
+      .cake_size_modal
+        .cake_size_modal_content(value='') 
+          button(type="button" value=1 onclick="sizeValue(this.value, this.parentElement.value)") 6 inch
+          button(type="button" value=1.2 onclick="sizeValue(this.value, this.parentElement.value)") 8 inch
+      
+      .hidden_block 
+      
+      .nav
+        a(href='/order')
+          button#prev__schedule Previous
+        button#next_customer Next
+      
+      
+
+    section.third
+      .bunny_icon_small
+        <img src="/img/logo_circle.png">
+      
+      form(action="")
+        ul
+          li(class="question")
+            label(for="cust_name") Name
+          li(class="answer")
+            input(type="text" id="cust_name" name="name")
+          li(class="question")
+            label(for="insta") Instagram ID or Email
+          li(class="answer")
+            input(type="text" id="insta" name="insta") 
+          li(class="question")
+            label(for="phone") Phone Number
+          li(class="answer")
+            input(type="text" id="phone" name="phone")
+          li(class="question")
+            label(for="allergy") Any food allergies?
+          li(class="answer")
+            input(type="text" id="allergy" name="allergy")
+          li(class="question")
+            | Select Delviery
+            div.time
+              p - Pickup is avaiable between 5 to 7 PM
+              p - Delivery is avaialble between 5 to 7 PM
+          li(id="radio")
+            label
+              input(type='radio' id='pick' name='pickup' value='pick-up')
+              span Pick Up
+            label
+              input(type='radio' id='delivery' name='pickup' value='delivery')
+              span Delivery
+          li.pickup_info            
+          li.delivery_info
+            label(for='address') Put your Postal Code
+            input(type='text' id= 'postal' name='address')
+            button(type='button' id="address_check") Check address
+            div(id="delivery_fee")               
+            div(id="delivery_free") 
+              p free delivery service
+            div(id="delivery_error")
+              p please put the right postal code   
+
+      .hidden_block 
+
+      .nav
+        button#prev__items Previous
+        button#next_check Check Out
+    
+    section.fourth
+      .bunny_icon_small
+        <img src="/img/logo_circle.png">
+
+      h1 Request
+      p if you want to change something, you can go to the prior menu with previous button
+
+      form(method='POST' action="")
+        div(class='form-group')
+          table.confirmation_customer
+          table.confirmation_order
+        
+        .nav
+          button(type="button")#prev__customer Previous
+          button(type="submit" onsubmit="return onSubmit()")#next_check Request
+
+      .hidden_block
+      
+    .modal
+      .modal__content
+
+
+script(type='text/javascript' src='/js/order_eng.js')
