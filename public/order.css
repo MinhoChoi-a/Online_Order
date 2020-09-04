@@ -67,7 +67,6 @@ h1, p, h3, h2 {
 
 img.bunny_icon {
     position:absolute;
-    align-self: flex-end;
     bottom: 0;
     right: 0;
     width: 100px;
@@ -77,18 +76,20 @@ img.bunny_icon {
 }
 
 .bunny_icon_small {
-    position: absolute;
-    top:0;
-    right:0;
-    z-index: 99;
-    width: 50px;
-    margin: 10px;
-    height: 50px;    
+    position: relative;
+    width: 100%;
+    display: block;
+    height: 30px;
+    
 }
 
 .bunny_icon_small img {
-    width: 100%;
-    height: 100%;    
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    top: 0;
+    right: 0;
 }
 
 .hidden_block {
@@ -508,12 +509,11 @@ img.bunny_icon {
 }
 
 .second .item__list p {
-    font-size: 15px;
+    font-size: 16px;
     width: 100%;
     height: 100%;
     color: var(--font_color);
-    margin: 0;
-    padding: 0;
+    margin:0;    
 }
 
 
@@ -533,6 +533,7 @@ img.bunny_icon {
 .second .item #amount {
     display: flex;
     flex-direction: row;    
+    justify-content: center;
     text-align: center;
 }
 
