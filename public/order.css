@@ -248,6 +248,17 @@ img.bunny_icon {
     display: flex;
     width: 100%;
     flex-direction: row;
+    justify-content: center;
+}
+
+[type="date"] {
+    background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+}
+[type="date"]::-webkit-inner-spin-button {
+    display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
 }
 
 .inquiry_modal__content .date label{
@@ -526,6 +537,7 @@ img.bunny_icon {
 }
 
 .second .item #amount input {
+    font-size: 16px;
     border: none;
     text-align: center;
     width: 150px;    
