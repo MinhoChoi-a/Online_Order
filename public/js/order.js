@@ -90,6 +90,8 @@ const item_list = document.querySelector('.second .item__list');
 const cake_list = document.querySelector('.second .cake_list');
 const dacq_list = document.querySelector('.second .dacq_list');
 
+const alret_modal = document.querySelector('.alret_modal');
+
 const xmlhttp = new XMLHttpRequest();
 const url = "../db/items.json";
 
@@ -253,8 +255,13 @@ calendar.addEventListener('click', async (e) => {
         cake_list.innerHTML = await cake_div;
         dacq_list.innerHTML = await dacq_div;
 
+        alret_modal.style.height = '100vh';
         item_section.style.display = 'block';
     });
+
+alret_modal.addEventListener('click', e => {
+    alret_modal.style.height = 0;
+})
 
 /* menu section*/
 
@@ -327,7 +334,7 @@ function addCart(p) {
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
     
-    var content = `Succesfully added, you can add other items more, otherwise click the next button below. if you want to change the amount, change it and click the Added button.`;
+    var content = `<p>Succesfully added, you can add other items more, otherwise click the next button below.</p><p>if you want to change the amount, change it and click the Added button.</p>`;
 
     if(type.id == 'cake') {
         cake_total += amount;

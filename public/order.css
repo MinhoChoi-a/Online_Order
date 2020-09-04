@@ -190,6 +190,8 @@ h1, p, h3, h2 {
 
 .welcome p {
     font-family: var(--title_font);
+    margin: 0;
+    margin-bottom:10px;
     font-size: 20px;
 }
 
@@ -258,6 +260,11 @@ h1, p, h3, h2 {
 
 .inquiry_modal__content form .text{
     height: 200px;
+}
+
+.inquiry_modal__content form p{
+    margin-bottom: 0;
+    align-self: flex-start;
 }
 
 .inquiry_modal__content .button{
@@ -515,6 +522,11 @@ h1, p, h3, h2 {
     width: 150px;    
 }
 
+.second .alret_modal h1,.second .alret_modal p{
+    padding: 10px;
+    margin: 0;
+}
+
 .second .dessert_nav_modal_button {
     display: flex;
     flex-direction: row;
@@ -533,7 +545,7 @@ h1, p, h3, h2 {
     color: var(--font_color);
 }
 
-.second .dessert_nav_modal, .second .cake_size_modal {
+.second .dessert_nav_modal, .second .cake_size_modal, .second .alret_modal {
     display: flex; /* Hidden by default */
     flex-direction: row;
     justify-content: center;
@@ -541,7 +553,7 @@ h1, p, h3, h2 {
     margin:0;
     padding:0;
     position: fixed; /* Stay in place */
-    z-index: 99; /* Sit on top */
+    z-index: 999; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -552,7 +564,7 @@ h1, p, h3, h2 {
 
 }
 
-.second .dessert_modal_content, .second .cake_size_modal_content {
+.second .dessert_modal_content, .second .cake_size_modal_content, .second .alret_content {
     display: flex; /* Hidden by default */
     flex-direction: column;
     justify-content: center;

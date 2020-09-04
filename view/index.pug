@@ -30,8 +30,11 @@ body
     section.welcome
       .text
         h1 Baking Bunny
-        P Flower Cake | Whipped Cream | Butter Cream
-        p Dacqouise | Spoon Cake
+        P Baking Bunny is specialized in 
+        p flower cakes, custom designed lettering cake 
+        p and dacquoise in birthday, showers, 
+        p and every other occaion in Calgary, Alberta        
+        br
         br
         a(href='/order') 
           button.welcome__button(type='button') Online Order
@@ -55,6 +58,8 @@ body
         form.contact_form(method='POST' action='')
           input.name(type='text' name='name' placeholder='Name' required)
           input.email(type='text' name='email' placeholder='E-mail' required)
+          p(id="needed_Date") Needed Date
+          input.date_need(type='date' name='date')             
           textarea.text(placeholder='Message' name='Message' rows='4' cols='50' required)
           .button
             button.send(type='submit') Send 

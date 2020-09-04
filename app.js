@@ -414,13 +414,16 @@ router.post('/management', (req,res) => {
 
 router.post('/email', async function (req, res, next) {
 
-  console.log(req.body);
+  console.log(req.body.date);
+
+
 
   mailOptions.subject = 'Baking Bunny Inquiry from '+ req.body.name;
   mailOptions.html =
   `<h1> Inquiry Email </h1>`+
   `<div id='text' style="margin-top:10px; background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px">` +
   `<p>${req.body.Message}</p>`+
+  `<p>Needed date: `+ `${req.body.date}</p>`+
   `<p> Email address: `+ `${req.body.email}</p></div>`;
   
   try {
