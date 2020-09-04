@@ -99,13 +99,12 @@ img.bunny_icon {
 }
 
 ::-webkit-scrollbar {
-    width: 0px;  /* Remove scrollbar space */
-    background: transparent;
+    display: none;
       }
     /* Optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
-    border-radius: 20px;
-    background: var(--beige);
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
     }
 
 @-webkit-keyframes fadeIn {
