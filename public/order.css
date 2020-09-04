@@ -451,11 +451,11 @@ img.bunny_icon {
 .second .item__list {
     margin-bottom: 50px;
     margin-top: 20px;
-    display: grid;    
-    grid-template-columns: repeat(1, 1fr);
+    display: flex;    
+    flex-direction: column;
+    align-items: center;
     padding-left: 5px;
-    padding-right: 5px;
-    
+    padding-right: 5px;    
 }
 
 .second .cake_list, .second .dacq_list {
@@ -508,14 +508,6 @@ img.bunny_icon {
     height: 20px;
 }
 
-.second .item__list p {
-    font-size: 16px;
-    width: 100%;
-    height: 100%;
-    color: var(--font_color);
-    margin:0;    
-}
-
 
 .second .add_button {
     display: block;    
@@ -531,17 +523,26 @@ img.bunny_icon {
 }
 
 .second .item #amount {
-    display: flex;
+    display: grid;
     flex-direction: row;    
-    justify-content: center;
-    text-align: center;
+    grid-template-columns: repeat(2, 1fr);    
+}
+
+.second .item__list #p {
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+    color: var(--font_color);
+    margin:0;
+    padding:0;    
 }
 
 .second .item #amount input {
     font-size: 16px;
     border: none;
     text-align: center;
-    width: 150px;    
+    width: 100%;
+    height: 100%;    
 }
 
 .second .alret_modal h1,.second .alret_modal p{

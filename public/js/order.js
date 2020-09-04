@@ -220,7 +220,7 @@ calendar.addEventListener('click', async (e) => {
                     <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
                 </li>
                 <li id="amount">
-                    <p>$ ${cake_price}</p>
+                    <div id="p">$ ${cake_price}</div>
                     <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                 </li>
                 <li class="add_button" id="button_${available_data[i].item_name}">
@@ -257,7 +257,7 @@ calendar.addEventListener('click', async (e) => {
                         <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
                     </li>
                     <li id="amount">
-                        <p>$ ${cake_price}</p>
+                        <div id="p">$ ${cake_price}</div>
                         <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                     </li>
                     <li class="add_button" id="button_${available_data[i].item_name}">
@@ -283,7 +283,7 @@ calendar.addEventListener('click', async (e) => {
                     <div id="dacq_name">${available_data[i].item_name}</div>
                     <div id="dacq_size" style="display:none;"></div></li>
                 <li id="amount">
-                    <p>$ ${available_data[i].price}</p>
+                    <div id="p">$ ${available_data[i].price}</div>
                     <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
                 </li>
                 <li class="add_button" id="button_${available_data[i].item_name}">
