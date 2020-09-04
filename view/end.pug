@@ -28,8 +28,7 @@ body
       
       button.inquiry(type='button') Inquiry
       
-      .bunny_icon
-          <img src="/img/logo_circle.png">
+      img.bunny_icon(src="/img/logo_circle.png")
 
 
     .inquiry_modal
@@ -45,8 +44,9 @@ body
         form.contact_form(method='POST' action='')
           input.name(type='text' name='name' placeholder='Name' required)
           input.email(type='text' name='email' placeholder='E-mail' required)
-          p(id="needed_Date") Needed Date
-          input.date_need(type='date' name='date')             
+          .date
+            label(for="date") Needed Date
+            input.date_need(type='date' name='date')             
           textarea.text(placeholder='Message' name='Message' rows='4' cols='50' required)
           .button
             button.send(type='submit') Send 
