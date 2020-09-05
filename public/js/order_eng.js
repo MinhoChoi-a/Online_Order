@@ -1,10 +1,10 @@
 /* Schedule Section*/
 var holiday = [
     20200831,
-    20200907,
-    20200914,
-    20200921,
-    20200928,
+    20200907,20200906,
+    20200914,20200913,
+    20200921,20200920,
+    20200928,20200927,
     20201005
 ];
 
@@ -62,7 +62,6 @@ function updateSchedule() {
 
         if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = 'grey';
-            schedule__date[i].innerHTML = 'X';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
         
@@ -73,8 +72,7 @@ function updateSchedule() {
         }
 
         if(holiday.includes(parseInt(schedule__date[i].id))) {
-            schedule__date[i].style.background = 'white';
-            schedule__date[i].innerHTML = '';
+            schedule__date[i].style.background = 'grey';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
       
@@ -848,25 +846,25 @@ address_check.addEventListener('click', e=> {
                 }
 
                 else if(distance < 10000) {
-                    delivery_fee.innerHTML = "<p> $3 additional charge </p>" ;
+                    delivery_fee.innerHTML = "<p> $3 additional delivery fee </p>" ;
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 3;
                 }
 
                 else if(distance < 15000) {
-                    delivery_fee.innerHTML = "<p> $5 additional charge </p>";
+                    delivery_fee.innerHTML = "<p> $5 additional delivery fee </p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 5;
                 }
 
                 else if(distance < 20000) {
-                    delivery_fee.innerHTML = "<p> $7 additional charge </p>";
+                    delivery_fee.innerHTML = "<p> $7 additional delivery fee </p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 7;
                 }
 
                 else if(distance < 25000) {
-                    delivery_fee.innerHTML = "<p> $10 additional charge </p>";
+                    delivery_fee.innerHTML = "<p> $10 additional delivery fee </p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 10;
                 }
@@ -1032,7 +1030,7 @@ function confirmation(cust, ord, deliv) {
         }
 
         var div = 
-        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
+        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}"  style="font-size:12px; readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
 
         order_info += div;
     }

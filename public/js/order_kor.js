@@ -1,12 +1,12 @@
 /* Schedule Section*/
-var holiday = [
-    20200831,
-    20200907,
-    20200914,
-    20200921,
-    20200928,
-    20201005
-];
+ var holiday = [
+     20200831,
+     20200907,20200906,
+     20200914,20200913,
+     20200921,20200920,
+     20200928,20200927,
+     20201005
+ ];
 
 var today = new Date();
 var today__num = today.getDay();
@@ -62,7 +62,6 @@ function updateSchedule() {
 
         if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = 'grey';
-            schedule__date[i].innerHTML = 'X';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
         
@@ -72,11 +71,10 @@ function updateSchedule() {
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
 
-        if(holiday.includes(parseInt(schedule__date[i].id))) {
-            schedule__date[i].style.background = 'white';
-            schedule__date[i].innerHTML = '';
-            schedule__date[i].setAttribute('disabled', 'disabled');
-        }
+         if(holiday.includes(parseInt(schedule__date[i].id))) {
+             schedule__date[i].style.background = 'grey';
+             schedule__date[i].setAttribute('disabled', 'disabled');
+         }
       
     }
 }
@@ -435,7 +433,7 @@ function addCart(p) {
         cake_total += amount;
         
         content = 
-        `<p id='kor'>추가되었습니다. Custom Cake의 경우 디자인, Flavor 등 더 많은 정보가 필요하니, 주문을 완료하시고 나면 이메일로 추가 문의를 드릴 예정입니다.</p>`+
+        `<p id='kor'>추가되었습니다. Custom Cake의 경우 디자인에 따라 추가 요금이 발생할 수 있습니다. 정확한 가격 안내는 주문을 완료하시고 나면 이메일로 안내를 드릴 예정입니다.</p>`+
         `<p id='kor'>다른 메뉴를 더 선택하시거나, 하단의 Next 버튼을 누르시고 다음 단계로 가셔도 됩니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
 
         if(cake_total > today_limit.cake_limit) {
@@ -848,25 +846,25 @@ address_check.addEventListener('click', e=> {
                 }
 
                 else if(distance < 10000) {
-                    delivery_fee.innerHTML = "<p> $3 additional charge </p>" ;
+                    delivery_fee.innerHTML = "<p> $3 additional delivery fee</p>" ;
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 3;
                 }
 
                 else if(distance < 15000) {
-                    delivery_fee.innerHTML = "<p> $5 additional charge </p>";
+                    delivery_fee.innerHTML = "<p> $5 additional delivery fee</p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 5;
                 }
 
                 else if(distance < 20000) {
-                    delivery_fee.innerHTML = "<p> $7 additional charge </p>";
+                    delivery_fee.innerHTML = "<p> $7 additional delivery fee</p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 7;
                 }
 
                 else if(distance < 25000) {
-                    delivery_fee.innerHTML = "<p> $10 additional charge </p>";
+                    delivery_fee.innerHTML = "<p> $10 additional delivery fee </p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 10;
                 }
@@ -1013,7 +1011,7 @@ function confirmation(cust, ord, deliv) {
 
     customer_table.innerHTML = cust_info;
 
-    var order_info = "<tr><td id='head'>Product</td><td id='head'>Quantity</td><td id='head'>Price</td>";
+    var order_info = "<tr><td id='head'>Product</td><td id='head'>Qty</td><td id='head'>Price</td>";
 
     for(var i =1; i<ord.length; i++) {
 
@@ -1032,7 +1030,7 @@ function confirmation(cust, ord, deliv) {
         }
 
         var div = 
-        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
+        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
 
         order_info += div;
     }

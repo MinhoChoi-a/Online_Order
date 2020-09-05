@@ -892,10 +892,11 @@ img.bunny_icon {
 .fourth .confirmation_order input{
     width: 100%;
     text-align: center;
+    overflow: auto;
 }
 
 .fourth table #item {
-    width: 180px;
+    width: 200px;
 }
 
 .fourth table #amount {

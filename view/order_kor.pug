@@ -24,10 +24,11 @@ body
     section.first
       div.information
         h2 Information
-        p#kor - 주문을 진행하려면 우선 드시고 싶은 날짜를 선택해주세요.
-        p#kor - 선택하실 수 있는 디저트의 수량이 매일 매일 다릅니다.
-        p#kor - 무료 딜리버리 서비스는 $50 구매에 한해, 목요일, 금요일, 그리고 토요일에만 가능합니다.
-        p#kor - 거리가 멀 경우, 추가 요금이 발생합니다.
+        p#kor - 주문을 진행하려면 픽업 날짜를 선택해주세요.
+        p#kor - 선택하실 수 있는 디저트의 메뉴는 매주 다릅니다.
+        p#kor - 케익 주문은 카톡:Baking Bunny 로 문의주세요.
+        p#kor - 딜리버리는 $50 이상 목, 금, 토요일에 가능합니다.
+        p#kor - 거리에 따라 $0 ~ $10(다운타운에서 20km 이상 떨어진 경우) 까지 딜리버리 요금이 발생합니다.
       div.calendar__table
         h2.month September
         .calendar
@@ -114,29 +115,14 @@ body
               button#20201002.date 2
             .div(id="td")
               button#20201003.date 3
-          .week
-            .div(id="td")
-              button#20201004.date 4
-            .div(id="td")
-              button#20201005.date 5
-            .div(id="td")
-              button#20201006.date 6
-            .div(id="td")
-              button#20201007.date 7
-            .div(id="td")
-              button#20201008.date 8
-            .div(id="td")
-              button#20201009.date 9
-            .div(id="td")
-              button#20201010.date 10
-      
+                
       .hidden_block
 
     section.second
       .alret_modal
         .alret_content 
           h1 Before Select
-          p#kor 본 메뉴는 밀, 에그, 땅콩, 견과류 그리고 우유 등을 포함하고 있습니다.
+          p#kor 본 메뉴는 달걀, 견과류 그리고 우유 등을 포함할 수 있습니다.
           p#kor 만약 특정 알러지가 있으시다면 주문 하실 때 꼭 적어주세요.
           p#kor 다 읽으셨다면, 화면을 클릭해 주세요 :)
 
@@ -151,7 +137,7 @@ body
       .dessert_nav_modal
         .dessert_modal_content 
           button.nav_all(type='button') All
-          button.nav_cake(type="button") Cake
+          button.nav_cake(type="button") Cake - Comming Soon
           button.nav_dacq(type="button") Dacquoise
 
       .cake_size_modal
@@ -193,7 +179,7 @@ body
           li(class="question")
             | Select Delviery
             div.time
-              p - Pickup is avaiable between 5 to 7 PM
+              p - Pickup is avaiable between 3 to 8 PM
               p - Delivery is avaialble between 5 to 7 PM
           li(id="radio")
             label
