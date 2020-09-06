@@ -67,6 +67,7 @@ function updateSchedule() {
         
         if(sold_out_date.includes(parseInt(schedule__date[i].id))) {
             schedule__date[i].style.background = 'grey';
+            schedule__date[i].style.fontsize = '10px';
             schedule__date[i].innerHTML = 'sold out';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }

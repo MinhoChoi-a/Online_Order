@@ -683,14 +683,14 @@ router.post('/management', (req,res) => {
 	var limit_data = [{
 
 		date: '',
-		day_num: '',
+		//day_num: '',
 		dacq_limit: '',
 		cake_limit: ''
 		
 	}];
 	
 	//CSV is much easier to manage data than txt.
-	fs.createReadStream('./public/db/limit.csv')
+	fs.createReadStream('./public/db/limit_update.csv')
 		.pipe(csv()) //to use this we need csv-parser module
 		.on('data', (row) => {
 			limit_data.push(row);			
@@ -703,10 +703,13 @@ router.post('/management', (req,res) => {
 
 			while(n < limit_data.length) {
 
-          var limit = new Limit(limit_data[n]);
+          // var limit = new Limit(limit_data[n]);
           
-          //save on mongo
-          limit.save(function (err) {
+          // //save on mongo
+          // limit.save(function (err) {
+
+          Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit}}, function(err) {
+
           if(!err) {
             console.log("mongo success");
             }
@@ -714,8 +717,9 @@ router.post('/management', (req,res) => {
           
           n++;
           };
-  
-          console.log('finished conversion');
+          
+          console.log('finished update');
+          //console.log('finished conversion');
           res.redirect('back');
           
 		})				
