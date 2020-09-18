@@ -799,14 +799,24 @@ address_check.addEventListener('click', e=> {
 
     console.log(code);
 
-    var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${code}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
+    var address_code = code.split(" ");
+    var address_input = "";
+
+    for(var c=0; c<address_code-1; c++){
+        address_input += address_code[c];
+    }
+
+    var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address_input}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
 
     fetch(geoCodeUrl)
       .then(response => response.json())
       .then(data => {
         
+        if(data.results.length > 0) {
+
         var geocode = data.results[0].geometry.location;
         
+        }
         console.log(data.results[0]);
         
         var { lat, lng } = geocode;
