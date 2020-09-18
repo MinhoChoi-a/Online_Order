@@ -887,7 +887,8 @@ address_check.addEventListener('click', e=> {
             }
         })
     })
-    .catch(error => {
+    .catch(err => {
+        console.log(err.message);
         post_code.value = null;
         delivery_error.style.display = 'block';
         customer_delivery_fee = 0;
