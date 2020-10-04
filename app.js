@@ -703,11 +703,12 @@ router.post('/management', (req,res) => {
 
 			while(n < limit_data.length) {
 
-          // var limit = new Limit(limit_data[n]);
+                   
+          //save on mongo
+          //var limit = new Limit(limit_data[n]);
+          //limit.save(function (err) {
           
-          // //save on mongo
-          // limit.save(function (err) {
-
+          //update mongo
           Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit}}, function(err) {
 
           if(!err) {

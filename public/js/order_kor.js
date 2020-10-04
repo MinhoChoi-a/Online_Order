@@ -1,11 +1,6 @@
 /* Schedule Section*/
  var holiday = [
-     20200831,
-     20200907,20200906,
-     20200914,20200913,
-     20200921,20200920,
-     20200928,20200927,
-     20201005
+     20201004, 20201005, 20201012, 20201019, 20201026
  ];
 
 var today = new Date();
@@ -60,20 +55,25 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fff8d4';            
         }
 
+        /**
         if(schedule__date[i].id < availalbeDate) {
-            schedule__date[i].style.background = 'grey';
+            schedule__date[i].style.background = '#fffdee';
+             schedule__date[i].style.fontSize = '10px';
+             schedule__date[i].innerHTML = 'closed';             
             schedule__date[i].setAttribute('disabled', 'disabled');
-        }
+        }*/
         
         if(sold_out_date.includes(parseInt(schedule__date[i].id))) {
-            schedule__date[i].style.background = 'grey';
+            schedule__date[i].style.background = '#f8e3de';
             schedule__date[i].style.fontSize = '10px';
             schedule__date[i].innerHTML = 'sold out';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
 
          if(holiday.includes(parseInt(schedule__date[i].id))) {
-             schedule__date[i].style.background = 'grey';
+             schedule__date[i].style.background = '#fffdee';
+             schedule__date[i].style.fontSize = '10px';
+             schedule__date[i].innerHTML = 'closed';
              schedule__date[i].setAttribute('disabled', 'disabled');
          }
       
