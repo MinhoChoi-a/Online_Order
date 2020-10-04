@@ -1059,7 +1059,7 @@ function confirmation(cust, ord, deliv) {
 
     customer_table.innerHTML = cust_info;
 
-    var order_info = "<tr><td id='head'>Product</td><td id='head'>Quantity</td><td id='head'>Price</td>";
+    var order_info = "<tr><td id='head'>Product</td><td id='head'>Qty</td><td id='head'>Price</td>";
 
     for(var i =1; i<ord.length; i++) {
 
@@ -1078,7 +1078,7 @@ function confirmation(cust, ord, deliv) {
         }
 
         var div = 
-        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}"  style="font-size:12px; readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
+        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
 
         order_info += div;
     }
