@@ -5,7 +5,7 @@ var holiday = [
 
 var today = new Date();
 var today__num = today.getDay();
-var availableDate = '';
+var availalbeDate = '';
 
 
 if(today__num == 7) {
@@ -208,43 +208,8 @@ calendar.addEventListener('click', async (e) => {
             cake_price = available_data[i].price * 0.8;
         }
 
-        var cake_content = 
-            `<ul class="item" id=${available_data[i].type}>
-                <li id="type">${cake_type}</li>
-                <li id="image">
-                    <img src="/img/${available_data[i].image}"/>    
-                </li>
-                <li id="name">
-                    <div id="cake_name">${available_data[i].item_name}</div>
-                    <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
-                </li>
-                <li id="amount">
-                    <div id="p">$ ${cake_price}</div>
-                    <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
-                </li>
-                <li class="add_button" id="button_${available_data[i].item_name}">
-                    <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
-                </li>
-                <li class="fix_button" id="fixCart_${available_data[i].item_name}">
-                    <button type="button" onclick="fixCart(this.parentElement)">Added</button>
-                </li>
-            </ul>`;
-            
-            cake_div += cake_content;
-        }
+        if(cake_price != 0) {
 
-        else if(available_data[i].type == 'custom-cake') {
-        
-            cake_name_list.push(available_data[i].item_name);
-            
-            var cake_type = available_data[i].type;
-            var cake_price = available_data[i].price;
-            
-            if(available_data[i].special == order_month) {
-                cake_type = "monthly special cake";
-                cake_price = available_data[i].price * 0.8;
-            }
-    
             var cake_content = 
                 `<ul class="item" id=${available_data[i].type}>
                     <li id="type">${cake_type}</li>
@@ -266,35 +231,109 @@ calendar.addEventListener('click', async (e) => {
                         <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                     </li>
                 </ul>`;
-                
-                custom_cake_div += cake_content;
-            }
-
-        else {
-         
-        var dacq_content = 
-            `<ul class="item" id=${available_data[i].type}>
-                <li id="type">${available_data[i].type}</li>
-                <li id="image">
-                    <img src="/img/${available_data[i].image}"/>
-                </li>                
-                <li id="name">
-                    <div id="dacq_name">${available_data[i].item_name}</div>
-                    <div id="dacq_size" style="display:none;"></div></li>
-                <li id="amount">
-                    <div id="p">$ ${available_data[i].price}</div>
-                    <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
-                </li>
-                <li class="add_button" id="button_${available_data[i].item_name}">
-                    <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
-                </li>
-                <li class="fix_button" id="fixCart_${available_data[i].item_name}">
-                    <button type="button" onclick="fixCart(this.parentElement)">Added</button>
-                </li>
-            </ul>`;
             
-            dacq_div += dacq_content;
-        }
+            }
+            
+            //can delete later
+            else {
+                var cake_content = 
+                `<ul class="item" id=${available_data[i].type}>
+                    <li id="type">${cake_type}</li>
+                    <li id="image">
+                        <img src="/img/${available_data[i].image}"/>    
+                    </li>
+                    <li id="name">
+                        <div id="cake_name">${available_data[i].item_name}</div>
+                    </li>                
+                    <li class="inq_button">
+                        <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
+                    </li>                
+                </ul>`;
+            }
+                
+                cake_div += cake_content;
+            }
+    
+            else if(available_data[i].type == 'custom-cake') {
+            
+                cake_name_list.push(available_data[i].item_name);
+                
+                var cake_type = available_data[i].type;
+                var cake_price = available_data[i].price;
+                
+                if(available_data[i].special == order_month) {
+                    cake_type = "monthly special cake";
+                    cake_price = available_data[i].price * 0.8;
+                }
+                
+            if(cake_price !=0) {
+    
+                var cake_content = 
+                    `<ul class="item" id=${available_data[i].type}>
+                        <li id="type">${cake_type}</li>
+                        <li id="image">
+                            <img src="/img/${available_data[i].image}"/>    
+                        </li>
+                        <li id="name">
+                            <div id="cake_name">${available_data[i].item_name}</div>
+                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
+                        </li>
+                        <li id="amount">
+                            <div id="p">$ ${cake_price}</div>
+                            <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
+                        </li>
+                        <li class="add_button" id="button_${available_data[i].item_name}">
+                            <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
+                        </li>
+                        <li class="fix_button" id="fixCart_${available_data[i].item_name}">
+                            <button type="button" onclick="fixCart(this.parentElement)">Added</button>
+                        </li>
+                    </ul>`; }
+    
+                    else {
+                        var cake_content = 
+                        `<ul class="item" id=${available_data[i].type}>
+                            <li id="type">${cake_type}</li>
+                            <li id="image">
+                                <img src="/img/${available_data[i].image}"/>    
+                            </li>
+                            <li id="name">
+                                <div id="cake_name">${available_data[i].item_name}</div>
+                            </li>                
+                            <li class="inq_button">
+                                <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
+                            </li>                
+                        </ul>`;
+                    }
+                    
+                    custom_cake_div += cake_content;
+                }
+    
+            else {
+             
+            var dacq_content = 
+                `<ul class="item" id=${available_data[i].type}>
+                    <li id="type">${available_data[i].type}</li>
+                    <li id="image">
+                        <img src="/img/${available_data[i].image}"/>
+                    </li>                
+                    <li id="name">
+                        <div id="dacq_name">${available_data[i].item_name}</div>
+                        <div id="dacq_size" style="display:none;"></div></li>
+                    <li id="amount">
+                        <div id="p">$ ${available_data[i].price}</div>
+                        <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
+                    </li>
+                    <li class="add_button" id="button_${available_data[i].item_name}">
+                        <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
+                    </li>
+                    <li class="fix_button" id="fixCart_${available_data[i].item_name}">
+                        <button type="button" onclick="fixCart(this.parentElement)">Added</button>
+                    </li>
+                </ul>`;
+                
+                dacq_div += dacq_content;
+            }
         
         
         }
@@ -313,6 +352,12 @@ calendar.addEventListener('click', async (e) => {
 alret_modal.addEventListener('click', e => {
     alret_modal.style.height = 0;
 })
+
+function cake__inquiry() {
+    var content = `<p id='kor'>Please inquire this cake to Baking Bunny's email (bakingbunny.yyc@gmail.com). Thank you :)</p>`;
+    modal_content.innerHTML = content;   
+    modal.style.display = "flex";
+}
 
 /* menu section*/
 
@@ -747,14 +792,14 @@ delivery_button.addEventListener('click', e => {
 
     if(order_sum > 50) {
 
-        if(order_day_num == 4 || order_day_num == 5 || order_day_num == 6) {
+        if(order_day_num == 5 || order_day_num == 6) {
             setTimeout(function deliveryInput() {
                 delivery_info.style.display = "block";
             }, 500);
         }
 
         else {
-            var content = "Sorry delivery is avaiable only for Thursday ~ Saturday";
+            var content = "Sorry delivery is avaiable only for Friday ~ Saturday";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -797,16 +842,7 @@ address_check.addEventListener('click', e=> {
 
     var code = post_code.value;
 
-    console.log(code);
-
-    var address_code = code.split(" ");
-    var address_input = "";
-
-    for(var c=0; c<address_code-1; c++){
-        address_input += address_code[c];
-    }
-
-    var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address_input}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
+    var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${code}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
 
     fetch(geoCodeUrl)
       .then(response => response.json())

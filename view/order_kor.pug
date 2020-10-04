@@ -11,6 +11,7 @@ head
   script(
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY"
       defer)
+  script(src="https://code.jquery.com/jquery-2.1.3.min.js")
     
   link(rel='stylesheet' href='/order.css')
   meta(name='Baking bunny' content='Fresh & Sweet Dessert')
@@ -27,7 +28,7 @@ body
         p#kor - 주문을 진행하려면 픽업 날짜를 선택해주세요.
         p#kor - 선택하실 수 있는 디저트의 메뉴는 매주 다릅니다.
         p#kor - 케익 주문은 카톡:Baking Bunny 로 문의주세요.
-        p#kor - 딜리버리는 $50 이상 목, 금, 토요일에 가능합니다.
+        p#kor - 딜리버리는 $50 이상 금, 토요일에 가능합니다.
         p#kor - 거리에 따라 $0 ~ $10(다운타운에서 20km 이상 떨어진 경우) 까지 딜리버리 요금이 발생합니다.
       div.calendar__table
         h2.month October
@@ -122,14 +123,14 @@ body
       .dessert_nav_modal
         .dessert_modal_content 
           button.nav_all(type='button') All
-          button.nav_cake(type="button") Cake - Comming Soon
+          button.nav_cake(type="button") Cake
           button.nav_dacq(type="button") Dacquoise
 
       .cake_size_modal
         .cake_size_modal_content(value='') 
           button(type="button" value=1 onclick="sizeValue(this.value, this.parentElement.value)") 6 inch
           button(type="button" value=1.2 onclick="sizeValue(this.value, this.parentElement.value)") 8 inch
-      
+          
       .hidden_block 
       
       .nav
@@ -137,7 +138,26 @@ body
           button#prev__schedule Previous
         button#next_customer Next
       
-      
+      .inquiry_modal
+          .inquiry_modal__content
+            section.loading
+              .loading_text
+                p Now sending the E-mail...
+            
+            section.sent
+              .text_content
+              button.close_two(type='button') Close
+
+            form.contact_form(method='POST' action='')
+              input.name(type='text' name='name' placeholder='Name' required)
+              input.email(type='text' name='email' placeholder='E-mail' required)
+              .date
+                label(for="date") Needed Date
+                input.date_need(type='date' name='date')             
+              textarea.text(placeholder='Message' name='Message' rows='4' cols='50' required)
+              .button
+                button.send(type='submit') Send 
+                button.close_one(type='button') Close        
 
     section.third
       .bunny_icon_small

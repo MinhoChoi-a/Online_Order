@@ -478,6 +478,10 @@ img.bunny_icon {
     font-family: var(--font_style);    
 }
 
+.second .cake_list {
+    display: none;
+}
+
 .second .item__list ul{
     margin: 0;
     text-align: center;

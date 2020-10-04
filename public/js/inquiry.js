@@ -30,6 +30,7 @@ const close__button_one = document.querySelector('button.close_one');
 const close__button_two = document.querySelector('button.close_two');
 
 inquiry__button.addEventListener('click', e => {
+    console.log(e.target);
     inquiry__modal.style.height = '100vh';
 })
 

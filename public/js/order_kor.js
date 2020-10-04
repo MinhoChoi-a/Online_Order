@@ -5,7 +5,7 @@
 
 var today = new Date();
 var today__num = today.getDay();
-var availableDate = '';
+var availalbeDate = '';
 
 
 if(today__num == 7) {
@@ -195,7 +195,7 @@ calendar.addEventListener('click', async (e) => {
         
         if(available_data[i].type == 'cake') {
         
-        cake_name_list.push(available_data[i].item_name);
+        cake_name_list.push(available_data[i].item_name_kor);
         
         var cake_type = available_data[i].type;
         var cake_price = available_data[i].price;
@@ -207,6 +207,8 @@ calendar.addEventListener('click', async (e) => {
             cake_type = "monthly special cake";
             cake_price = available_data[i].price * 0.8;
         }
+        
+        if(cake_price != 0) {
 
         var cake_content = 
             `<ul class="item" id=${available_data[i].type}>
@@ -215,20 +217,39 @@ calendar.addEventListener('click', async (e) => {
                     <img src="/img/${available_data[i].image}"/>    
                 </li>
                 <li id="name">
-                    <div id="cake_name">${available_data[i].item_name}</div>
-                    <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
+                    <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
+                    <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name_kor}" value="none"/>size select</div>
                 </li>
                 <li id="amount">
                     <div id="p">$ ${cake_price}</div>
                     <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                 </li>
-                <li class="add_button" id="button_${available_data[i].item_name}">
+                <li class="add_button" id="button_${available_data[i].item_name_kor}">
                     <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                 </li>
-                <li class="fix_button" id="fixCart_${available_data[i].item_name}">
+                <li class="fix_button" id="fixCart_${available_data[i].item_name_kor}">
                     <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                 </li>
             </ul>`;
+        
+        }
+        
+        //can delete later
+        else {
+            var cake_content = 
+            `<ul class="item" id=${available_data[i].type}>
+                <li id="type">${cake_type}</li>
+                <li id="image">
+                    <img src="/img/${available_data[i].image}"/>    
+                </li>
+                <li id="name">
+                <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
+                </li>                
+                <li class="inq_button">
+                    <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
+                </li>                
+            </ul>`;
+        }
             
             cake_div += cake_content;
         }
@@ -244,7 +265,9 @@ calendar.addEventListener('click', async (e) => {
                 cake_type = "monthly special cake";
                 cake_price = available_data[i].price * 0.8;
             }
-    
+            
+        if(cake_price !=0) {
+
             var cake_content = 
                 `<ul class="item" id=${available_data[i].type}>
                     <li id="type">${cake_type}</li>
@@ -252,20 +275,36 @@ calendar.addEventListener('click', async (e) => {
                         <img src="/img/${available_data[i].image}"/>    
                     </li>
                     <li id="name">
-                        <div id="cake_name">${available_data[i].item_name}</div>
-                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
+                    <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
+                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name_kor}" value="none"/>size select</div>
                     </li>
                     <li id="amount">
                         <div id="p">$ ${cake_price}</div>
                         <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                     </li>
-                    <li class="add_button" id="button_${available_data[i].item_name}">
+                    <li class="add_button" id="button_${available_data[i].item_name_kor}">
                         <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                     </li>
-                    <li class="fix_button" id="fixCart_${available_data[i].item_name}">
+                    <li class="fix_button" id="fixCart_${available_data[i].item_name_kor}">
                         <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                     </li>
-                </ul>`;
+                </ul>`; }
+
+                else {
+                    var cake_content = 
+                    `<ul class="item" id=${available_data[i].type}>
+                        <li id="type">${cake_type}</li>
+                        <li id="image">
+                            <img src="/img/${available_data[i].image}"/>    
+                        </li>
+                        <li id="name">
+                        <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
+                        </li>                
+                        <li class="inq_button">
+                            <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
+                        </li>                
+                    </ul>`;
+                }
                 
                 custom_cake_div += cake_content;
             }
@@ -279,16 +318,16 @@ calendar.addEventListener('click', async (e) => {
                     <img src="/img/${available_data[i].image}"/>
                 </li>                
                 <li id="name">
-                    <div id="dacq_name">${available_data[i].item_name}</div>
+                    <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
                     <div id="dacq_size" style="display:none;"></div></li>
                 <li id="amount">
                     <div id="p">$ ${available_data[i].price}</div>
                     <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
                 </li>
-                <li class="add_button" id="button_${available_data[i].item_name}">
+                <li class="add_button" id="button_${available_data[i].item_name_kor}">
                     <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                 </li>
-                <li class="fix_button" id="fixCart_${available_data[i].item_name}">
+                <li class="fix_button" id="fixCart_${available_data[i].item_name_kor}">
                     <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                 </li>
             </ul>`;
@@ -313,6 +352,12 @@ calendar.addEventListener('click', async (e) => {
 alret_modal.addEventListener('click', e => {
     alret_modal.style.height = 0;
 })
+
+function cake__inquiry() {
+    var content = `<p id='kor'>해당 케이크는 이메일(bakingbunny.yyc@gmail.com)로 별도 문의 부탁드립니다. 감사합니다 :)</p>`;
+    modal_content.innerHTML = content;   
+    modal.style.display = "flex";
+}
 
 /* menu section*/
 
@@ -747,14 +792,14 @@ delivery_button.addEventListener('click', e => {
 
     if(order_sum > 50) {
 
-        if(order_day_num == 4 || order_day_num == 5 || order_day_num == 6) {
+        if(order_day_num == 5 || order_day_num == 6) {
             setTimeout(function deliveryInput() {
                 delivery_info.style.display = "block";
             }, 500);
         }
 
         else {
-            var content = "<div id='kor'> 죄송합니다. 딜리버리는 목요일에서 토요일까지만 가능합니다.</div>";
+            var content = "<div id='kor'> 죄송합니다. 딜리버리는 금요일에서 토요일까지만 가능합니다.</div>";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -1021,16 +1066,14 @@ function confirmation(cust, ord, deliv) {
         if(cake_name_list.includes(ord[i].item_name)) {
 
         if(ord[i].set_value == 1) {
-            size = ' 6 inch';
-        }
+            size = ' 6 inch';}
 
         else if(ord[i].set_value == 1.2) {
             size = ' 8 inch';
         }
-        
-        }
+      }
 
-        var div = 
+        var div =
         `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
 
         order_info += div;
