@@ -19,7 +19,7 @@
     {
         "type": "cake",
         "item_name": "Ssook-Jeol-Mi",
-        "item_name_kor": "쑥절미",
+        "item_name_kor": "쑥절미케이크",
         "price": 0,
         "available_date": 
         [20201006, 20201007, 20201008, 2020109, 20201010, 20201011, 
@@ -47,7 +47,7 @@
     {
         "type": "cake",
         "item_name": "Black-Sesame",
-        "item_name_kor": "흑임자",
+        "item_name_kor": "흑임자케이크",
         "price": 0,
         "available_date": 
             [20201006, 20201007, 20201008, 2020109, 20201010, 20201011, 
