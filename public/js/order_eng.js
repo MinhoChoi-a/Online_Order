@@ -842,70 +842,65 @@ address_check.addEventListener('click', e=> {
 
     var code = post_code.value;
 
-    var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${code}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
+    console.log(code);
 
-    fetch(geoCodeUrl)
-      .then(response => response.json())
-      .then(data => {
-        
-        if(data.results.length > 0) {
+    //var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${code}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
 
-        var geocode = data.results[0].geometry.location;
+    // fetch(geoCodeUrl)
+    //   .then(response => response.json())
+    //   .then(data => {
         
-        }
-        console.log(data.results[0]);
+    //     var geocode = data.results[0].geometry.location;
         
-        var { lat, lng } = geocode;
+    //     console.log(data.results[0]);
         
-        var long = parseFloat(lng);
-        var lati = parseFloat(lat);
+    //     var { lat, lng } = geocode;
         
-        var office = {long: -114.0803995, lati: 51.0503758}
+        // var long = parseFloat(lng);
+        // var lati = parseFloat(lat);
+        
+        // var office = {long: -114.0803995, lati: 51.0503758}
 
         var service = new google.maps.DistanceMatrixService();
 
         service.getDistanceMatrix({
-            origins: [new google.maps.LatLng(office.lati, office.long)],
-            destinations: [new google.maps.LatLng(lati, long)],
+            origins: [code],//[new google.maps.LatLng(office.lati, office.long)],
+            destinations: ["T2P 3P3"],//[new google.maps.LatLng(lati, long)],
             travelMode: google.maps.TravelMode.DRIVING,
         }, function(response, status){
             
             var distance = response.rows[0].elements[0].distance.value;
             
-            var city = data.results[0].address_components[2].short_name;
+            //var city = data.results[0].address_components[2].short_name;
             //might need so do split ex) Northwest Calgary
             
-            city = city.split(' ');
+            //city = city.split(' ');
 
             var content = '';
 
             console.log(distance);
 
-            if(distance > 5000) {
-                if(!city.includes('Calgary')) {
-                    
-                    content = "Sorry this place is not available";
-                    post_code.value = null;
-                    modal_content.innerHTML = content;   
-                    modal.style.display = "flex";
+            //if(distance > 5000) {
+                if(distance < 5000) {
+                    console.log(delivery_free);
+                    delivery_free.style.display = 'block';
                     customer_delivery_fee = 0;
-   
                 }
 
                 else if(distance < 10000) {
-                    delivery_fee.innerHTML = "<p> $3 additional delivery fee </p>" ;
+                    delivery_fee.innerHTML = "<p> $3 additional delivery fee</p>" ;
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 3;
                 }
 
                 else if(distance < 15000) {
-                    delivery_fee.innerHTML = "<p> $5 additional delivery fee </p>";
+                    delivery_fee.innerHTML = "<p> $5 additional delivery fee</p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 5;
                 }
 
                 else if(distance < 20000) {
-                    delivery_fee.innerHTML = "<p> $7 additional delivery fee </p>";
+                    delivery_fee.innerHTML = "<p> $7 additional delivery fee</p>";
                     delivery_fee.style.display = 'block';
                     customer_delivery_fee = 7;
                 }
@@ -917,7 +912,7 @@ address_check.addEventListener('click', e=> {
                 }
 
                 else {
-                    content = "Sorry this place is not available";
+                    content = "<p> Sorry, this place is not available</p>";
                     post_code.value = null;
                     modal_content.innerHTML = content;   
                     modal.style.display = "flex";
@@ -926,20 +921,19 @@ address_check.addEventListener('click', e=> {
 
             }
 
-            else {
-                console.log(delivery_free);
-                delivery_free.style.display = 'block';
-                customer_delivery_fee = 0;
-            }
-        })
-    })
-    .catch(err => {
-        console.log(err.message);
-        post_code.value = null;
-        delivery_error.style.display = 'block';
-        customer_delivery_fee = 0;
-    });
-})
+            // else {
+            //     console.log(delivery_free);
+            //     delivery_free.style.display = 'block';
+            //     customer_delivery_fee = 0;
+            //}
+        );
+     });
+//     .catch(error => {
+//         post_code.value = null;
+//         delivery_error.style.display = 'block';
+//         customer_delivery_fee = 0;
+//     });
+// })
 
 const prev_items_button = document.querySelector('#prev__items');
 

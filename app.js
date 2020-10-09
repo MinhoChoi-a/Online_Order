@@ -474,6 +474,8 @@ router.post('/order/kor', async function (req, res) {
 
           i++;
         }
+        
+        console.log(order_info);
 
         let delivery_fee = '';
         let total_sum = '';

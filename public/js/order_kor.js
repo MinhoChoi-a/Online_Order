@@ -844,51 +844,47 @@ address_check.addEventListener('click', e=> {
 
     console.log(code);
 
-    var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${code}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
+    //var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${code}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
 
-    fetch(geoCodeUrl)
-      .then(response => response.json())
-      .then(data => {
+    // fetch(geoCodeUrl)
+    //   .then(response => response.json())
+    //   .then(data => {
         
-        var geocode = data.results[0].geometry.location;
+    //     var geocode = data.results[0].geometry.location;
         
-        console.log(data.results[0]);
+    //     console.log(data.results[0]);
         
-        var { lat, lng } = geocode;
+    //     var { lat, lng } = geocode;
         
-        var long = parseFloat(lng);
-        var lati = parseFloat(lat);
+        // var long = parseFloat(lng);
+        // var lati = parseFloat(lat);
         
-        var office = {long: -114.0803995, lati: 51.0503758}
+        // var office = {long: -114.0803995, lati: 51.0503758}
 
         var service = new google.maps.DistanceMatrixService();
 
         service.getDistanceMatrix({
-            origins: [new google.maps.LatLng(office.lati, office.long)],
-            destinations: [new google.maps.LatLng(lati, long)],
+            origins: [code],//[new google.maps.LatLng(office.lati, office.long)],
+            destinations: ["T2P 3P3"],//[new google.maps.LatLng(lati, long)],
             travelMode: google.maps.TravelMode.DRIVING,
         }, function(response, status){
             
             var distance = response.rows[0].elements[0].distance.value;
             
-            var city = data.results[0].address_components[2].short_name;
+            //var city = data.results[0].address_components[2].short_name;
             //might need so do split ex) Northwest Calgary
             
-            city = city.split(' ');
+            //city = city.split(' ');
 
             var content = '';
 
             console.log(distance);
 
-            if(distance > 5000) {
-                if(!city.includes('Calgary')) {
-                    
-                    content = "<div id='kor'> 죄송합니다. 이 지역은 딜리버리가 불가능합니다.</div>";
-                    post_code.value = null;
-                    modal_content.innerHTML = content;   
-                    modal.style.display = "flex";
+            //if(distance > 5000) {
+                if(distance < 5000) {
+                    console.log(delivery_free);
+                    delivery_free.style.display = 'block';
                     customer_delivery_fee = 0;
-   
                 }
 
                 else if(distance < 10000) {
@@ -925,19 +921,19 @@ address_check.addEventListener('click', e=> {
 
             }
 
-            else {
-                console.log(delivery_free);
-                delivery_free.style.display = 'block';
-                customer_delivery_fee = 0;
-            }
-        })
-    })
-    .catch(error => {
-        post_code.value = null;
-        delivery_error.style.display = 'block';
-        customer_delivery_fee = 0;
-    });
-})
+            // else {
+            //     console.log(delivery_free);
+            //     delivery_free.style.display = 'block';
+            //     customer_delivery_fee = 0;
+            //}
+        );
+     });
+//     .catch(error => {
+//         post_code.value = null;
+//         delivery_error.style.display = 'block';
+//         customer_delivery_fee = 0;
+//     });
+// })
 
 const prev_items_button = document.querySelector('#prev__items');
 
