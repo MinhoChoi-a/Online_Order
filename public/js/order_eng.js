@@ -814,7 +814,8 @@ delivery_button.addEventListener('click', e => {
     }
 
     else {
-        var content = "Sorry you should buy more than $ 50";
+        //var content = "Sorry you should buy more than $ 50";
+        var content = "Sorry, the delivery service is not available for this item";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
