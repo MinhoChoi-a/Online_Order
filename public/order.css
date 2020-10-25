@@ -479,7 +479,7 @@ img.bunny_icon {
 }
 
 .second .cake_list {
-    display: none;
+    display: grid;
 }
 
 .second .item__list ul{

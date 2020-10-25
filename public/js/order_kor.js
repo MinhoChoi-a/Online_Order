@@ -55,12 +55,14 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fff8d4';            
         }
 
+        
         if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = '#fffdee';
              schedule__date[i].style.fontSize = '8px';
-             schedule__date[i].innerHTML = 'closed';             
+            schedule__date[i].innerHTML = 'closed';             
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
+        
         
         if(sold_out_date.includes(parseInt(schedule__date[i].id))) {
             schedule__date[i].style.background = '#ececec';
@@ -74,6 +76,13 @@ function updateSchedule() {
              schedule__date[i].style.fontSize = '8px';
              schedule__date[i].innerHTML = 'closed';
              schedule__date[i].setAttribute('disabled', 'disabled');
+         }
+
+         if(schedule__date[i].id == 20201031) {
+            schedule__date[i].style.background = '#e6dae8';
+            schedule__date[i].style.fontSize = '10px';
+            schedule__date[i].innerHTML = '31';
+            schedule__date[i].removeAttribute('disabled');
          }
       
     }
