@@ -78,13 +78,7 @@ function updateSchedule() {
              schedule__date[i].setAttribute('disabled', 'disabled');
          }
 
-         if(schedule__date[i].id == 20201031) {
-            schedule__date[i].style.background = '#e6dae8';
-            schedule__date[i].style.fontSize = '10px';
-            schedule__date[i].innerHTML = '31';
-            schedule__date[i].removeAttribute('disabled');
-         }
-      
+         
     }
 }
 
