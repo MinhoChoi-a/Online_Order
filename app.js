@@ -692,7 +692,7 @@ router.post('/management', (req,res) => {
 	}];
 	
 	//CSV is much easier to manage data than txt.
-	fs.createReadStream('./public/db/limit.csv')
+	fs.createReadStream('./public/db/limit_update.csv')
 		.pipe(csv()) //to use this we need csv-parser module
 		.on('data', (row) => {
 			limit_data.push(row);			
@@ -707,11 +707,11 @@ router.post('/management', (req,res) => {
 
                    
           //save on mongo
-          var limit = new Limit(limit_data[n]);
-          limit.save(function (err) {
+          //var limit = new Limit(limit_data[n]);
+          //limit.save(function (err) {
           
           //update mongo
-          //Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit}}, function(err) {
+          Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit}}, function(err) {
 
           if(!err) {
             console.log("mongo success");
