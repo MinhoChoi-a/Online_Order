@@ -18,8 +18,8 @@
     
     {
         "type": "cake",
-        "item_name": "Ssook-Jeol-Mi",
-        "item_name_kor": "쑥절미케이크",
+        "item_name": "Mugwort-Cake",
+        "item_name_kor": "쑥케이크",
         "price": 45,
         "available_date": 
         [   20201108, 20201109, 20201110, 20201111, 
@@ -46,8 +46,24 @@
 
     {
         "type": "cake",
-        "item_name": "Black-Sesame",
+        "item_name": "Black-Sesame-Cake",
         "item_name_kor": "흑임자케이크",
+        "price": 45,
+        "available_date": 
+        [   20201108, 20201109, 20201110, 20201111, 
+            20201112, 20201113, 20201114, 20201115, 20201116, 20201117,
+            20201118, 20201119, 20201120, 20201121, 20201122, 20201123,
+            20201124, 20201125, 20201126, 20201127, 20201128, 20201129,
+            20201130
+        ],
+        "image": "cake_3.jpg",
+        "special": ""
+    },
+
+    {
+        "type": "cake",
+        "item_name": "Injeolmi-Cake",
+        "item_name_kor": "인절미케이크",
         "price": 45,
         "available_date": 
         [   20201108, 20201109, 20201110, 20201111, 
@@ -349,8 +365,8 @@
     },
     {
         "type": "dacquoise",
-        "item_name": "Bacon-Cream-Soup",
-        "item_name_kor": "크림베이컨",
+        "item_name": "Bacon",
+        "item_name_kor": "베이컨",
         "price": 3.7,
         "available_date": 
             [   
