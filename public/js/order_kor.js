@@ -1,7 +1,8 @@
 /* Schedule Section*/
- var holiday = [
-     20201102, 20201109, 20201116, 20201123, 20201130
- ];
+var holiday = [
+    20201102, 20201109, 20201116, 20201123, 20201130
+];
+
 
 var today = new Date();
 var today__num = today.getDay();
