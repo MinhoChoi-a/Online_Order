@@ -1,7 +1,8 @@
 /* Schedule Section*/
 var holiday = [
-    20201004, 20201005, 20201012, 20201019, 20201026
+    20201102, 202011109, 20201116, 20201123, 20201130
 ];
+
 
 var today = new Date();
 var today__num = today.getDay();
@@ -53,6 +54,7 @@ function updateSchedule() {
 
         if( parseInt((schedule__date[i].id).substring(4,6)) == 1 + parseInt(availalbeDate.substring(4,6))) {
             schedule__date[i].style.background = '#fff8d4';            
+            schedule__date[i].setAttribute('disabled', 'disabled');
         }
 
         if(schedule__date[i].id < availalbeDate) {
@@ -807,8 +809,7 @@ delivery_button.addEventListener('click', e => {
     }
 
     else {
-        //var content = "Sorry you should buy more than $ 50";
-        var content = "Sorry, the delivery service is not available for this item";
+        var content = "Sorry you should buy more than $ 50";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
