@@ -8,15 +8,23 @@ const LimitSchema = new mongoose.Schema({
     
     day_num  : {
 		type : Number,
-	},
+	  },
 
-	dacq_limit : {
+	  dacq_limit : {
 			type: Number,
     },
     
     cake_limit : {
         type: Number,
-},
+    },
+
+    pickup_time : [
+      {type: Number}
+    ],
+
+    delivery_time: {
+      type: String
+    }
     
     
 });

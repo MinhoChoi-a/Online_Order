@@ -8,7 +8,15 @@ const SalesSchema = new mongoose.Schema({
     },
     
 	order_date  : {
-		type : Date,
+		type : Date, //String => new Date('yyyy-mm-ddThh:mm:ss');
+	},
+
+	delivery_option : {
+		type: String
+	},
+
+	address: {
+		type: String
 	},
 
 	purchase : [
@@ -28,7 +36,16 @@ const SalesSchema = new mongoose.Schema({
 				required : true
 			}
 		}
-    ]
+	],
+
+	delivery_fee: {
+		type: Number
+
+	},
+	
+	total_price: {
+		type	: Number
+	}
     
 });
 

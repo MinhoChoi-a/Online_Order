@@ -56,15 +56,14 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fff8d4';            
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
-
         
+        /**
         if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = '#fffdee';
              schedule__date[i].style.fontSize = '8px';
             schedule__date[i].innerHTML = 'closed';             
             schedule__date[i].setAttribute('disabled', 'disabled');
-        }
-        
+        } */
         
         if(sold_out_date.includes(parseInt(schedule__date[i].id))) {
             schedule__date[i].style.background = '#ececec';
@@ -79,8 +78,6 @@ function updateSchedule() {
              schedule__date[i].innerHTML = 'closed';
              schedule__date[i].setAttribute('disabled', 'disabled');
          }
-
-         
     }
 }
 

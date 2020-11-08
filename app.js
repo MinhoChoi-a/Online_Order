@@ -58,15 +58,11 @@ router.get('/', function (req, res) {
 });
 
 router.get('/end/eng', function (req, res) {
-
   res.render('end_eng');
-
 });
 
 router.get('/end/kor', function (req, res) {
-
   res.render('end_kor');
-
 });
 
 router.get('/order/eng', function (req, res) {
@@ -90,7 +86,7 @@ router.get('/order/eng', function (req, res) {
             Limit.find({})
          .where('date')
          .gte(20200801)
-         .lt(20201231)
+         .lt(20221231)
          .exec(callback);
         },
     }, function(err, results) {
