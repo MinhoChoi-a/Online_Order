@@ -125,8 +125,6 @@ router.post('/order/eng', async function (req, res) {
       order_info.push(req.body[prop]);
     }
 
-    console.log(order_info);
-
     let email_content =
     "<body><div class='order_confirm'>"+
        "<h3>Order Request</h3>"+
@@ -188,7 +186,7 @@ router.post('/order/eng', async function (req, res) {
                 
         sold_content +=
         `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${delivery_fee}</td>`+
-        `<tr><td colspan=2>Total Sum</td><td style="text-align:center">${total_sum}</td></tr></table>`;
+        `<tr><td colspan=2>Total</td><td style="text-align:center">${total_sum}</td></tr></table>`;
       }
 
     else {
@@ -224,7 +222,7 @@ router.post('/order/eng', async function (req, res) {
         }
 
         sold_content +=
-        `<tr><td colspan=2>Total Sum</td><td style="text-align:center">${order_info[i]}</td></tr></table>`;
+        `<tr><td colspan=2>Total</td><td style="text-align:center">${order_info[i]}</td></tr></table>`;
 
       }
 
@@ -288,7 +286,7 @@ router.post('/order/eng', async function (req, res) {
 
                           let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                           
-                          mailOptions.subject = 'Baking Bunny Order';
+                          mailOptions.subject = 'Baking Bunny Order '+Date();
                           mailOptions.html = final_content;
 
                           transporter.sendMail(mailOptions, function() {
@@ -349,7 +347,7 @@ router.post('/order/eng', async function (req, res) {
 
                 let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                 
-                mailOptions.subject = 'Baking Bunny Order - comeback customer';
+                mailOptions.subject = 'Baking Bunny Order-Comeback Customer'+Date();
                 mailOptions.html = final_content;
 
                 transporter.sendMail(mailOptions, function() {

@@ -3,11 +3,9 @@ var holiday = [
     20201102, 20201109, 20201116, 20201123, 20201130
 ];
 
-
 var today = new Date();
 var today__num = today.getDay();
 var availalbeDate = '';
-
 
 if(today__num == 7) {
     let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+8);
@@ -27,10 +25,9 @@ else {
 const calendar = document.querySelector('.calendar');
 const schedule__date = document.querySelectorAll('.date');
 
+//100&10
 const sales__limit = document.querySelector('.data').value;
 var limit = JSON.parse(sales__limit);
-
-console.log(limit);
 
 const sold_out_date = [];
 
@@ -43,8 +40,6 @@ function updateSchedule() {
             sold_out_date.push(limit[i].date);
         }
     }
-
-    console.log(sold_out_date);
 
     for(var i = 0; i < schedule__date.length; i++ ) {
         
@@ -82,7 +77,6 @@ function updateSchedule() {
 }
 
 /* schedule select => menu section*/
-
 const calendar_section = document.querySelector('.first');
 
 const item_section = document.querySelector('.second');
@@ -111,16 +105,6 @@ var cake_name_list = [];
 
 calendar.addEventListener('click', async (e) => {
     
-    //make every input as default value
-    //make every button, div a default display
-    //make orderobjectarray as null
-    //make customer_info as null
-    //make delivery_fee as null
-
-    var dac_items= [];
-    var cake_items= [];
-    var custom_cake_items= [];
-
     today_limit = '';
 
     const targetWork = e.target.closest('button');
@@ -131,175 +115,102 @@ calendar.addEventListener('click', async (e) => {
     var check = true;
     var i=0;
     
-    console.log(limit[i].date);
-
     while(check) {
         if(parseInt(limit[i].date) == parseInt(targetWork.id)) {
             check = false;
             today_limit = limit[i];
             order_day_num = limit[i].day_num;
         }
-        console.log(limit[i].date);
-        console.log(targetWork.id);
-        console.log(i);
         i++;
     }
-    
-    for(var t= 0; t < items.length; t++) {
-        if(items[t].type == 'cake') {
-            cake_items.push(items[t]);
-        }
-
-        else if(items[t].type == 'custom-cake') {
-            custom_cake_items.push(items[t]);
-        }
-        
-        else if(items[t].type == 'dacquoise') {
-            dac_items.push(items[t]);
-        }
-    }
-
-    console.log(dac_items[1].type);
-
-    var available_data = [];
-
-    if(today_limit.dacq_limit != 0) //might need to delete this condition to show every products
-    {
-        for(var i=0; i < dac_items.length; i++) {
-            if(dac_items[i].available_date.includes(parseInt(targetWork.id))){
-                available_data.push(dac_items[i]);
-            }
-        }
-    }   
-
-    if(today_limit.cake_limit != 0) //might need to delete this condition to show every products
-    {
-        for(var i=0; i < cake_items.length; i++) {
-            if(cake_items[i].available_date.includes(parseInt(targetWork.id))){
-                available_data.push(cake_items[i]);
-            }
-        }
-
-        for(var i=0; i < custom_cake_items.length; i++) {
-            if(custom_cake_items[i].available_date.includes(parseInt(targetWork.id))){
-                available_data.push(custom_cake_items[i]);
-            }
-        }
-
-    }   
     
     var cake_div = '';
     var dacq_div = '';
     var custom_cake_div = '';
-    
-    for(var i=0; i<available_data.length; i++) {
-        
-        if(available_data[i].type == 'cake') {
-        
-        cake_name_list.push(available_data[i].item_name);
-        
-        var cake_type = available_data[i].type;
-        var cake_price = available_data[i].price;
-        
-        console.log(available_data[i].special);
-        console.log(order_month);
 
-        if(available_data[i].special == order_month) {
-            cake_type = "monthly special cake";
-            cake_price = available_data[i].price * 0.8;
-        }
+    for(var t= 0; t < items.length; t++) {
+      
+        if(items[t].available_date.includes(parseInt(targetWork.id))) {
 
-        if(cake_price != 0) {
+        if(items[t].type == 'cake') {
+        
+            cake_name_list.push(items[t].item_name);
+        
+            var cake_type = items[t].type;
+        
+            var cake_price = items[t].price;
+        
+                if(items[t].special == order_month) {
+                    cake_type = "monthly special cake";
+                    cake_price = available_data[i].price * 0.8;
+                }
 
             var cake_content = 
-                `<ul class="item" id=${available_data[i].type}>
+                `<ul class="item" id=${cake_type}>
                     <li id="type">${cake_type}</li>
                     <li id="image">
-                        <img src="/img/${available_data[i].image}"/>    
+                        <img src="/img/${items[t].image}"/>    
                     </li>
                     <li id="name">
-                        <div id="cake_name">${available_data[i].item_name}</div>
-                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
+                        <div id="cake_name">${items[t].item_name}</div>
+                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
                     </li>
                     <li id="amount">
                         <div id="p">$ ${cake_price}</div>
                         <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                     </li>
-                    <li class="add_button" id="button_${available_data[i].item_name}">
+                    <li class="add_button" id="button_${items[t].item_name}">
                         <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                     </li>
-                    <li class="fix_button" id="fixCart_${available_data[i].item_name}">
+                    <li class="fix_button" id="fixCart_${items[t].item_name}">
                         <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                     </li>
                 </ul>`;
-            
-            }
-            
-            //can delete later
-            else {
-                var cake_content = 
-                `<ul class="item" id=${available_data[i].type}>
-                    <li id="type">${cake_type}</li>
-                    <li id="image">
-                        <img src="/img/${available_data[i].image}"/>    
-                    </li>
-                    <li id="name">
-                        <div id="cake_name">${available_data[i].item_name}</div>
-                    </li>                
-                    <li class="inq_button">
-                        <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
-                    </li>                
-                </ul>`;
-            }
                 
                 cake_div += cake_content;
-            }
-    
-            else if(available_data[i].type == 'custom-cake') {
             
-                cake_name_list.push(available_data[i].item_name);
+            }
+        
+            else if(items[t].type == 'custom-cake') {
+        
+                cake_name_list.push(items[t].item_name);
                 
-                var cake_type = available_data[i].type;
-                var cake_price = available_data[i].price;
-                
-                if(available_data[i].special == order_month) {
-                    cake_type = "monthly special cake";
-                    cake_price = available_data[i].price * 0.8;
-                }
+                var cake_type = items[t].type;
+                var cake_price = items[t].price;
                 
             if(cake_price !=0) {
     
                 var cake_content = 
-                    `<ul class="item" id=${available_data[i].type}>
+                    `<ul class="item" id=${cake_type}>
                         <li id="type">${cake_type}</li>
                         <li id="image">
-                            <img src="/img/${available_data[i].image}"/>    
+                            <img src="/img/${items[t].image}"/>    
                         </li>
                         <li id="name">
-                            <div id="cake_name">${available_data[i].item_name}</div>
-                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name}" value="none"/>size select</div>
+                            <div id="cake_name">${items[t].item_name}</div>
+                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
                         </li>
                         <li id="amount">
                             <div id="p">$ ${cake_price}</div>
                             <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                         </li>
-                        <li class="add_button" id="button_${available_data[i].item_name}">
+                        <li class="add_button" id="button_${items[t].item_name}">
                             <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                         </li>
-                        <li class="fix_button" id="fixCart_${available_data[i].item_name}">
+                        <li class="fix_button" id="fixCart_${items[t].item_name}">
                             <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                         </li>
                     </ul>`; }
     
                     else {
                         var cake_content = 
-                        `<ul class="item" id=${available_data[i].type}>
+                        `<ul class="item" id=${cake_type}>
                             <li id="type">${cake_type}</li>
                             <li id="image">
-                                <img src="/img/${available_data[i].image}"/>    
+                                <img src="/img/${items[t].image}"/>    
                             </li>
                             <li id="name">
-                                <div id="cake_name">${available_data[i].item_name}</div>
+                                <div id="cake_name">${items[t].item_name}</div>
                             </li>                
                             <li class="inq_button">
                                 <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
@@ -309,35 +220,34 @@ calendar.addEventListener('click', async (e) => {
                     
                     custom_cake_div += cake_content;
                 }
-    
-            else {
-             
-            var dacq_content = 
-                `<ul class="item" id=${available_data[i].type}>
-                    <li id="type">${available_data[i].type}</li>
-                    <li id="image">
-                        <img src="/img/${available_data[i].image}"/>
-                    </li>                
-                    <li id="name">
-                        <div id="dacq_name">${available_data[i].item_name}</div>
-                        <div id="dacq_size" style="display:none;"></div></li>
-                    <li id="amount">
-                        <div id="p">$ ${available_data[i].price}</div>
-                        <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
-                    </li>
-                    <li class="add_button" id="button_${available_data[i].item_name}">
-                        <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
-                    </li>
-                    <li class="fix_button" id="fixCart_${available_data[i].item_name}">
-                        <button type="button" onclick="fixCart(this.parentElement)">Added</button>
-                    </li>
-                </ul>`;
-                
-                dacq_div += dacq_content;
+        
+                else if(items[t].type == 'dacquoise') {
+        
+                    var dacq_content = 
+                    `<ul class="item" id=${items[t].type}>
+                        <li id="type">${items[t].type}</li>
+                        <li id="image">
+                            <img src="/img/${items[t].image}"/>
+                        </li>                
+                        <li id="name">
+                            <div id="dacq_name">${items[t].item_name}</div>
+                            <div id="dacq_size" style="display:none;"></div></li>
+                        <li id="amount">
+                            <div id="p">$ ${items[t].price}</div>
+                            <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
+                        </li>
+                        <li class="add_button" id="button_${items[t].item_name}">
+                            <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
+                        </li>
+                        <li class="fix_button" id="fixCart_${items[t].item_name}">
+                            <button type="button" onclick="fixCart(this.parentElement)">Added</button>
+                        </li>
+                    </ul>`;
+                    
+                    dacq_div += dacq_content;
+                }
             }
-        
-        
-        }
+    }
 
         calendar_section.style.display = 'none';
         alret_modal.style.height = '100vh';
@@ -374,14 +284,9 @@ function getSumOrder() {
     
     var sum = 0;
 
-    console.log(orderObjectArray);
-
     for(var i =1; i < orderObjectArray.length; i++) {
         sum += (orderObjectArray[i].amount) * (orderObjectArray[i].price) * (orderObjectArray[i].set_value);
-        console.log(sum);
     }
-
-    console.log(sum);
 
     return parseFloat(sum.toFixed(1));
 }
@@ -398,7 +303,6 @@ const modal_content = document.querySelector(".modal__content");
 const size_modal = document.querySelector(".cake_size_modal");
 const size_modal_content = document.querySelector(".cake_size_modal_content");
 
-
 cake_list.addEventListener('click', e => {
 
     if(e.target.innerHTML == "size select") {
@@ -410,11 +314,7 @@ cake_list.addEventListener('click', e => {
 
 function sizeValue(value, id) {
     
-    console.log(value);
-    console.log(id);
-
     document.querySelector(`#${id}`).value = value;
-
     size_modal.style.height = 0;
 }
 
@@ -434,9 +334,16 @@ function addCart(p) {
     var content = `<p>Succesfully added, you can add other items more, otherwise click the next button below.</p><p>if you want to change the amount, change it and click the Added button.</p>`;
         
     if(type.id == 'cake') {
+        
         cake_total += amount;
         
-        if(cake_total > today_limit.cake_limit) {
+        if(today_limit.cake_limit == 0) {
+            content = `Sorry, cake is sold out`;
+            cake_total -= amount;
+            amount_class.firstElementChild.nextElementSibling.value = 1;
+        }
+
+        else if(cake_total > today_limit.cake_limit) {
             content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
@@ -472,10 +379,10 @@ function addCart(p) {
             
             total__check.innerHTML = `<p>Total purchase ${sum}</p>`;
             total__check.style.height = '30px';
-
         }
     }
 
+    /**
     else if(type.id == 'custom-cake') {
         cake_total += amount;
         
@@ -522,9 +429,16 @@ function addCart(p) {
 
         }
     }
+     */
 
     else if(type.id == 'dacquoise') {
         dacq_total += amount;
+
+        if(today_limit.dacq_limit == 0) {
+            content = `Sorry, dacq is sold out`;
+            dacq_total -= amount;
+            amount_class.firstElementChild.nextElementSibling.value = 1;
+        }
 
         if(dacq_total > today_limit.dacq_limit) {
             content = `Sorry, You cannot put dacq more than ${today_limit.dacq_limit}`;
@@ -539,6 +453,7 @@ function addCart(p) {
                 price: price,
                 set_value: 1
             }
+            
             orderObjectArray.push(newItem); 
 
             var cartButton = document.querySelector(`#button_${title}`);
@@ -555,8 +470,6 @@ function addCart(p) {
             total__check.style.height = '30px';
         }
     }
-
-    console.log(orderObjectArray);
 
     modal_content.innerHTML = content;   
     modal.style.display = "flex";
@@ -621,8 +534,6 @@ function fixCart(p) {
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
 
-    console.log(title);
-
     var content = `Succesfully fixed`;
 
     if(type.id == 'cake' || type.id == 'custom-cake') {
@@ -673,7 +584,7 @@ function fixCart(p) {
                 check = true;
 
                 if(dacq_total > today_limit.dacq_limit) {
-                    content = `Sorry, You cannot put cake more than ${today_limit.dacq_limit}`;
+                    content = `Sorry, You cannot put dacquoise more than ${today_limit.dacq_limit}`;
                     dacq_total -= difference;
                     amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
 
@@ -704,7 +615,6 @@ function fixCart(p) {
 /* menu section => customer */
 
 const prev_schedule_button = document.querySelector('#prev__schedule');
-//warning: it's gonna make every data as default value
 
 const next_customer_button = document.querySelector('#next_customer');
 const customer_section = document.querySelector('.third');
@@ -718,8 +628,6 @@ const delivery_info = document.querySelector('.delivery_info');
 next_customer_button.addEventListener('click', e => {
 
     var sumOrder = getSumOrder();
-
-    console.log(sumOrder);
 
     if(sumOrder == null || sumOrder == '' || sumOrder == 0) {
     
@@ -737,9 +645,7 @@ next_customer_button.addEventListener('click', e => {
     }
 
         item_section.style.display = 'none';
-        customer_section.style.display = 'block';
-
-
+        customer_section.style.display = 'block';   
     }
 
 })
@@ -764,6 +670,7 @@ pickup_button.addEventListener('click', e => {
         maxZoom: 17, // this is for max zoom for map    
       });
 
+      /**
     let marker = new google.maps.Marker({
         position: {lat: 51.0510542, lng: -114.0810167},
         map: map,
@@ -772,7 +679,7 @@ pickup_button.addEventListener('click', e => {
         //   url: '../images/pin.svg',
         //   scaledSize: new google.maps.Size(40,40),
         // }
-      });   
+      }); */   
     
     var office_address = document.createElement("div");
     office_address.classList.add("office_address");
@@ -785,11 +692,8 @@ pickup_button.addEventListener('click', e => {
 delivery_button.addEventListener('click', e => {
     
     zero_height();
-    console.log(order_day_num);
     
     var order_sum = getSumOrder();
-
-    console.log(order_sum);
 
     if(order_sum > 50) {
 
@@ -843,25 +747,6 @@ address_check.addEventListener('click', e=> {
 
     var code = post_code.value;
 
-    console.log(code);
-
-    //var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${code}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
-
-    // fetch(geoCodeUrl)
-    //   .then(response => response.json())
-    //   .then(data => {
-        
-    //     var geocode = data.results[0].geometry.location;
-        
-    //     console.log(data.results[0]);
-        
-    //     var { lat, lng } = geocode;
-        
-        // var long = parseFloat(lng);
-        // var lati = parseFloat(lat);
-        
-        // var office = {long: -114.0803995, lati: 51.0503758}
-
         var service = new google.maps.DistanceMatrixService();
 
         service.getDistanceMatrix({
@@ -870,20 +755,22 @@ address_check.addEventListener('click', e=> {
             travelMode: google.maps.TravelMode.DRIVING,
         }, function(response, status){
             
-            var distance = response.rows[0].elements[0].distance.value;
-            
-            //var city = data.results[0].address_components[2].short_name;
-            //might need so do split ex) Northwest Calgary
-            
-            //city = city.split(' ');
-
             var content = '';
+            
+            if(response.rows[0].elements[0].distance == undefined) {
+                
+                    content = "<p>Please right the right postal code which can be searched on Google map</p>";
+                    post_code.value = null;
+                    modal_content.innerHTML = content;   
+                    modal.style.display = "flex";
+                    customer_delivery_fee = 0;
+            }
 
-            console.log(distance);
+            else {
 
-            //if(distance > 5000) {
+                var distance = response.rows[0].elements[0].distance.value;
+
                 if(distance < 5000) {
-                    console.log(delivery_free);
                     delivery_free.style.display = 'block';
                     customer_delivery_fee = 0;
                 }
@@ -921,20 +808,9 @@ address_check.addEventListener('click', e=> {
                 }
 
             }
-
-            // else {
-            //     console.log(delivery_free);
-            //     delivery_free.style.display = 'block';
-            //     customer_delivery_fee = 0;
-            //}
+    }
         );
      });
-//     .catch(error => {
-//         post_code.value = null;
-//         delivery_error.style.display = 'block';
-//         customer_delivery_fee = 0;
-//     });
-// })
 
 const prev_items_button = document.querySelector('#prev__items');
 
@@ -947,11 +823,14 @@ const next_check_button = document.querySelector('#next_check');
 
 var customer_info = {
     name: '',
+    etransfer:'',
     insta: '',
     phone: '',
     allergy: '',
+    lettering:'',
     delivery: '',
-    address: '',
+    postal_code: '',
+    address:'',
 }
 
 const confirmation_section = document.querySelector('.fourth');
@@ -959,17 +838,20 @@ const confirmation_section = document.querySelector('.fourth');
 next_check_button.addEventListener('click', e =>{
 
     var name = document.querySelector('#cust_name').value;
+    var etransfer;
     var insta = document.querySelector('#insta').value;
     var phone = document.querySelector('#phone').value;
     var allergy = document.querySelector('#allergy').value;
+    var lettering;
     var delivery = '';
+    var postal_code;
     var address = '';
+
     
     var error_check = {
         check: false,
         message: ''        
     }
-
 
     if(pickup_button.checked == true) {
         delivery = 'pickup';
@@ -985,7 +867,6 @@ next_check_button.addEventListener('click', e =>{
                 error_check.check = true;
                 error_check.message = 'you should click check address button';    
             }
-
         }
 
         else {
@@ -999,10 +880,6 @@ next_check_button.addEventListener('click', e =>{
         error_check.message = "didn't select the delivery option";
     }
 
-    console.log(post_code.value);
-    console.log(name);
-    console.log(phone);
-
     if(name == null || phone == null || name == '' || phone == '' || name == 0 || phone == 0 ||
         insta == null || insta == '' || allergy == null || allergy == '') {
         error_check.check = true;
@@ -1015,6 +892,7 @@ next_check_button.addEventListener('click', e =>{
 
         customer_section.style.display = 'none';
         confirmation_section.style.display = 'block';
+        
         confirmation(customer_info, orderObjectArray, customer_delivery_fee);
         
     }
@@ -1038,7 +916,7 @@ const prev_custom_button = document.querySelector('#prev__customer');
 
 function confirmation(cust, ord, deliv) {
 
-    var order_schedule = order_day.substring(4,6) + " / " + order_day.substring(6,8) + " "+ day_list[order_day_num - 1];
+    var order_schedule = order_day + " "+ day_list[order_day_num - 1];
 
     var cust_info = 
     `<tr><td id="head">Schedule</td><td id="content"><input type="text" name="schedule" value="${order_schedule}" readonly/></td>`+
@@ -1058,6 +936,8 @@ function confirmation(cust, ord, deliv) {
 
     for(var i =1; i<ord.length; i++) {
 
+        if(ord[i].amount > 0) {
+        
         let size = ''
 
         if(cake_name_list.includes(ord[i].item_name)) {
@@ -1076,6 +956,7 @@ function confirmation(cust, ord, deliv) {
         `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
 
         order_info += div;
+        }
     }
 
     var total_sum = getSumOrder();
