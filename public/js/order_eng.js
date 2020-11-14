@@ -435,12 +435,12 @@ function addCart(p) {
         dacq_total += amount;
 
         if(today_limit.dacq_limit == 0) {
-            content = `Sorry, dacq is sold out`;
+            content = `Sorry, dacquoise is sold out today`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
-        if(dacq_total > today_limit.dacq_limit) {
+        else if(dacq_total > today_limit.dacq_limit) {
             content = `Sorry, You cannot put dacq more than ${today_limit.dacq_limit}`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
