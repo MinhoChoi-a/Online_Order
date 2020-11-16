@@ -103,7 +103,9 @@ router.get('/order/eng', function (req, res) {
             err.status = 404;
             return next(err);
         }
-       
+
+    console.log(results.limits);
+    console.log(JSON.stringify(results.limits));
     res.render('order_eng', {limit_data: JSON.stringify(results.limits)});
   });
 });

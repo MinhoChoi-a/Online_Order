@@ -8,21 +8,22 @@ const SalesSchema = new mongoose.Schema({
     },
     
 	order_date  : {
-		type : Date, //String => new Date('yyyy-mm-ddThh:mm:ss');
+		type : String, //String => new Date('yyyy-mm-ddThh:mm:ss');
 	},
 
 	delivery_option : {
 		type: String
 	},
 
-	address: {
-		type: String
-	},
-
 	purchase : [
 		{
-			product        : {
-				type     : String, // UNTAPPD BID
+			type	: {
+				type     : String,
+				required : true
+			},
+			
+			item_name        : {
+				type     : String,
 				required : true
 			},
 
@@ -34,17 +35,25 @@ const SalesSchema = new mongoose.Schema({
 			price  : {
 				type     : Number,
 				required : true
+			},
+			
+			set_value  : {
+				type     : Number,
+				required : true
 			}
 		}
 	],
 
-	delivery_fee: {
-		type: Number
+	address: {
+		type	: String
+	},
 
+	delivery_fee: {
+		type	: Number
 	},
 	
 	total_price: {
-		type	: Number
+		type	: String
 	}
     
 });
