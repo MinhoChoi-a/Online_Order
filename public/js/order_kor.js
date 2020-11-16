@@ -155,7 +155,7 @@ calendar.addEventListener('click', async (e) => {
                         <img src="/img/${items[t].image}"/>    
                     </li>
                     <li id="name">
-                        <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
+                        <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${items[i].item_name_kor}</div>
                         <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name_kor}" value="none"/>size select</div>
                     </li>
                     <li id="amount">
@@ -190,7 +190,7 @@ calendar.addEventListener('click', async (e) => {
                             <img src="/img/${items[t].image}"/>    
                         </li>
                         <li id="name">
-                            <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
+                            <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${items[i].item_name_kor}</div>
                             <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name_kor}" value="none"/>size select</div>
                         </li>
                         <li id="amount">
@@ -233,7 +233,7 @@ calendar.addEventListener('click', async (e) => {
                             <img src="/img/${items[t].image}"/>
                         </li>                
                         <li id="name">
-                            <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
+                            <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${items[i].item_name_kor}</div>
                             <div id="dacq_size" style="display:none;"></div></li>
                         <li id="amount">
                             <div id="p">$ ${items[t].price}</div>
