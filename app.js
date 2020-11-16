@@ -50,7 +50,6 @@ let mailOptions = {
   html: ''
 }
 
-
 app.use('/', router);
 
 router.get('/', function (req, res) {
@@ -471,7 +470,7 @@ router.get('/order/kor', function (req, res) {
     
     console.log(results.limits);
 
-    res.render('order_kor', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_kor_up', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
