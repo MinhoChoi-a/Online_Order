@@ -806,7 +806,7 @@ img.bunny_icon {
 .pickup_info {
     position: relative;
     display: none;
-    width: 100%;
+    width: 350px;
     margin-top: 15px;
     height: auto;    
 }
