@@ -19,7 +19,10 @@ const LimitSchema = new mongoose.Schema({
     },
 
     pickup_time : [
-      {type: Number}
+      {
+        timeline: { type: String },
+        limit: { type: Number }
+      }
     ],
 
     delivery_time: {
