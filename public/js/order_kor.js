@@ -137,7 +137,7 @@ calendar.addEventListener('click', async (e) => {
 
         if(items[t].type == 'cake') {
         
-            cake_name_list.push(items[t].item_name);
+            cake_name_list.push(items[t].item_name_kor);
         
             var cake_type = items[t].type;
         
@@ -155,17 +155,17 @@ calendar.addEventListener('click', async (e) => {
                         <img src="/img/${items[t].image}"/>    
                     </li>
                     <li id="name">
-                        <div id="cake_name">${items[t].item_name}</div>
-                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
+                        <div id="cake_name">${items[t].item_name_kor}</div>
+                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name_kor}" value="none"/>size select</div>
                     </li>
                     <li id="amount">
                         <div id="p">$ ${cake_price}</div>
                         <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                     </li>
-                    <li class="add_button" id="button_${items[t].item_name}">
+                    <li class="add_button" id="button_${items[t].item_name_kor}">
                         <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                     </li>
-                    <li class="fix_button" id="fixCart_${items[t].item_name}">
+                    <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
                         <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                     </li>
                 </ul>`;
@@ -176,7 +176,7 @@ calendar.addEventListener('click', async (e) => {
         
             else if(items[t].type == 'custom-cake') {
         
-                cake_name_list.push(items[t].item_name);
+                cake_name_list.push(items[t].item_name_kor);
                 
                 var cake_type = items[t].type;
                 var cake_price = items[t].price;
@@ -190,17 +190,17 @@ calendar.addEventListener('click', async (e) => {
                             <img src="/img/${items[t].image}"/>    
                         </li>
                         <li id="name">
-                            <div id="cake_name">${items[t].item_name}</div>
-                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
+                            <div id="cake_name">${items[t].item_name_kor}</div>
+                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name_kor}" value="none"/>size select</div>
                         </li>
                         <li id="amount">
                             <div id="p">$ ${cake_price}</div>
-                            <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
+                            <input type='number' value=1 min='0' max='${today_limit.cake_limit_kor}'/>       
                         </li>
-                        <li class="add_button" id="button_${items[t].item_name}">
+                        <li class="add_button" id="button_${items[t].item_name_kor}">
                             <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                         </li>
-                        <li class="fix_button" id="fixCart_${items[t].item_name}">
+                        <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
                             <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                         </li>
                     </ul>`; }
@@ -213,7 +213,7 @@ calendar.addEventListener('click', async (e) => {
                                 <img src="/img/${items[t].image}"/>    
                             </li>
                             <li id="name">
-                                <div id="cake_name">${items[t].item_name}</div>
+                                <div id="cake_name">${items[t].item_name_kor}</div>
                             </li>                
                             <li class="inq_button">
                                 <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
@@ -233,16 +233,16 @@ calendar.addEventListener('click', async (e) => {
                             <img src="/img/${items[t].image}"/>
                         </li>                
                         <li id="name">
-                            <div id="dacq_name">${items[t].item_name}</div>
+                            <div id="dacq_name">${items[t].item_name_kor}</div>
                             <div id="dacq_size" style="display:none;"></div></li>
                         <li id="amount">
                             <div id="p">$ ${items[t].price}</div>
                             <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
                         </li>
-                        <li class="add_button" id="button_${items[t].item_name}">
+                        <li class="add_button" id="button_${items[t].item_name_kor}">
                             <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                         </li>
-                        <li class="fix_button" id="fixCart_${items[t].item_name}">
+                        <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
                             <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                         </li>
                     </ul>`;
