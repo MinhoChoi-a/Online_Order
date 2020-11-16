@@ -3,11 +3,9 @@ var holiday = [
     20201102, 20201109, 20201116, 20201123, 20201130
 ];
 
-
 var today = new Date();
 var today__num = today.getDay();
 var availalbeDate = '';
-
 
 if(today__num == 7) {
     let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+8);
@@ -27,10 +25,9 @@ else {
 const calendar = document.querySelector('.calendar');
 const schedule__date = document.querySelectorAll('.date');
 
+//100&10
 const sales__limit = document.querySelector('.data').value;
 var limit = JSON.parse(sales__limit);
-
-console.log(limit);
 
 const sold_out_date = [];
 
@@ -44,8 +41,6 @@ function updateSchedule() {
         }
     }
 
-    console.log(sold_out_date);
-
     for(var i = 0; i < schedule__date.length; i++ ) {
         
         if( parseInt((schedule__date[i].id).substring(4,6)) == parseInt(availalbeDate.substring(4,6))) {
@@ -56,14 +51,14 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fff8d4';            
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
-        
+
         if(schedule__date[i].id < availalbeDate) {
-            schedule__date[i].style.background = '#fffdee';
-             schedule__date[i].style.fontSize = '8px';
-            schedule__date[i].innerHTML = 'closed';             
+            schedule__date[i].style.background = '#ececec';
+            schedule__date[i].style.fontSize = '10px';
+            schedule__date[i].innerHTML = 'sold out';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
-
+        
         if(sold_out_date.includes(parseInt(schedule__date[i].id))) {
             schedule__date[i].style.background = '#ececec';
             schedule__date[i].style.fontSize = '10px';
@@ -77,11 +72,11 @@ function updateSchedule() {
              schedule__date[i].innerHTML = 'closed';
              schedule__date[i].setAttribute('disabled', 'disabled');
          }
+      
     }
 }
 
 /* schedule select => menu section*/
-
 const calendar_section = document.querySelector('.first');
 
 const item_section = document.querySelector('.second');
@@ -110,16 +105,6 @@ var cake_name_list = [];
 
 calendar.addEventListener('click', async (e) => {
     
-    //make every input as default value
-    //make every button, div a default display
-    //make orderobjectarray as null
-    //make customer_info as null
-    //make delivery_fee as null
-
-    var dac_items= [];
-    var cake_items= [];
-    var custom_cake_items= [];
-
     today_limit = '';
 
     const targetWork = e.target.closest('button');
@@ -130,213 +115,139 @@ calendar.addEventListener('click', async (e) => {
     var check = true;
     var i=0;
     
-    console.log(limit[i].date);
-
     while(check) {
         if(parseInt(limit[i].date) == parseInt(targetWork.id)) {
             check = false;
             today_limit = limit[i];
             order_day_num = limit[i].day_num;
         }
-        console.log(limit[i].date);
-        console.log(targetWork.id);
-        console.log(i);
         i++;
     }
-    
-    for(var t= 0; t < items.length; t++) {
-        if(items[t].type == 'cake') {
-            cake_items.push(items[t]);
-        }
-
-        else if(items[t].type == 'custom-cake') {
-            custom_cake_items.push(items[t]);
-        }
-        
-        else if(items[t].type == 'dacquoise') {
-            dac_items.push(items[t]);
-        }
-    }
-
-    console.log(dac_items[1].type);
-
-    var available_data = [];
-
-    if(today_limit.dacq_limit != 0) //might need to delete this condition to show every products
-    {
-        for(var i=0; i < dac_items.length; i++) {
-            if(dac_items[i].available_date.includes(parseInt(targetWork.id))){
-                available_data.push(dac_items[i]);
-            }
-        }
-    }   
-
-    if(today_limit.cake_limit != 0) //might need to delete this condition to show every products
-    {
-        for(var i=0; i < cake_items.length; i++) {
-            if(cake_items[i].available_date.includes(parseInt(targetWork.id))){
-                available_data.push(cake_items[i]);
-            }
-        }
-
-        for(var i=0; i < custom_cake_items.length; i++) {
-            if(custom_cake_items[i].available_date.includes(parseInt(targetWork.id))){
-                available_data.push(custom_cake_items[i]);
-            }
-        }
-
-    }   
     
     var cake_div = '';
     var dacq_div = '';
     var custom_cake_div = '';
-    
-    for(var i=0; i<available_data.length; i++) {
-        
-        if(available_data[i].type == 'cake') {
-        
-        cake_name_list.push(available_data[i].item_name_kor);
-        
-        var cake_type = available_data[i].type;
-        var cake_price = available_data[i].price;
-        
-        console.log(available_data[i].special);
-        console.log(order_month);
 
-        if(available_data[i].special == order_month) {
-            cake_type = "monthly special cake";
-            cake_price = available_data[i].price * 0.8;
-        }
-        
-        if(cake_price != 0) {
+    for(var t= 0; t < items.length; t++) {
+      
+        if(items[t].available_date.includes(parseInt(targetWork.id))) {
 
-        var cake_content = 
-            `<ul class="item" id=${available_data[i].type}>
-                <li id="type">${cake_type}</li>
-                <li id="image">
-                    <img src="/img/${available_data[i].image}"/>    
-                </li>
-                <li id="name">
-                    <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
-                    <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name_kor}" value="none"/>size select</div>
-                </li>
-                <li id="amount">
-                    <div id="p">$ ${cake_price}</div>
-                    <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
-                </li>
-                <li class="add_button" id="button_${available_data[i].item_name_kor}">
-                    <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
-                </li>
-                <li class="fix_button" id="fixCart_${available_data[i].item_name_kor}">
-                    <button type="button" onclick="fixCart(this.parentElement)">Added</button>
-                </li>
-            </ul>`;
+        if(items[t].type == 'cake') {
         
-        }
+            cake_name_list.push(items[t].item_name);
         
-        //can delete later
-        else {
-            var cake_content = 
-            `<ul class="item" id=${available_data[i].type}>
-                <li id="type">${cake_type}</li>
-                <li id="image">
-                    <img src="/img/${available_data[i].image}"/>    
-                </li>
-                <li id="name">
-                <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
-                </li>                
-                <li class="inq_button">
-                    <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
-                </li>                
-            </ul>`;
-        }
-            
-            cake_div += cake_content;
-        }
-
-        else if(available_data[i].type == 'custom-cake') {
+            var cake_type = items[t].type;
         
-            cake_name_list.push(available_data[i].item_name);
-            
-            var cake_type = available_data[i].type;
-            var cake_price = available_data[i].price;
-            
-            if(available_data[i].special == order_month) {
-                cake_type = "monthly special cake";
-                cake_price = available_data[i].price * 0.8;
-            }
-            
-        if(cake_price !=0) {
+            var cake_price = items[t].price;
+        
+                if(items[t].special == order_month) {
+                    cake_type = "monthly special cake";
+                    cake_price = available_data[i].price * 0.8;
+                }
 
             var cake_content = 
-                `<ul class="item" id=${available_data[i].type}>
+                `<ul class="item" id=${cake_type}>
                     <li id="type">${cake_type}</li>
                     <li id="image">
-                        <img src="/img/${available_data[i].image}"/>    
+                        <img src="/img/${items[t].image}"/>    
                     </li>
                     <li id="name">
-                    <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
-                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${available_data[i].item_name_kor}" value="none"/>size select</div>
+                        <div id="cake_name">${items[t].item_name}</div>
+                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
                     </li>
                     <li id="amount">
                         <div id="p">$ ${cake_price}</div>
                         <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                     </li>
-                    <li class="add_button" id="button_${available_data[i].item_name_kor}">
+                    <li class="add_button" id="button_${items[t].item_name}">
                         <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                     </li>
-                    <li class="fix_button" id="fixCart_${available_data[i].item_name_kor}">
+                    <li class="fix_button" id="fixCart_${items[t].item_name}">
                         <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                     </li>
-                </ul>`; }
-
-                else {
-                    var cake_content = 
-                    `<ul class="item" id=${available_data[i].type}>
+                </ul>`;
+                
+                cake_div += cake_content;
+            
+            }
+        
+            else if(items[t].type == 'custom-cake') {
+        
+                cake_name_list.push(items[t].item_name);
+                
+                var cake_type = items[t].type;
+                var cake_price = items[t].price;
+                
+            if(cake_price !=0) {
+    
+                var cake_content = 
+                    `<ul class="item" id=${cake_type}>
                         <li id="type">${cake_type}</li>
                         <li id="image">
-                            <img src="/img/${available_data[i].image}"/>    
+                            <img src="/img/${items[t].image}"/>    
                         </li>
                         <li id="name">
-                        <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
-                        </li>                
-                        <li class="inq_button">
-                            <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
-                        </li>                
-                    </ul>`;
+                            <div id="cake_name">${items[t].item_name}</div>
+                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
+                        </li>
+                        <li id="amount">
+                            <div id="p">$ ${cake_price}</div>
+                            <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
+                        </li>
+                        <li class="add_button" id="button_${items[t].item_name}">
+                            <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
+                        </li>
+                        <li class="fix_button" id="fixCart_${items[t].item_name}">
+                            <button type="button" onclick="fixCart(this.parentElement)">Added</button>
+                        </li>
+                    </ul>`; }
+    
+                    else {
+                        var cake_content = 
+                        `<ul class="item" id=${cake_type}>
+                            <li id="type">${cake_type}</li>
+                            <li id="image">
+                                <img src="/img/${items[t].image}"/>    
+                            </li>
+                            <li id="name">
+                                <div id="cake_name">${items[t].item_name}</div>
+                            </li>                
+                            <li class="inq_button">
+                                <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
+                            </li>                
+                        </ul>`;
+                    }
+                    
+                    custom_cake_div += cake_content;
                 }
-                
-                custom_cake_div += cake_content;
+        
+                else if(items[t].type == 'dacquoise') {
+        
+                    var dacq_content = 
+                    `<ul class="item" id=${items[t].type}>
+                        <li id="type">${items[t].type}</li>
+                        <li id="image">
+                            <img src="/img/${items[t].image}"/>
+                        </li>                
+                        <li id="name">
+                            <div id="dacq_name">${items[t].item_name}</div>
+                            <div id="dacq_size" style="display:none;"></div></li>
+                        <li id="amount">
+                            <div id="p">$ ${items[t].price}</div>
+                            <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
+                        </li>
+                        <li class="add_button" id="button_${items[t].item_name}">
+                            <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
+                        </li>
+                        <li class="fix_button" id="fixCart_${items[t].item_name}">
+                            <button type="button" onclick="fixCart(this.parentElement)">Added</button>
+                        </li>
+                    </ul>`;
+                    
+                    dacq_div += dacq_content;
+                }
             }
-
-        else {
-         
-        var dacq_content = 
-            `<ul class="item" id=${available_data[i].type}>
-                <li id="type">${available_data[i].type}</li>
-                <li id="image">
-                    <img src="/img/${available_data[i].image}"/>
-                </li>                
-                <li id="name">
-                    <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${available_data[i].item_name_kor}</div>
-                    <div id="dacq_size" style="display:none;"></div></li>
-                <li id="amount">
-                    <div id="p">$ ${available_data[i].price}</div>
-                    <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
-                </li>
-                <li class="add_button" id="button_${available_data[i].item_name_kor}">
-                    <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
-                </li>
-                <li class="fix_button" id="fixCart_${available_data[i].item_name_kor}">
-                    <button type="button" onclick="fixCart(this.parentElement)">Added</button>
-                </li>
-            </ul>`;
-            
-            dacq_div += dacq_content;
-        }
-        
-        
-        }
+    }
 
         calendar_section.style.display = 'none';
         alret_modal.style.height = '100vh';
@@ -363,24 +274,20 @@ function cake__inquiry() {
 
 //important! global variable of order information
 let orderObjectArray = [{
-    item_name: '',
-    amount: '',
-    price: '',
-    set_value: '' //set_size_value & set_custom_value
+    "type": "null",
+    "item_name": "null",
+    "amount": 0,
+    "price": 0,
+    "set_value": 0
 }];
 
 function getSumOrder() {
     
     var sum = 0;
 
-    console.log(orderObjectArray);
-
     for(var i =1; i < orderObjectArray.length; i++) {
         sum += (orderObjectArray[i].amount) * (orderObjectArray[i].price) * (orderObjectArray[i].set_value);
-        console.log(sum);
     }
-
-    console.log(sum);
 
     return parseFloat(sum.toFixed(1));
 }
@@ -397,7 +304,6 @@ const modal_content = document.querySelector(".modal__content");
 const size_modal = document.querySelector(".cake_size_modal");
 const size_modal_content = document.querySelector(".cake_size_modal_content");
 
-
 cake_list.addEventListener('click', e => {
 
     if(e.target.innerHTML == "size select") {
@@ -409,11 +315,7 @@ cake_list.addEventListener('click', e => {
 
 function sizeValue(value, id) {
     
-    console.log(value);
-    console.log(id);
-
     document.querySelector(`#${id}`).value = value;
-
     size_modal.style.height = 0;
 }
 
@@ -431,11 +333,18 @@ function addCart(p) {
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
     
     var content = `<p id='kor'>추가되었습니다. 다른 메뉴를 더 선택하시거나, 하단의 Next 버튼을 누르시고 다음 단계로 가셔도 됩니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
-
+        
     if(type.id == 'cake') {
+        
         cake_total += amount;
         
-        if(cake_total > today_limit.cake_limit) {
+        if(today_limit.cake_limit == 0) {
+            content = `<div id='kor'>죄송합니다, 이 날의 케익은 모두 마감되었습니다.</div>`;
+            cake_total -= amount;
+            amount_class.firstElementChild.nextElementSibling.value = 1;
+        }
+
+        else if(cake_total > today_limit.cake_limit) {
             content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
@@ -452,10 +361,11 @@ function addCart(p) {
         else{
             
             var newItem = {
-                item_name: title,
-                amount: amount,
-                price: price,
-                set_value: cake_set.value
+                "type": type.id,
+                "item_name": title,
+                "amount": amount,
+                "price": price,
+                "set_value": cake_set.value                
             }
             orderObjectArray.push(newItem); 
 
@@ -471,26 +381,26 @@ function addCart(p) {
             
             total__check.innerHTML = `<p>Total purchase ${sum}</p>`;
             total__check.style.height = '30px';
-
         }
     }
 
+    /**
     else if(type.id == 'custom-cake') {
         cake_total += amount;
         
         content = 
-        `<p id='kor'>추가되었습니다. Custom Cake의 경우 디자인에 따라 추가 요금이 발생할 수 있습니다. 정확한 가격 안내는 주문을 완료하시고 나면 이메일로 안내를 드릴 예정입니다.</p>`+
-        `<p id='kor'>다른 메뉴를 더 선택하시거나, 하단의 Next 버튼을 누르시고 다음 단계로 가셔도 됩니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+        `<p>Succesfully added, but this is not the final confirmation. I'll ask you further question to set design and favor after you finished to check out.</p>`+
+        `<p>You can add other items more, otherwise click the next button below.</p><p>if you want to change the amount, change it and click the Added button.</p>`;
 
         if(cake_total > today_limit.cake_limit) {
-            content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
+            content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(cake_set.value == "none" || cake_set.value == undefined) {
             
-            content = "<div id='kor'> 케익의 사이즈를 먼저 선택해 주세요 </div>";
+            content = "Please select the cake size first";
             cake_total -= amount;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -521,11 +431,18 @@ function addCart(p) {
 
         }
     }
+     */
 
     else if(type.id == 'dacquoise') {
         dacq_total += amount;
 
-        if(dacq_total > today_limit.dacq_limit) {
+        if(today_limit.dacq_limit == 0) {
+            content = `<div id='kor'>죄송합니다, 이 날의 다쿠아즈는 모두 마감되었습니다.</div>`;
+            dacq_total -= amount;
+            amount_class.firstElementChild.nextElementSibling.value = 1;
+        }
+
+        else if(dacq_total > today_limit.dacq_limit) {
             content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
@@ -533,11 +450,13 @@ function addCart(p) {
 
         else{
             var newItem = {
-                item_name: title,
-                amount: amount,
-                price: price,
-                set_value: 1
+                "type": type.id,
+                "item_name": title,
+                "amount": amount,
+                "price": price,
+                "set_value": 1,                
             }
+            
             orderObjectArray.push(newItem); 
 
             var cartButton = document.querySelector(`#button_${title}`);
@@ -554,8 +473,6 @@ function addCart(p) {
             total__check.style.height = '30px';
         }
     }
-
-    console.log(orderObjectArray);
 
     modal_content.innerHTML = content;   
     modal.style.display = "flex";
@@ -620,9 +537,7 @@ function fixCart(p) {
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
 
-    console.log(title);
-
-    var content = "<div id='kor'> 수정되었습니다. </div>";
+    var content = "<div id='kor'> 수정되었습니다.</div>";
 
     if(type.id == 'cake' || type.id == 'custom-cake') {
         
@@ -666,8 +581,6 @@ function fixCart(p) {
             if(orderObjectArray[i].item_name === title) {
                 var difference = amount - orderObjectArray[i].amount;
                 
-                console.log(difference);
-                
                 dacq_total += difference;
                 check = true;
 
@@ -693,65 +606,131 @@ function fixCart(p) {
             i++;
         }
     }
-  
     modal_content.innerHTML = content;   
     modal.style.display = "flex";
-
 }
-
 
 /* menu section => customer */
 
 const prev_schedule_button = document.querySelector('#prev__schedule');
-//warning: it's gonna make every data as default value
 
 const next_customer_button = document.querySelector('#next_customer');
 const customer_section = document.querySelector('.third');
+const cake_lettering = document.querySelector('.cake_lettering');
 
 const pickup_button = document.querySelector('#pick');
 const delivery_button = document.querySelector('#delivery');
 
+const delivery_option_info = document.querySelector('.delivery_option_info');
+
 const pickup_info = document.querySelector('.pickup_info');
+const pickup_location = document.querySelector('.pickup_location');
+const pickup_address = document.querySelector('.pickup_address');
+const pickup_selection = document.querySelector('.pickup_selection');
+
 const delivery_info = document.querySelector('.delivery_info');
 
+var customer_info = {
+    "name": "",
+    "etransfer":"",
+    "insta": "",
+    "phone": "",
+    "allergy": "",
+    "delivery": "",
+    "pickup_time": "",
+    "delivery_fee": "",
+    "postal_code": "",
+    "address":"",
+    "lettering": [],
+    "lettering_id": [],
+    "etc": ""
+}
+
 next_customer_button.addEventListener('click', e => {
-
+    
     var sumOrder = getSumOrder();
-
-    console.log(sumOrder);
 
     if(sumOrder == null || sumOrder == '' || sumOrder == 0) {
     
         var content = "<div id='kor'>메뉴를 선택해주세요</div>"
         modal_content.innerHTML = content;   
         modal.style.display = "flex";
-
     }
 
     else {
+    
+    customer_info.lettering_id = [];
 
     if (sumOrder < 50) {
         delivery_button.checked = false;
         delivery_info.style.display = "none";
     }
 
-        item_section.style.display = 'none';
-        customer_section.style.display = 'block';
+    for(var i=1; i<orderObjectArray.length; i++) {
+        
+        if(orderObjectArray[i].type == 'cake' && orderObjectArray[i].amount != 0) {
 
+        var lettering_q = document.createElement("li");
+        lettering_q.classList.add("question");
+        var markup = `<label for='lettering_${i}'> Messages on ${orderObjectArray[i].item_name} (optional)`;
+        lettering_q.innerHTML = markup;
+        cake_lettering.appendChild(lettering_q);
 
+        var lettering_a = document.createElement("li");
+        lettering_a.classList.add("answer");
+        var markup_2 = `<input type="text" id="${orderObjectArray[i].item_name}_${i}" name="lettering_${i}" maxlength="30">`;
+        lettering_a.innerHTML = markup_2;
+        cake_lettering.appendChild(lettering_a);
+
+        customer_info.lettering_id.push(`${orderObjectArray[i].item_name}_${i}`);
+        
+            if(orderObjectArray[i].amount > 1) {
+
+                for(var l=1; l<orderObjectArray[i].amount; l++) {
+
+                var lettering_q = document.createElement("li");
+                lettering_q.classList.add("question");
+                var markup = `<label for='lettering_${i}_${l}'> Messages on ${orderObjectArray[i].item_name} ${l+1} (optional)`;
+                lettering_q.innerHTML = markup;
+                cake_lettering.appendChild(lettering_q);
+
+                var lettering_a = document.createElement("li");
+                lettering_a.classList.add("answer");
+                var markup_2 = `<input type="text" id="${orderObjectArray[i].item_name}_${i}_${l}" name="lettering_${i}_${l}" maxlength="30">`;
+                lettering_a.innerHTML = markup_2;
+                cake_lettering.appendChild(lettering_a);
+
+                customer_info.lettering_id.push(`${orderObjectArray[i].item_name}_${i}_${l}`);
+                }
+            }
+        }
     }
-
+        item_section.style.display = 'none';
+        customer_section.style.display = 'block';   
+    }
 })
 
-var customer_delivery_fee = ''
+var customer_delivery_fee = null;
+
+const delivery_option_modal = document.querySelector('.delivery_option_modal');
+const delivery_option_content = document.querySelector('.delivery_option_content');
+
+
+function xButton() {
+    delivery_option_modal.style.height = 0;
+}
 
 pickup_button.addEventListener('click', e => {
     
+    customer_info.postal_code = '';
+    customer_info.address = '';
+
     delivery_info.style.display = "none";
-    pickup_info.style.height = '200px'; 
+    pickup_info.style.display = 'block'; 
+    
     customer_delivery_fee = 0;
 
-    let map = new google.maps.Map(pickup_info, {
+    let map = new google.maps.Map(pickup_location, {
         center: {lat: 51.0510542, lng: -114.0810167},
         zoom: 15,
         mapTypeControlOptions: {
@@ -763,6 +742,7 @@ pickup_button.addEventListener('click', e => {
         maxZoom: 17, // this is for max zoom for map    
       });
 
+      
     let marker = new google.maps.Marker({
         position: {lat: 51.0510542, lng: -114.0810167},
         map: map,
@@ -773,29 +753,80 @@ pickup_button.addEventListener('click', e => {
         // }
       });   
     
-    var office_address = document.createElement("div");
-    office_address.classList.add("office_address");
-    const markup = "<p>Pick-up location</p>";
-    office_address.innerHTML = markup;
-    pickup_info.appendChild(office_address);
+    var markup = "<p>Pick-up location</p>";
+    pickup_address.innerHTML = markup;    
+    
+    markup = 
+    `<select name="pickup_time" id="pickup_time">
+    <option value="" selected="selected">Choose a pick-up time</option>`
+    
+    for(var l=0; l < (today_limit.pickup_time.length); l++) {
+        
+        var pick_time = today_limit.pickup_time[l].timeline;
+        var pick_text = ""
+
+        pick_text = pick_time +":00 - "+ pick_time +":59"; 
+        
+        if(today_limit.pickup_time[l].limit == 0) {
+            markup+=`<option value=${pick_time} disabled>${pick_text} (sold out)</option>`;    
+        }
+
+        else {
+        markup+=`<option value=${pick_time}>${pick_text}</option>`;
+        }
+    }
+    
+    markup += `</select>`;    
+    
+    pickup_selection.innerHTML = markup;    
+    
+    delivery_option_modal.style.height = '100vh';
    
 })
 
+function pickup_apply() {
+    var selected_time = document.querySelector('#pickup_time');
+    var specific_time = document.querySelector('#specific_pick');
+
+    if(selected_time.value == "") {
+
+        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>시간 대를 먼저 선택해주세요</div>"
+    }
+
+    else if(specific_time.value == "") {
+
+        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>몇분에 오실지 적어주세요</div>"
+    }
+
+    else if(specific_time.value > 59 || specific_time.value < 0) {
+
+        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>잘못된 숫자를 적으셨습니다</div>"
+    }
+
+    else {
+        document.querySelector('.pickup_err').innerHTML = "";
+        delivery_option_modal.style.height = '0vh';
+        
+        delivery_option_info.innerHTML=
+        `<p>Pickup Service at ${selected_time.value}:${specific_time.value}</p>`;
+        
+        customer_info.pickup_time = selected_time.value+":"+specific_time.value;
+    }
+}
+
 delivery_button.addEventListener('click', e => {
     
-    zero_height();
-    console.log(order_day_num);
+    customer_info.pickup_time = 0;
+    delivery_info.style.display = "block";
+    pickup_info.style.display = 'none'; 
     
     var order_sum = getSumOrder();
-
-    console.log(order_sum);
 
     if(order_sum > 50) {
 
         if(order_day_num == 5 || order_day_num == 6) {
-            setTimeout(function deliveryInput() {
                 delivery_info.style.display = "block";
-            }, 500);
+                delivery_option_modal.style.height = '100vh';
         }
 
         else {
@@ -804,7 +835,6 @@ delivery_button.addEventListener('click', e => {
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
         }
-        
     }
 
     else {
@@ -815,15 +845,46 @@ delivery_button.addEventListener('click', e => {
     }
 })
 
-function zero_height() {
-    pickup_info.style.height = '0px';
+
+function delivery_apply() {
+    
+    var specific_address = document.querySelector('#specific_address'); 
+    
+    if(customer_delivery_fee == null || specific_address.value == undefined) {        
+
+        document.querySelector('.delivery_err').innerHTML = "<div id='kor'> 우편 번호 확인을 먼저 부탁드려요</div>";
+    }
+
+    else if(specific_address.value == "") {
+        document.querySelector('.delivery_err').innerHTML = "<div id='kor'> 상세 주소를 적어주셔야해요</div>";
+    }
+
+    else {
+        document.querySelector('.delivery_err').innerHTML = "";
+
+        var mark = '';
+
+        if(customer_delivery_fee == 0) {
+            mark = "<p>Free Delivery Service</p>";
+        }
+
+        else {
+            mark = `<p>$${customer_delivery_fee} Additional Delivery Fee</p>`;
+        }
+
+        delivery_option_info.innerHTML= mark;
+        
+        customer_info.postal_code = document.querySelector('#postal').value;
+        customer_info.address = specific_address.value;
+        delivery_option_modal.style.height = '0vh';        
+    }
 }
+
 
 const address_check = document.querySelector('#address_check');
 const post_code = document.querySelector('#postal');
 const delivery_fee = document.querySelector('#delivery_fee');
-const delivery_free = document.querySelector('#delivery_free');
-const delivery_error = document.querySelector('#delivery_error');
+const delivery_specific = document.querySelector('#delivery_specific');
 
 var address_check_validation = true;
 
@@ -836,30 +897,10 @@ address_check.addEventListener('click', e=> {
 
     address_check_validation = true;
 
-    delivery_free.style.display = 'none';
-    delivery_fee.style.display = 'none';
-    delivery_error.style.display = 'none';
+    delivery_fee.style.display = 'none';    
+    delivery_specific.style.display = 'none';
 
     var code = post_code.value;
-
-    console.log(code);
-
-    //var geoCodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${code}&key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY`;
-
-    // fetch(geoCodeUrl)
-    //   .then(response => response.json())
-    //   .then(data => {
-        
-    //     var geocode = data.results[0].geometry.location;
-        
-    //     console.log(data.results[0]);
-        
-    //     var { lat, lng } = geocode;
-        
-        // var long = parseFloat(lng);
-        // var lati = parseFloat(lat);
-        
-        // var office = {long: -114.0803995, lati: 51.0503758}
 
         var service = new google.maps.DistanceMatrixService();
 
@@ -869,45 +910,52 @@ address_check.addEventListener('click', e=> {
             travelMode: google.maps.TravelMode.DRIVING,
         }, function(response, status){
             
-            var distance = response.rows[0].elements[0].distance.value;
-            
-            //var city = data.results[0].address_components[2].short_name;
-            //might need so do split ex) Northwest Calgary
-            
-            //city = city.split(' ');
-
             var content = '';
+            
+            if(response.rows[0].elements[0].distance == undefined || response.rows[0].elements[0].status == "NOT_FOUND") {
+                
+                    delivery_fee.innerHTML = "<p id='kor'>구글맵에서 확인되는 정확한 우편 번호를 적어주세요</p>";
+                    post_code.value = null;
+                    delivery_fee.style.display = 'block';                    
+                    customer_delivery_fee = null;
+            }
 
-            console.log(distance);
+            else {
 
-            //if(distance > 5000) {
+                var distance = response.rows[0].elements[0].distance.value;
+
                 if(distance < 5000) {
-                    console.log(delivery_free);
-                    delivery_free.style.display = 'block';
+                    delivery_fee.innerHTML = "<p>Free Delivery Service</p>";
+                    delivery_fee.style.display = 'block';
+                    delivery_specific.style.display = 'block';
                     customer_delivery_fee = 0;
                 }
 
                 else if(distance < 10000) {
                     delivery_fee.innerHTML = "<p> $3 additional delivery fee</p>" ;
                     delivery_fee.style.display = 'block';
+                    delivery_specific.style.display = 'block';
                     customer_delivery_fee = 3;
                 }
 
                 else if(distance < 15000) {
                     delivery_fee.innerHTML = "<p> $5 additional delivery fee</p>";
                     delivery_fee.style.display = 'block';
+                    delivery_specific.style.display = 'block';
                     customer_delivery_fee = 5;
                 }
 
                 else if(distance < 20000) {
                     delivery_fee.innerHTML = "<p> $7 additional delivery fee</p>";
                     delivery_fee.style.display = 'block';
+                    delivery_specific.style.display = 'block';
                     customer_delivery_fee = 7;
                 }
 
                 else if(distance < 25000) {
                     delivery_fee.innerHTML = "<p> $10 additional delivery fee </p>";
                     delivery_fee.style.display = 'block';
+                    delivery_specific.style.display = 'block';
                     customer_delivery_fee = 10;
                 }
 
@@ -916,75 +964,62 @@ address_check.addEventListener('click', e=> {
                     post_code.value = null;
                     modal_content.innerHTML = content;   
                     modal.style.display = "flex";
-                    customer_delivery_fee = 0;
+                    customer_delivery_fee = null;
                 }
-
             }
-
-            // else {
-            //     console.log(delivery_free);
-            //     delivery_free.style.display = 'block';
-            //     customer_delivery_fee = 0;
-            //}
+        }
         );
      });
-//     .catch(error => {
-//         post_code.value = null;
-//         delivery_error.style.display = 'block';
-//         customer_delivery_fee = 0;
-//     });
-// })
 
 const prev_items_button = document.querySelector('#prev__items');
 
 prev_items_button.addEventListener('click', e => {
+    
+    while(cake_lettering.hasChildNodes()) {
+        cake_lettering.removeChild(cake_lettering.firstChild);
+    }
+
     customer_section.style.display = 'none';
     item_section.style.display = "block";
 })
 
 const next_check_button = document.querySelector('#next_check');
 
-var customer_info = {
-    name: '',
-    insta: '',
-    phone: '',
-    allergy: '',
-    delivery: '',
-    address: '',
-}
-
 const confirmation_section = document.querySelector('.fourth');
 
 next_check_button.addEventListener('click', e =>{
 
     var name = document.querySelector('#cust_name').value;
+    var etransfer = document.querySelector('#etrans_name').value;
     var insta = document.querySelector('#insta').value;
     var phone = document.querySelector('#phone').value;
     var allergy = document.querySelector('#allergy').value;
+    var etc = document.querySelector('#etc').value;
     var delivery = '';
-    var address = '';
     
     var error_check = {
         check: false,
         message: ''        
     }
 
-
     if(pickup_button.checked == true) {
         delivery = 'pickup';
+
+        if(customer_info.pickup_time == 0) {
+            error_check.check = true;
+            error_check.message = "<div id='kor'>픽업 메뉴에서 시간대를 선택해주세요</div>";
+        }
     }
 
     else if(delivery_button.checked == true) {
 
         if(post_code.value != null && post_code.value != '') {
             delivery = 'delivery';
-            address = post_code.value;
-
+            
             if(!address_check_validation) {
                 error_check.check = true;
-                error_check.message = "<div id='kor'>Check Address 버튼을 꼭 눌러주세요</div>";
+                error_check.message = "<div id='kor'>딜리버리 메뉴에서 Check Address 버튼을 꼭 눌러주세요</div>";
             }
-
         }
 
         else {
@@ -998,24 +1033,37 @@ next_check_button.addEventListener('click', e =>{
         error_check.message = "<div id='kor'>딜리버리 옵션을 선택해주세요</div>";
     }
 
-    console.log(post_code.value);
-    console.log(name);
-    console.log(phone);
-
     if(name == null || phone == null || name == '' || phone == '' || name == 0 || phone == 0 ||
-        insta == null || insta == '' || allergy == null || allergy == '') {
+        insta == null || insta == '' || allergy == null || allergy == '' || etransfer == null 
+        || etransfer == '') {
         error_check.check = true;
-        error_check.message = "<div id='kor'>모든 내용을 적어주셔야 합니다.</div>";
+        error_check.message = "<div id='kor'>other inquiries와 lettering을 제외한 모든 내용을 적어주셔야 합니다.</div>";        
     }
 
     if(error_check.check == false) {
 
-        customer_info = {name, insta, phone, allergy, delivery, address};
+        customer_info.name = name;
+        customer_info.etransfer = etransfer;
+        customer_info.insta = insta;
+        customer_info.phone = phone;
+        customer_info.allergy = allergy;
+        customer_info.delivery = delivery;
+        customer_info.delivery_fee = customer_delivery_fee;
+        customer_info.etc = etc;
+
+        var lettering_array = [];
+
+        for(var t=0; t<(customer_info.lettering_id).length; t++) {
+
+            lettering_array.push(document.querySelector(`#${customer_info.lettering_id[t]}`).value);
+        }
+
+        customer_info.lettering = lettering_array;
 
         customer_section.style.display = 'none';
         confirmation_section.style.display = 'block';
-        confirmation(customer_info, orderObjectArray, customer_delivery_fee);
         
+        confirmation(customer_info, orderObjectArray, customer_delivery_fee);
     }
 
     else {
@@ -1037,42 +1085,63 @@ const prev_custom_button = document.querySelector('#prev__customer');
 
 function confirmation(cust, ord, deliv) {
 
-    var order_schedule = order_day.substring(4,6) + " / " + order_day.substring(6,8) + " "+ day_list[order_day_num - 1];
+    var order_schedule = order_day + " "+ day_list[order_day_num - 1];
 
     var cust_info = 
     `<tr><td id="head">Schedule</td><td id="content"><input type="text" name="schedule" value="${order_schedule}" readonly/></td>`+
     `<tr><td id="head">Name</td><td id="content"><input type="text" name="name" value="${cust.name}" readonly/></td>`+
     `<tr><td id="head">Insta ID / Email</td><td id="content"><input type="text" name="insta" value="${cust.insta}" readonly/></td>`+
     `<tr><td id="head">Phone Number</td><td id="content"><input type="text" name="phone" value="${cust.phone}" readonly/></td>`+
-    `<tr><td id="head">Allergy</td><td id="content"><input type="text" name="allergy" value="${cust.allergy}" readonly/></td>`+
-    `<tr><td id="head">Delivery Option</td><td id="content"><input type="text" name="deliveryOption" value="${cust.delivery}" readonly/></td>`;
-
+    `<tr><td id="head">Allergy</td><td id="content"><input type="text" name="allergy" value="${cust.allergy}" readonly/></td>`;
+    
     if(cust.delivery == 'delivery') {
-        cust_info += `<tr><td id="head">Address</td><td id="content"><input type="text" name="address" value="${cust.address}" readonly/></td>`;
+        cust_info += `<tr><td id="head">Delivery Option</td><td id="content"><input type="text" name="deliveryOption" value="${cust.delivery}" readonly/></td>`+
+        `<tr><td id="head">Address</td><td id="content"><input type="text" name="address" value="${cust.address}" readonly/></td>`;
+    }
+
+    else {
+        cust_info += `<tr><td id="head">Delivery Option</td><td id="content"><input type="text" name="deliveryOption" value="${cust.delivery} at ${cust.pickup_time}" readonly/></td>`;
     }
 
     customer_table.innerHTML = cust_info;
 
     var order_info = "<tr><td id='head'>Product</td><td id='head'>Qty</td><td id='head'>Price</td>";
+    var l=0;
 
     for(var i =1; i<ord.length; i++) {
 
-        let size = ''
+        if(ord[i].amount > 0) {
+        
+        let size = '';
+        var div = '';
 
         if(cake_name_list.includes(ord[i].item_name)) {
 
         if(ord[i].set_value == 1) {
-            size = ' 6 inch';}
+            size = ' 6 inch';
+        }
 
         else if(ord[i].set_value == 1.2) {
             size = ' 8 inch';
         }
-      }
 
-        var div =
-        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
+        div = `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
+        
+        for(var t=0; t<ord[i].amount; t++) {
+        
+            div +=`<tr><td id="item" colspan=3><input type="text" name="lettering_${l}" value="lettering: ${cust.lettering[l]}" style="font-size:12px;" readonly/>`;        
+            l++;
+            }
+        }
+
+        else {
+        div = 
+        `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
+        }
+        
 
         order_info += div;
+        }
     }
 
     var total_sum = getSumOrder();
@@ -1086,7 +1155,18 @@ function confirmation(cust, ord, deliv) {
 
     order_info += `<tr><td id="head" colspan=2>Total($)</td><td id="price"><input type="text" name="total_sum" value="${total_sum}" readonly/></td>`;
 
-    order_table.innerHTML = order_info;   
+    
+    var obj_ord = JSON.stringify(ord);
+    var obj_cust = JSON.stringify(cust);
+    
+    order_info += `<input type="text" name="ord_obj" value='${obj_ord}' style="display:none;"/>`;
+    order_info += `<input type="hidden" name="cust_obj" value='${obj_cust}'/></tr>`;
+    
+    order_table.innerHTML = order_info;
+    
+    
+
+    //sessiong storage
 
 }
 

@@ -4,11 +4,6 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const router = express.Router();
-const async = require('async');
-
-const bodyParser = require('body-parser');
-
-const item_list = require('./public/db/items.json');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -18,14 +13,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'view'));
 app.set('view engine', 'pug');
 
-const fs = require('fs');
-const csv = require('csv-parser');
-
 var mongoose = require('mongoose');
 var mongoDB = process.env.mongoDB;
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+const async = require('async');
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const item_list = require('./public/db/items.json');
+
+const fs = require('fs');
+const csv = require('csv-parser');
 
 const Limit = require('./models/limit');
 const Customer = require('./models/customer');
@@ -33,6 +34,7 @@ const Sales = require('./models/sales');
 
 const nodemailer = require('nodemailer');
 const { error } = require('console');
+const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants');
 let transporter = nodemailer.createTransport({
     service: 'gmail', //https://myaccount.google.com/lesssecureapps
     auth: {
@@ -48,8 +50,6 @@ let mailOptions = {
   html: ''
 }
 
-let cake_list = [];
-let dacq_list = [];
 
 app.use('/', router);
 
@@ -57,12 +57,16 @@ router.get('/', function (req, res) {
   res.render('index');
 });
 
-router.get('/end/eng', function (req, res) {
-  res.render('end_eng');
+router.get('/end/kor', function (req, res) {
+
+  res.render('end_kor');
+
 });
 
-router.get('/end/kor', function (req, res) {
-  res.render('end_kor');
+router.get('/end/eng', function (req, res) {
+
+  res.render('end_eng');
+
 });
 
 router.get('/order/eng', function (req, res) {
@@ -80,13 +84,16 @@ router.get('/order/eng', function (req, res) {
     }
   }
 
+  var rightNow = new Date();
+  var today = rightNow.toISOString().slice(0,10).replace(/-/g,"");
+
   async.parallel({
         
     limits: function(callback) {
             Limit.find({})
          .where('date')
-         .gte(20200801)
-         .lt(20221231)
+         .gte(today)
+         .lt(20211231)
          .exec(callback);
         },
     }, function(err, results) {
@@ -101,138 +108,154 @@ router.get('/order/eng', function (req, res) {
   });
 });
 
-
 router.post('/order/eng', async function (req, res) {
 
+  var customer = JSON.parse(req.body.cust_obj);
+  var order = JSON.parse(req.body.ord_obj);
+  
   let cake_num = 0;
   let dacq_num = 0;
 
-  var date = req.body.schedule;
-  date = date.split(' ');
-  date = '2020'+date[0]+date[2];
+  var date = req.body.schedule; 
+  date = date.split(' ')[0];
 
-  console.log(date);
+  var sum = 0;
+
+  var time_array = ''; 
+  var pick_time = '';
+
+  var inch = ['6 inch', '8 inch'];
 
   try{
-    let order_info = [];
-    let sold_items = [];
-
-    for(var prop in req.body) {
-      order_info.push(req.body[prop]);
-    }
-
+    
     let email_content =
     "<body><div class='order_confirm'>"+
        "<h3>Order Request</h3>"+
        "<table style='background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;'>"+
-         `<tr><td>Schedule</td><td>${order_info[0]}</td></tr>`+
-         `<tr><td>Name</td><td>${order_info[1]}</td></tr>`+
-         `<tr><td>insta/email</td><td>${order_info[2]}</td></tr>`+
-         `<tr><td>Phone</td><td>${order_info[3]}</td></tr>`+
-         `<tr><td>Allergy</td><td>${order_info[4]}</td></tr>`+
-         `<tr><td>Delivery Option</td><td>${order_info[5]}</td></tr>`;
+         `<tr><td>Schedule</td><td>${req.body.schedule}</td></tr>`+
+         `<tr><td>Name</td><td>${customer.name}</td></tr>`+
+         `<tr><td>Name on E-Transfer</td><td>${customer.etransfer}</td></tr>`+
+         `<tr><td>insta/email</td><td>${customer.insta}</td></tr>`+
+         `<tr><td>Phone</td><td>${customer.phone}</td></tr>`+
+         `<tr><td>Allergy</td><td>${customer.allergy}</td></tr>`+
+         `<tr><td>Etc</td><td>${customer.etc}</td></tr>`+
+         `<tr><td>Delivery Option</td><td>${customer.delivery}</td></tr>`;
     
     let sold_content = '<table style="margin-top:10px; background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;"><tr><td>Product</td><td style="text-align:center">Amount</td><td style="text-align:center">Price</td></tr>';     
 
-    if(order_info[5] == "delivery")  {
+    if(customer.delivery == "delivery")  {
       email_content +=
-      `<tr><td>Address</td><td>${order_info[6]}</td></tr></table>`;
+      `<tr><td>Address</td><td>${customer.address} (${customer.postal_code})</td></tr></table>`;
 
-        var i = 7;
+        var i = 1;
+        var l = 0;
+        
+        while(i < order.length) {
+          
+          var sold = parseInt(order[i].amount) *  parseFloat(order[i].price) * parseFloat(order[i].set_value);
 
-        while(i < order_info.length-2) {
-          let item = {
-            product: order_info[i],
-            amount: order_info[++i],
-            price: order_info[++i],
+          if(order[i].type == 'dacquoise') {
+            dacq_num += parseInt(order[i].amount);
+            sold_content +=
+          `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           }
 
-          let item_exact_name = item.product.split(' ');
+          if(order[i].type == 'cake') {
+            cake_num += parseInt(order[i].amount);
 
-          console.log(item_exact_name);
+            var inchT = '';
 
-          if(dacq_list.includes(item_exact_name[0])) {
-            dacq_num += parseInt(item.amount);
+            if(order[i].set_value == '1') {
+                inchT = inch[0];
+            }
+
+            else {
+              inchT = inch[1];
+            }
+            
+            sold_content +=
+          `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+          
+          for(var c=0; c<order[i].amount; c++) {
+            sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
+            l++; }
           }
-
-          if(cake_list.includes(item_exact_name[0])) {
-            cake_num += parseInt(item.amount);
-          }
-
-          sold_content +=
-          `<tr><td>${item.product}</td><td style="text-align:center">${item.amount}</td><td style="text-align:center">${item.price}</td></tr>`;
-
-          sold_items.push(item);
+          
+          sum += parseFloat(sold);
 
           i++;
-        }
-
-        let delivery_fee = '';
-        let total_sum = '';
-
-        if(order_info[i+1] == undefined){
-          delivery_fee = 0;
-          total_sum = order_info[i];
-        }
-
-        else {
-          total_sum = order_info[i+1];
-          delivery_fee = order_info[i];
-        }
+        }       
                 
         sold_content +=
-        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${delivery_fee}</td>`+
-        `<tr><td colspan=2>Total</td><td style="text-align:center">${total_sum}</td></tr></table>`;
+        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
+        `<tr><td colspan=2>Total</td><td style="text-align:center">${sum.toFixed(2)}</td></tr></table>`;
       }
 
     else {
+
+      time_array = (customer.pickup_time).split(':'); 
+      pick_time = time_array[0];
+
       email_content += "</table>"    
       
-      var i = 6;
+      var i = 1;
+        var l = 0;
+        
+        while(i < order.length) {
+          
+          var sold = parseFloat(order[i].amount) *  parseFloat(order[i].price) * parseFloat(order[i].set_value);
 
-        while(i < order_info.length-1) {
-          let item = {
-            product: order_info[i],
-            amount: order_info[++i],
-            price: order_info[++i],
+          if(order[i].type == 'dacquoise') {
+            dacq_num += parseInt(order[i].amount);
+            sold_content +=
+          `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           }
 
-          let item_exact_name = item.product.split(' ');
+          if(order[i].type == 'cake') {
+            cake_num += parseInt(order[i].amount);
 
-          console.log(item_exact_name);
+            var inchT = '';
 
-          if(dacq_list.includes(item_exact_name[0])) {
-            dacq_num += parseInt(item.amount);
+            if(order[i].set_value == '1') {
+                inchT = inch[0];
+            }
+
+            else {
+              inchT = inch[1];
+            }
+            
+            sold_content +=
+          `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+          
+          for(var c=0; c<order[i].amount; c++) {
+            sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
+            l++; }
           }
-
-          if(cake_list.includes(item_exact_name[0])) {
-            cake_num += parseInt(item.amount);
-          }
-
-          sold_content +=
-          `<tr><td>${item.product}</td><td style="text-align:center">${item.amount}</td><td style="text-align:center">${item.price}</td></tr>`;
-
-          sold_items.push(item);
+                    
+          sum += parseFloat(sold);
 
           i++;
-        }
+        }       
+        
+        sum += parseFloat(customer.delivery_fee);
 
         sold_content +=
-        `<tr><td colspan=2>Total</td><td style="text-align:center">${order_info[i]}</td></tr></table>`;
+        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
+        `<tr><td colspan=2>Total</td><td style="text-align:center">${sum.toFixed(2)}</td></tr></table>`;
 
       }
 
   let final_content = email_content + sold_content + "</div></body>";
   
-  const comeback_user = await Customer.findOne({$and: [{name: order_info[1]},{phone: order_info[3]}]});
+  const comeback_user = await Customer.findOne({$and: [{name: customer.name},{phone: customer.phone}]});
 
   if(!comeback_user) {
            
           var customer_info = {
-            name: order_info[1],
-            insta_email: order_info[2],
-            phone: order_info[3],
-            allergy: order_info[4]            
+            name: customer.name,
+            insta_email: customer.insta,
+            phone: customer.phone,
+            allergy: customer.allergy
           }
 
           var new_customer = new Customer(customer_info);
@@ -243,12 +266,22 @@ router.post('/order/eng', async function (req, res) {
                 
                 var sales_info = {
                   customer: new_customer._id,
-                  order_date: new Date(),
-                  purchase: sold_items
+                  order_date: date,
+                  delivery_option: customer.delivery,
+                  purchase: order,
+                  address: customer.address,
+                  delivery_fee: customer.delivery_fee,
+                  total_price: sum.toFixed(2)
                 }
+
+                console.log(sales_info);
                 
                 var new_sales = new Sales(sales_info);
                 new_sales.save(function (err) {
+                  if(err) {
+                    console.log(err.message);
+                  }
+                  
                   if(!err) {
                     console.log(new_sales._id);
                     console.log("sales info added");
@@ -266,19 +299,33 @@ router.post('/order/eng', async function (req, res) {
                         else{
                           console.log(results);
                           
-                          console.log(cake_num);
-                          console.log(dacq_num);
+                          console.log(results.limit[0].pickup_time);
+                          console.log(results.limit[0].pickup_time[0].timeline);
+
+                          //var pickup_time = results.limit[0];
+                          
+                          var pp =0;
+                          var check = false;
+                          
+                          while(!check && pp < results.limit[0].pickup_time.length) {
+                            
+                              if(results.limit[0].pickup_time[pp].timeline == pick_time) {
+                                check = true;
+                                console.log("find pick time");
+                                results.limit[0].pickup_time[pp].limit = results.limit[0].pickup_time[pp].limit - 1;
+                                console.log("pick limi: "+results.limit[0].pickup_time[pp].limit);
+                              }
+
+                              else {
+                                pp++;
+                              }
+                          }
 
                           var cake_limit = results.limit[0].cake_limit - cake_num;
                           var dacq_limit = results.limit[0].dacq_limit - dacq_num;
 
-                          console.log(dacq_limit);
-                          console.log(cake_limit);
-
                           results.limit[0].cake_limit = cake_limit;
                           results.limit[0].dacq_limit = dacq_limit;
-
-                          console.log(results.limit[0].dacq_limit);
 
                           let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                           
@@ -303,11 +350,15 @@ router.post('/order/eng', async function (req, res) {
           }    
   
   else {
-      var sales_info = {
-        customer: comeback_user._id,
-        order_date: new Date(),
-        purchase: sold_items
-      }
+    var sales_info = {
+      customer: comeback_user._id,
+      order_date: date,
+      delivery_option: customer.delivery,
+      purchase: order,
+      address: customer.address,
+      delivery_fee: customer.delivery_fee,
+      total_price: sum.toFixed(2)
+    }
       
       var new_sales = new Sales(sales_info);
       new_sales.save(function (err) {
@@ -324,24 +375,38 @@ router.post('/order/eng', async function (req, res) {
                   .exec(callback)
             }}, async (err, results) => {
               if(err) {console.log(err.message);}
-              else{
-                console.log(results);
-                
-                console.log(cake_num);
-                console.log(dacq_num);
+                        else{
+                          console.log(results);
+                          
+                          console.log(cake_num);
+                          console.log(dacq_num);
 
-                var cake_limit = results.limit[0].cake_limit - cake_num;
-                var dacq_limit = results.limit[0].dacq_limit - dacq_num;
+                          //var pickup_time = results.limit[0];
+                          
+                          var pp =0;
+                          var check = false;
+                          
+                          while(!check && pp < results.limit[0].pickup_time.length) {
+                            
+                              if(results.limit[0].pickup_time[pp].timeline == pick_time) {
+                                check = true;
+                                results.limit[0].pickup_time[pp].limit = results.limit[0].pickup_time[pp].limit - 1;
+                              }
 
-                console.log(dacq_limit);
-                console.log(cake_limit);
+                              else {
+                                pp++;
+                              }
+                          }
 
-                results.limit[0].cake_limit = cake_limit;
-                results.limit[0].dacq_limit = dacq_limit;
+                          var cake_limit = results.limit[0].cake_limit - cake_num;
+                          var dacq_limit = results.limit[0].dacq_limit - dacq_num;
 
-                console.log(results.limit[0].dacq_limit);
+                          results.limit[0].cake_limit = cake_limit;
+                          results.limit[0].dacq_limit = dacq_limit;
 
-                let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
+                          console.log(results.limit[0].dacq_limit);
+
+                          let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                 
                 mailOptions.subject = 'Baking Bunny Order-Comeback Customer'+Date();
                 mailOptions.html = final_content;
@@ -363,6 +428,8 @@ router.post('/order/eng', async function (req, res) {
   } catch(err) {
     console.log(err.message);
   }
+
+  
 });
 
 router.get('/order/kor', function (req, res) {
@@ -380,13 +447,16 @@ router.get('/order/kor', function (req, res) {
     }
   }
 
+  var rightNow = new Date();
+  var today = rightNow.toISOString().slice(0,10).replace(/-/g,"");
+
   async.parallel({
         
     limits: function(callback) {
             Limit.find({})
          .where('date')
-         .gte(20200801)
-         .lt(20201231)
+         .gte(today)
+         .lt(20211231)
          .exec(callback);
         },
     }, function(err, results) {
@@ -404,139 +474,152 @@ router.get('/order/kor', function (req, res) {
 
 router.post('/order/kor', async function (req, res) {
 
+  var customer = JSON.parse(req.body.cust_obj);
+  var order = JSON.parse(req.body.ord_obj);
+  
   let cake_num = 0;
   let dacq_num = 0;
 
-  var date = req.body.schedule;
-  date = date.split(' ');
-  date = '2020'+date[0]+date[2];
+  var date = req.body.schedule; 
+  date = date.split(' ')[0];
 
-  console.log(date);
+  var sum = 0;
+
+  var time_array = ''; 
+  var pick_time = '';
+
+  var inch = ['6 inch', '8 inch'];
 
   try{
-    let order_info = [];
-    let sold_items = [];
-
-    for(var prop in req.body) {
-      order_info.push(req.body[prop]);
-    }
-
-    console.log(order_info);
-
+    
     let email_content =
     "<body><div class='order_confirm'>"+
        "<h3>Order Request</h3>"+
        "<table style='background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;'>"+
-         `<tr><td>Schedule</td><td>${order_info[0]}</td></tr>`+
-         `<tr><td>Name</td><td>${order_info[1]}</td></tr>`+
-         `<tr><td>insta/email</td><td>${order_info[2]}</td></tr>`+
-         `<tr><td>Phone</td><td>${order_info[3]}</td></tr>`+
-         `<tr><td>Allergy</td><td>${order_info[4]}</td></tr>`+
-         `<tr><td>Delivery Option</td><td>${order_info[5]}</td></tr>`;
+         `<tr><td>Schedule</td><td>${req.body.schedule}</td></tr>`+
+         `<tr><td>Name</td><td>${customer.name}</td></tr>`+
+         `<tr><td>Name on E-Transfer</td><td>${customer.etransfer}</td></tr>`+
+         `<tr><td>insta/email</td><td>${customer.insta}</td></tr>`+
+         `<tr><td>Phone</td><td>${customer.phone}</td></tr>`+
+         `<tr><td>Allergy</td><td>${customer.allergy}</td></tr>`+
+         `<tr><td>Etc</td><td>${customer.etc}</td></tr>`+
+         `<tr><td>Delivery Option</td><td>${customer.delivery}</td></tr>`;
     
     let sold_content = '<table style="margin-top:10px; background: rgba(248, 227, 222, 0.6); width:350px; padding: 5px;"><tr><td>Product</td><td style="text-align:center">Amount</td><td style="text-align:center">Price</td></tr>';     
 
-    if(order_info[5] == "delivery")  {
+    if(customer.delivery == "delivery")  {
       email_content +=
-      `<tr><td>Address</td><td>${order_info[6]}</td></tr></table>`;
+      `<tr><td>Address</td><td>${customer.address} (${customer.postal_code})</td></tr></table>`;
 
-        var i = 7;
+        var i = 1;
+        var l = 0;
+        
+        while(i < order.length) {
+          
+          var sold = parseInt(order[i].amount) *  parseFloat(order[i].price) * parseFloat(order[i].set_value);
 
-        while(i < order_info.length-2) {
-          let item = {
-            product: order_info[i],
-            amount: order_info[++i],
-            price: order_info[++i],
+          if(order[i].type == 'dacquoise') {
+            dacq_num += parseInt(order[i].amount);
+            sold_content +=
+          `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           }
 
-          let item_exact_name = item.product.split(' ');
+          if(order[i].type == 'cake') {
+            cake_num += parseInt(order[i].amount);
 
-          console.log(item_exact_name);
+            var inchT = '';
 
-          if(dacq_list.includes(item_exact_name[0])) {
-            dacq_num += parseInt(item.amount);
+            if(order[i].set_value == '1') {
+                inchT = inch[0];
+            }
+
+            else {
+              inchT = inch[1];
+            }
+            
+            sold_content +=
+          `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+          
+          for(var c=0; c<order[i].amount; c++) {
+            sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
+            l++; }
           }
-
-          if(cake_list.includes(item_exact_name[0])) {
-            cake_num += parseInt(item.amount);
-          }
-
-          sold_content +=
-          `<tr><td>${item.product}</td><td style="text-align:center">${item.amount}</td><td style="text-align:center">${item.price}</td></tr>`;
-
-          sold_items.push(item);
+          
+          sum += parseFloat(sold);
 
           i++;
-        }
-        
-        console.log(order_info);
-
-        let delivery_fee = '';
-        let total_sum = '';
-
-        if(order_info[i+1] == undefined){
-          delivery_fee = 0;
-          total_sum = order_info[i];
-        }
-
-        else {
-          total_sum = order_info[i+1];
-          delivery_fee = order_info[i];
-        }
+        }       
                 
         sold_content +=
-        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${delivery_fee}</td>`+
-        `<tr><td colspan=2>Total Sum</td><td style="text-align:center">${total_sum}</td></tr></table>`;
+        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
+        `<tr><td colspan=2>Total</td><td style="text-align:center">${sum.toFixed(2)}</td></tr></table>`;
       }
 
     else {
+
+      time_array = (customer.pickup_time).split(':'); 
+      pick_time = time_array[0];
+
       email_content += "</table>"    
       
-      var i = 6;
+      var i = 1;
+        var l = 0;
+        
+        while(i < order.length) {
+          
+          var sold = parseFloat(order[i].amount) *  parseFloat(order[i].price) * parseFloat(order[i].set_value);
 
-        while(i < order_info.length-1) {
-          let item = {
-            product: order_info[i],
-            amount: order_info[++i],
-            price: order_info[++i],
+          if(order[i].type == 'dacquoise') {
+            dacq_num += parseInt(order[i].amount);
+            sold_content +=
+          `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           }
 
-          let item_exact_name = item.product.split(' ');
+          if(order[i].type == 'cake') {
+            cake_num += parseInt(order[i].amount);
 
-          console.log(item_exact_name);
+            var inchT = '';
 
-          if(dacq_list.includes(item_exact_name[0])) {
-            dacq_num += parseInt(item.amount);
+            if(order[i].set_value == '1') {
+                inchT = inch[0];
+            }
+
+            else {
+              inchT = inch[1];
+            }
+            
+            sold_content +=
+          `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+          
+          for(var c=0; c<order[i].amount; c++) {
+            sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
+            l++; }
           }
-
-          if(cake_list.includes(item_exact_name[0])) {
-            cake_num += parseInt(item.amount);
-          }
-
-          sold_content +=
-          `<tr><td>${item.product}</td><td style="text-align:center">${item.amount}</td><td style="text-align:center">${item.price}</td></tr>`;
-
-          sold_items.push(item);
+                    
+          sum += parseFloat(sold);
 
           i++;
-        }
+        }       
+        
+        sum += parseFloat(customer.delivery_fee);
 
         sold_content +=
-        `<tr><td colspan=2>Total Sum</td><td style="text-align:center">${order_info[i]}</td></tr></table>`;
+        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
+        `<tr><td colspan=2>Total</td><td style="text-align:center">${sum.toFixed(2)}</td></tr></table>`;
 
       }
 
   let final_content = email_content + sold_content + "</div></body>";
   
-  const comeback_user = await Customer.findOne({$and: [{name: order_info[1]},{phone: order_info[3]}]});
+  const comeback_user = await Customer.findOne({$and: [{name: customer.name},{phone: customer.phone}]});
 
   if(!comeback_user) {
            
           var customer_info = {
-            name: order_info[1],
-            insta_email: order_info[2],
-            phone: order_info[3],
-            allergy: order_info[4]            
+            name: customer.name,
+            insta_email: customer.insta,
+            phone: customer.phone,
+            allergy: customer.allergy
           }
 
           var new_customer = new Customer(customer_info);
@@ -547,12 +630,22 @@ router.post('/order/kor', async function (req, res) {
                 
                 var sales_info = {
                   customer: new_customer._id,
-                  order_date: new Date(),
-                  purchase: sold_items
+                  order_date: date,
+                  delivery_option: customer.delivery,
+                  purchase: order,
+                  address: customer.address,
+                  delivery_fee: customer.delivery_fee,
+                  total_price: sum.toFixed(2)
                 }
+
+                console.log(sales_info);
                 
                 var new_sales = new Sales(sales_info);
                 new_sales.save(function (err) {
+                  if(err) {
+                    console.log(err.message);
+                  }
+                  
                   if(!err) {
                     console.log(new_sales._id);
                     console.log("sales info added");
@@ -570,23 +663,37 @@ router.post('/order/kor', async function (req, res) {
                         else{
                           console.log(results);
                           
-                          console.log(cake_num);
-                          console.log(dacq_num);
+                          console.log(results.limit[0].pickup_time);
+                          console.log(results.limit[0].pickup_time[0].timeline);
+
+                          //var pickup_time = results.limit[0];
+                          
+                          var pp =0;
+                          var check = false;
+                          
+                          while(!check && pp < results.limit[0].pickup_time.length) {
+                            
+                              if(results.limit[0].pickup_time[pp].timeline == pick_time) {
+                                check = true;
+                                console.log("find pick time");
+                                results.limit[0].pickup_time[pp].limit = results.limit[0].pickup_time[pp].limit - 1;
+                                console.log("pick limi: "+results.limit[0].pickup_time[pp].limit);
+                              }
+
+                              else {
+                                pp++;
+                              }
+                          }
 
                           var cake_limit = results.limit[0].cake_limit - cake_num;
                           var dacq_limit = results.limit[0].dacq_limit - dacq_num;
 
-                          console.log(dacq_limit);
-                          console.log(cake_limit);
-
                           results.limit[0].cake_limit = cake_limit;
                           results.limit[0].dacq_limit = dacq_limit;
 
-                          console.log(results.limit[0].dacq_limit);
-
                           let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                           
-                          mailOptions.subject = 'Baking Bunny Order';
+                          mailOptions.subject = 'Baking Bunny Order '+Date();
                           mailOptions.html = final_content;
 
                           transporter.sendMail(mailOptions, function() {
@@ -594,7 +701,7 @@ router.post('/order/kor', async function (req, res) {
                             
                             else {
                               console.log('Success Email');
-                              res.redirect('/end/kor');
+                              res.redirect('/end/eng');
                             }
                           
                           });
@@ -607,11 +714,15 @@ router.post('/order/kor', async function (req, res) {
           }    
   
   else {
-      var sales_info = {
-        customer: comeback_user._id,
-        order_date: new Date(),
-        purchase: sold_items
-      }
+    var sales_info = {
+      customer: comeback_user._id,
+      order_date: date,
+      delivery_option: customer.delivery,
+      purchase: order,
+      address: customer.address,
+      delivery_fee: customer.delivery_fee,
+      total_price: sum.toFixed(2)
+    }
       
       var new_sales = new Sales(sales_info);
       new_sales.save(function (err) {
@@ -628,26 +739,40 @@ router.post('/order/kor', async function (req, res) {
                   .exec(callback)
             }}, async (err, results) => {
               if(err) {console.log(err.message);}
-              else{
-                console.log(results);
+                        else{
+                          console.log(results);
+                          
+                          console.log(cake_num);
+                          console.log(dacq_num);
+
+                          //var pickup_time = results.limit[0];
+                          
+                          var pp =0;
+                          var check = false;
+                          
+                          while(!check && pp < results.limit[0].pickup_time.length) {
+                            
+                              if(results.limit[0].pickup_time[pp].timeline == pick_time) {
+                                check = true;
+                                results.limit[0].pickup_time[pp].limit = results.limit[0].pickup_time[pp].limit - 1;
+                              }
+
+                              else {
+                                pp++;
+                              }
+                          }
+
+                          var cake_limit = results.limit[0].cake_limit - cake_num;
+                          var dacq_limit = results.limit[0].dacq_limit - dacq_num;
+
+                          results.limit[0].cake_limit = cake_limit;
+                          results.limit[0].dacq_limit = dacq_limit;
+
+                          console.log(results.limit[0].dacq_limit);
+
+                          let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                 
-                console.log(cake_num);
-                console.log(dacq_num);
-
-                var cake_limit = results.limit[0].cake_limit - cake_num;
-                var dacq_limit = results.limit[0].dacq_limit - dacq_num;
-
-                console.log(dacq_limit);
-                console.log(cake_limit);
-
-                results.limit[0].cake_limit = cake_limit;
-                results.limit[0].dacq_limit = dacq_limit;
-
-                console.log(results.limit[0].dacq_limit);
-
-                let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
-                
-                mailOptions.subject = 'Baking Bunny Order - comeback customer';
+                mailOptions.subject = 'Baking Bunny Order-Comeback Customer'+Date();
                 mailOptions.html = final_content;
 
                 transporter.sendMail(mailOptions, function() {
@@ -667,6 +792,8 @@ router.post('/order/kor', async function (req, res) {
   } catch(err) {
     console.log(err.message);
   }
+
+  
 });
 
 
@@ -681,7 +808,8 @@ router.post('/management', (req,res) => {
 		date: '',
 		//day_num: '',
 		dacq_limit: '',
-		cake_limit: ''
+    cake_limit: '',
+    pickup_time: '',
 		
 	}];
 	
@@ -705,7 +833,22 @@ router.post('/management', (req,res) => {
           //limit.save(function (err) {
           
           //update mongo
-          Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit}}, function(err) {
+
+          var pickup_array = (limit_data[n].pickup_time).split(",");
+          var pick_obj_arr = [];
+
+          for(var i=0; i < pickup_array.length; i++) {
+          
+          var pickup_obj = {
+            timeline: pickup_array[i],
+            limit: 2
+          }
+
+          pick_obj_arr.push(pickup_obj);
+
+          }
+
+          Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit, pickup_time: pick_obj_arr}}, function(err) {
 
           if(!err) {
             console.log("mongo success");
