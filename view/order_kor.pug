@@ -12,6 +12,7 @@ head
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY"
       defer)
   script(src="https://code.jquery.com/jquery-2.1.3.min.js")
+ 
     
   link(rel='stylesheet' href='/order.css')
   meta(name='Baking bunny' content='Fresh & Sweet Dessert')
@@ -102,7 +103,8 @@ body
               button#20201204.date 4
             .div(id="td")
               button#20201205.date 5
-           
+         
+      
       .hidden_block
 
     section.second
@@ -131,7 +133,7 @@ body
         .cake_size_modal_content(value='') 
           button(type="button" value=1 onclick="sizeValue(this.value, this.parentElement.value)") 6 inch
           button(type="button" value=1.2 onclick="sizeValue(this.value, this.parentElement.value)") 8 inch
-          
+      
       .hidden_block 
       
       .nav
@@ -139,37 +141,20 @@ body
           button#prev__schedule Previous
         button#next_customer Next
       
-      .inquiry_modal
-          .inquiry_modal__content
-            section.loading
-              .loading_text
-                p Now sending the E-mail...
-            
-            section.sent
-              .text_content
-              button.close_two(type='button') Close
-
-            form.contact_form(method='POST' action='')
-              input.name(type='text' name='name' placeholder='Name' required)
-              input.email(type='text' name='email' placeholder='E-mail' required)
-              .date
-                label(for="date") Needed Date
-                input.date_need(type='date' name='date')             
-              textarea.text(placeholder='Message' name='Message' rows='4' cols='50' required)
-              .button
-                button.send(type='submit') Send 
-                button.close_one(type='button') Close        
-
     section.third
       .bunny_icon_small
         <img src="/img/logo_circle.png">
       
       form(action="")
-        ul
+        ul(class="customer_form")
           li(class="question")
             label(for="cust_name") Name
           li(class="answer")
             input(type="text" id="cust_name" name="name")
+          li(class="question")
+            label(for="cust_name") Name on E-transfer
+          li(class="answer")
+            input(type="text" id="etrans_name" name="etrans_name")
           li(class="question")
             label(for="insta") Instagram ID or Email
           li(class="answer")
@@ -183,10 +168,13 @@ body
           li(class="answer")
             input(type="text" id="allergy" name="allergy")
           li(class="question")
-            | Select Delviery
-            div.time
-              p - Pickup is avaiable between 3 to 8 PM
-              p - Delivery is avaialble between 5 to 7 PM
+            label(for="etc") Any other inquiries?
+          li(class="answer")
+            input(type="text" id="etc" name="etc")
+        ul(class="cake_lettering")    
+        ul
+          li(class="question")
+            | Select Pickup/Delivery Option
           li(id="radio")
             label
               input(type='radio' id='pick' name='pickup' value='pick-up')
@@ -194,17 +182,34 @@ body
             label
               input(type='radio' id='delivery' name='pickup' value='delivery')
               span Delivery
-          li.pickup_info            
-          li.delivery_info
-            label(for='address') Put your Postal Code
+          li.delivery_option_info            
+          
+      .delivery_option_modal
+        .delivery_option_content
+          button(value="" class="xIcon" onclick="xButton()") Close          
+          
+          div.pickup_info
+            div.pickup_address
+            div.pickup_location            
+            div.pickup_selection
+            div.pickup_specific
+              p#kor 몇분에 오시게 될지 숫자로 적어주세요 (any number between 0 - 59)
+              input(type="number" max="59" id= 'specific_pick' name='specific_pick')               
+            div.pickup_err
+            button(id="apply" type="button" value='' onclick="pickup_apply()") Apply
+          
+          div.delivery_info
+            p#kor 딜리버리 서비스는 금요일은 4시에서 6시, 토요일은 12시에서 2시 사이에 이뤄집니다. 정확한 시간은 주문하신 뒤에 별도 안내 드립니다.
+            label(for='address') Please put your Postal Code
             input(type='text' id= 'postal' name='address')
             button(type='button' id="address_check") Check address
-            div(id="delivery_fee")               
-            div(id="delivery_free") 
-              p free delivery service
-            div(id="delivery_error")
-              p please put the right postal code   
-
+            div(id="delivery_fee")
+            div(id="delivery_specific")
+              p#kor 정확한 딜리버리 서비스를 위해 상세 주소를 남겨주세요 (ex. 000 0st SW)
+              input(type='text' id='specific_address' name='specific_address')               
+            div.delivery_err
+            button(id="apply" type="button" value='' onclick="delivery_apply()") Apply
+              
       .hidden_block 
 
       .nav
@@ -218,7 +223,7 @@ body
       h1 Request
       p#kor 주문을 수정하고 싶으시면, Previous 버튼을 누르시고 변경하시면 됩니다.
 
-      form(method='POST' action="")
+      form(method='POST' action="" enctype="application/x-www-form-urlencoded")
         div(class='form-group')
           table.confirmation_customer
           table.confirmation_order

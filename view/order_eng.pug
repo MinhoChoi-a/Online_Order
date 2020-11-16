@@ -6,7 +6,7 @@ head
   
   link(href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet')
   link(href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet")
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+  link(href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap" rel="stylesheet")
 
   script(
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq7_wnyksRIYf6kOhCQ555TDZT0TKoeQY"
@@ -138,18 +138,20 @@ body
           button#prev__schedule Previous
         button#next_customer Next
       
-      
-
     section.third
       .bunny_icon_small
         <img src="/img/logo_circle.png">
       
       form(action="")
-        ul
+        ul(class="customer_form")
           li(class="question")
             label(for="cust_name") Name
           li(class="answer")
             input(type="text" id="cust_name" name="name")
+          li(class="question")
+            label(for="cust_name") Name on E-transfer
+          li(class="answer")
+            input(type="text" id="etrans_name" name="etrans_name")
           li(class="question")
             label(for="insta") Instagram ID or Email
           li(class="answer")
@@ -163,10 +165,13 @@ body
           li(class="answer")
             input(type="text" id="allergy" name="allergy")
           li(class="question")
-            | Select Delviery
-            div.time
-              p - Pickup is avaiable between 3 to 8 PM
-              p - Delivery is avaialble between 5 to 7 PM
+            label(for="etc") Any other inquiries?
+          li(class="answer")
+            input(type="text" id="etc" name="etc")
+        ul(class="cake_lettering")    
+        ul
+          li(class="question")
+            | Select Pickup/Delivery Option
           li(id="radio")
             label
               input(type='radio' id='pick' name='pickup' value='pick-up')
@@ -174,17 +179,34 @@ body
             label
               input(type='radio' id='delivery' name='pickup' value='delivery')
               span Delivery
-          li.pickup_info            
-          li.delivery_info
-            label(for='address') Put your Postal Code
+          li.delivery_option_info            
+          
+      .delivery_option_modal
+        .delivery_option_content
+          button(value="" class="xIcon" onclick="xButton()") Close          
+          
+          div.pickup_info
+            div.pickup_address
+            div.pickup_location            
+            div.pickup_selection
+            div.pickup_specific
+              p Please put specific minute for pikcup(any number between 0 - 59)
+              input(type="number" max="59" id= 'specific_pick' name='specific_pick')               
+            div.pickup_err
+            button(id="apply" type="button" value='' onclick="pickup_apply()") Apply
+          
+          div.delivery_info
+            p Delviery service will be placed between 4 to 6 PM on Friday, 12 to 2 PM on Saturday. The specific time will be noticed with the confirmation of order.
+            label(for='address') Please put your Postal Code
             input(type='text' id= 'postal' name='address')
             button(type='button' id="address_check") Check address
-            div(id="delivery_fee")               
-            div(id="delivery_free") 
-              p free delivery service
-            div(id="delivery_error")
-              p please put the right postal code   
-
+            div(id="delivery_fee")
+            div(id="delivery_specific")
+              p Please put specific address to make a correct delivery service.(ex. 000 0st SW)
+              input(type='text' id='specific_address' name='specific_address')               
+            div.delivery_err
+            button(id="apply" type="button" value='' onclick="delivery_apply()") Apply
+              
       .hidden_block 
 
       .nav
@@ -198,7 +220,7 @@ body
       h1 Request
       p if you want to change something, you can go to the prior menu with previous button
 
-      form(method='POST' action="")
+      form(method='POST' action="" enctype="application/x-www-form-urlencoded")
         div(class='form-group')
           table.confirmation_customer
           table.confirmation_order

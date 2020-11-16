@@ -84,6 +84,9 @@ const item_list = document.querySelector('.second .item__list');
 const cake_list = document.querySelector('.second .cake_list');
 const dacq_list = document.querySelector('.second .dacq_list');
 
+const menu_modal = document.querySelector('.dessert_nav_modal');
+const menu_modal_button = document.querySelector('.dessert_nav_modal_button');
+
 const alret_modal = document.querySelector('.alret_modal');
 
 const xmlhttp = new XMLHttpRequest();
@@ -262,6 +265,7 @@ calendar.addEventListener('click', async (e) => {
 
 alret_modal.addEventListener('click', e => {
     alret_modal.style.height = 0;
+    menu_modal.style.height = '100vh';
 })
 
 function cake__inquiry() {
@@ -294,8 +298,6 @@ function getSumOrder() {
 
 const total__check = document.querySelector('.total_check');
 
-const menu_modal = document.querySelector('.dessert_nav_modal');
-const menu_modal_button = document.querySelector('.dessert_nav_modal_button');
 //menu select
 
 const modal = document.querySelector(".modal");
