@@ -80,6 +80,7 @@ function updateSchedule() {
 const calendar_section = document.querySelector('.first');
 
 const item_section = document.querySelector('.second');
+
 const item_list = document.querySelector('.second .item__list');
 const cake_list = document.querySelector('.second .cake_list');
 const dacq_list = document.querySelector('.second .dacq_list');
@@ -256,9 +257,9 @@ calendar.addEventListener('click', async (e) => {
         alret_modal.style.height = '100vh';
 
         //item_list.innerHTML = div;
-        cake_list.innerHTML = await cake_div;
-        cake_list.innerHTML += await custom_cake_div;
-        dacq_list.innerHTML = await dacq_div;
+        cake_list.innerHTML = cake_div;
+        cake_list.innerHTML += custom_cake_div;
+        dacq_list.innerHTML = dacq_div;
         
         item_section.style.display = 'block';
     });

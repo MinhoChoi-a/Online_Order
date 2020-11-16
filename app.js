@@ -441,11 +441,11 @@ router.get('/order/kor', function (req, res) {
 
   for(var i =0; i < item_list.length; i++) {
     if(item_list[i].type == 'cake'|| item_list[i].type == 'custom-cake') {
-      cake_list.push(item_list[i].item_name);
+      cake_list.push(item_list[i].item_name_kor);
     }
   
     else if(item_list[i].type == 'dacquoise') {
-      dacq_list.push(item_list[i].item_name);
+      dacq_list.push(item_list[i].item_name_kor);
     }
   }
 
@@ -468,7 +468,9 @@ router.get('/order/kor', function (req, res) {
             err.status = 404;
             return next(err);
         }
-       
+    
+    console.log(results.limits);
+
     res.render('order_kor', {limit_data: JSON.stringify(results.limits)});
   });
 });
