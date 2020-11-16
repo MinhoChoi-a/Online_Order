@@ -793,9 +793,9 @@ img.bunny_icon {
     position: absolute;
     height: 30px;
     width: 80px;
-    
+    font-size: 13px;
     background-color: #efdcbe;
-
+    text-align: center;
     top: 0;
     right: 0;
     
@@ -806,8 +806,8 @@ img.bunny_icon {
 .delivery_option_content #apply {
 
     margin-top: 10px;
-    width: 80px;
-    height: 30px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .pickup_info {
@@ -849,6 +849,7 @@ img.bunny_icon {
     padding-left: 10px;
     border: none;
     border-radius: 5px;
+    font-size: 16px;
 
 }
 
@@ -893,15 +894,16 @@ img.bunny_icon {
     height: 25px;
     width: 100%;
     border: none;
-    border-radius: 5px;    
+    border-radius: 5px;
+    font-size: 16px;    
 }
 
-.delivery_info button{
-    margin-top: 10px;
-    width: 100%;
-    border-radius: 5px;
+.delivery_info button, .pickup_info button{
+    
+    width: 80px;
     height: 30px;
-    font-size: 16px;    
+    font-size: 13px;
+    text-align: center;
 }
 
 #delivery_fee {
