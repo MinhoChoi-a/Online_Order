@@ -107,7 +107,7 @@ var order_day = '';
 
 var cake_name_list = [];
 
-calendar.addEventListener('click', async (e) => {
+calendar.addEventListener('click', (e) => {
     
     today_limit = '';
 
@@ -177,7 +177,7 @@ calendar.addEventListener('click', async (e) => {
         
             else if(items[t].type == 'custom-cake') {
         
-                cake_name_list.push(items[t].item_name_kor);
+                //cake_name_list.push(items[t].item_name_kor);
                 
                 var cake_type = items[t].type;
                 var cake_price = items[t].price;
