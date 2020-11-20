@@ -45,7 +45,7 @@ let transporter = nodemailer.createTransport({
 
 let mailOptions = {
   from: process.env.mail_account,
-  to: 'bakingbunny.yyc@gmail.com',
+  to: 'minhocalgary@gmail.com',
   subject: '',
   html: ''
 }
@@ -185,7 +185,9 @@ router.post('/order/eng', async function (req, res) {
           sum += parseFloat(sold);
 
           i++;
-        }       
+        }
+        
+        sum += parseFloat(customer.delivery_fee);       
                 
         sold_content +=
         `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
@@ -197,7 +199,8 @@ router.post('/order/eng', async function (req, res) {
       time_array = (customer.pickup_time).split(':'); 
       pick_time = time_array[0];
 
-      email_content += "</table>"    
+      email_content +=
+      `<tr><td>Pickup time</td><td>${customer.pickup_time}</td></tr></table>`;
       
       var i = 1;
         var l = 0;
@@ -229,19 +232,16 @@ router.post('/order/eng', async function (req, res) {
           `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
           for(var c=0; c<order[i].amount; c++) {
-            sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
+            sold_content += `<tr><td colspan=3>lettering: ${customer.lettering[l]}</td></tr>`;
             l++; }
           }
                     
           sum += parseFloat(sold);
 
           i++;
-        }       
-        
-        sum += parseFloat(customer.delivery_fee);
+        }
 
         sold_content +=
-        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
         `<tr><td colspan=2>Total</td><td style="text-align:center">${sum.toFixed(2)}</td></tr></table>`;
 
       }
@@ -480,6 +480,8 @@ router.post('/order/kor', async function (req, res) {
   var customer = JSON.parse(req.body.cust_obj);
   var order = JSON.parse(req.body.ord_obj);
   
+  console.log(customer);
+
   let cake_num = 0;
   let dacq_num = 0;
 
@@ -544,14 +546,16 @@ router.post('/order/kor', async function (req, res) {
           `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
           for(var c=0; c<order[i].amount; c++) {
-            sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
+            sold_content += `<tr><td colspan=3>lettering: ${customer.lettering[l]}</td></tr>`;
             l++; }
           }
           
           sum += parseFloat(sold);
 
           i++;
-        }       
+        }
+        
+        sum += parseFloat(customer.delivery_fee);
                 
         sold_content +=
         `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
@@ -563,7 +567,8 @@ router.post('/order/kor', async function (req, res) {
       time_array = (customer.pickup_time).split(':'); 
       pick_time = time_array[0];
 
-      email_content += "</table>"    
+      email_content +=
+      `<tr><td>Pickup time</td><td>${customer.pickup_time}</td></tr></table>`;
       
       var i = 1;
         var l = 0;
@@ -602,12 +607,9 @@ router.post('/order/kor', async function (req, res) {
           sum += parseFloat(sold);
 
           i++;
-        }       
-        
-        sum += parseFloat(customer.delivery_fee);
+        }
 
         sold_content +=
-        `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
         `<tr><td colspan=2>Total</td><td style="text-align:center">${sum.toFixed(2)}</td></tr></table>`;
 
       }
