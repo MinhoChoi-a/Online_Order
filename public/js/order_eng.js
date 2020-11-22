@@ -48,8 +48,7 @@ function updateSchedule() {
         }
 
         if( parseInt((schedule__date[i].id).substring(4,6)) == 1 + parseInt(availalbeDate.substring(4,6))) {
-            schedule__date[i].style.background = '#fff8d4';            
-            schedule__date[i].setAttribute('disabled', 'disabled');
+            schedule__date[i].style.background = '#fff8d4';
         }
 
         if(schedule__date[i].id < availalbeDate) {

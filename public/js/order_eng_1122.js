@@ -48,8 +48,7 @@ function updateSchedule() {
         }
 
         if( parseInt((schedule__date[i].id).substring(4,6)) == 1 + parseInt(availalbeDate.substring(4,6))) {
-            schedule__date[i].style.background = '#fff8d4';            
-            schedule__date[i].setAttribute('disabled', 'disabled');
+            schedule__date[i].style.background = '#fff8d4';
         }
 
         if(schedule__date[i].id < availalbeDate) {
@@ -80,7 +79,6 @@ function updateSchedule() {
 const calendar_section = document.querySelector('.first');
 
 const item_section = document.querySelector('.second');
-
 const item_list = document.querySelector('.second .item__list');
 const cake_list = document.querySelector('.second .cake_list');
 const dacq_list = document.querySelector('.second .dacq_list');
@@ -107,7 +105,7 @@ var order_day = '';
 
 var cake_name_list = [];
 
-calendar.addEventListener('click', (e) => {
+calendar.addEventListener('click', async (e) => {
     
     today_limit = '';
 
@@ -138,7 +136,7 @@ calendar.addEventListener('click', (e) => {
 
         if(items[t].type == 'cake') {
         
-            cake_name_list.push(items[t].item_name_kor);
+            cake_name_list.push(items[t].item_name);
         
             var cake_type = items[t].type;
         
@@ -156,17 +154,17 @@ calendar.addEventListener('click', (e) => {
                         <img src="/img/${items[t].image}"/>    
                     </li>
                     <li id="name">
-                        <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name_kor}</div>
-                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name_kor}" value="none"/>size select</div>
+                        <div id="cake_name">${items[t].item_name}</div>
+                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
                     </li>
                     <li id="amount">
                         <div id="p">$ ${cake_price}</div>
                         <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                     </li>
-                    <li class="add_button" id="button_${items[t].item_name_kor}">
+                    <li class="add_button" id="button_${items[t].item_name}">
                         <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                     </li>
-                    <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
+                    <li class="fix_button" id="fixCart_${items[t].item_name}">
                         <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                     </li>
                 </ul>`;
@@ -177,7 +175,7 @@ calendar.addEventListener('click', (e) => {
         
             else if(items[t].type == 'custom-cake') {
         
-                //cake_name_list.push(items[t].item_name_kor);
+                cake_name_list.push(items[t].item_name);
                 
                 var cake_type = items[t].type;
                 var cake_price = items[t].price;
@@ -191,17 +189,17 @@ calendar.addEventListener('click', (e) => {
                             <img src="/img/${items[t].image}"/>    
                         </li>
                         <li id="name">
-                            <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name_kor}</div>
-                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name_kor}" value="none"/>size select</div>
+                            <div id="cake_name">${items[t].item_name}</div>
+                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
                         </li>
                         <li id="amount">
                             <div id="p">$ ${cake_price}</div>
-                            <input type='number' value=1 min='0' max='${today_limit.cake_limit_kor}'/>       
+                            <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                         </li>
-                        <li class="add_button" id="button_${items[t].item_name_kor}">
+                        <li class="add_button" id="button_${items[t].item_name}">
                             <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                         </li>
-                        <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
+                        <li class="fix_button" id="fixCart_${items[t].item_name}">
                             <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                         </li>
                     </ul>`; }
@@ -214,7 +212,7 @@ calendar.addEventListener('click', (e) => {
                                 <img src="/img/${items[t].image}"/>    
                             </li>
                             <li id="name">
-                                <div id="cake_name">${items[t].item_name_kor}</div>
+                                <div id="cake_name">${items[t].item_name}</div>
                             </li>                
                             <li class="inq_button">
                                 <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
@@ -234,16 +232,16 @@ calendar.addEventListener('click', (e) => {
                             <img src="/img/${items[t].image}"/>
                         </li>                
                         <li id="name">
-                            <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name_kor}</div>
+                            <div id="dacq_name">${items[t].item_name}</div>
                             <div id="dacq_size" style="display:none;"></div></li>
                         <li id="amount">
                             <div id="p">$ ${items[t].price}</div>
                             <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
                         </li>
-                        <li class="add_button" id="button_${items[t].item_name_kor}">
+                        <li class="add_button" id="button_${items[t].item_name}">
                             <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                         </li>
-                        <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
+                        <li class="fix_button" id="fixCart_${items[t].item_name}">
                             <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                         </li>
                     </ul>`;
@@ -257,9 +255,9 @@ calendar.addEventListener('click', (e) => {
         alret_modal.style.height = '100vh';
 
         //item_list.innerHTML = div;
-        cake_list.innerHTML = cake_div;
-        cake_list.innerHTML += custom_cake_div;
-        dacq_list.innerHTML = dacq_div;
+        cake_list.innerHTML = await cake_div;
+        cake_list.innerHTML += await custom_cake_div;
+        dacq_list.innerHTML = await dacq_div;
         
         item_section.style.display = 'block';
     });
@@ -270,7 +268,7 @@ alret_modal.addEventListener('click', e => {
 })
 
 function cake__inquiry() {
-    var content = `<p id='kor'>해당 케이크는 이메일(bakingbunny.yyc@gmail.com)로 별도 문의 부탁드립니다. 감사합니다 :)</p>`;
+    var content = `<p>Please inquire this cake to Baking Bunny's email (bakingbunny.yyc@gmail.com). Thank you :)</p>`;
     modal_content.innerHTML = content;   
     modal.style.display = "flex";
 }
@@ -335,27 +333,27 @@ function addCart(p) {
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
     
-    var content = `<p id='kor'>추가되었습니다. 다른 메뉴를 더 선택하시거나, 하단의 Next 버튼을 누르시고 다음 단계로 가셔도 됩니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+    var content = `<p>Succesfully added, you can add other items more, otherwise click the next button below.</p><p>if you want to change the amount, change it and click the Added button.</p>`;
         
     if(type.id == 'cake') {
         
         cake_total += amount;
         
         if(today_limit.cake_limit == 0) {
-            content = `<div id='kor'>죄송합니다, 이 날의 케익은 모두 마감되었습니다.</div>`;
+            content = `Sorry, cake is sold out today`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(cake_total > today_limit.cake_limit) {
-            content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
+            content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(cake_set.value == "none" || cake_set.value == undefined) {
             
-            content = "<div id='kor'> 케익의 사이즈를 먼저 선택해 주세요 </div>";
+            content = "Please select the cake size first";
             cake_total -= amount;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -440,13 +438,13 @@ function addCart(p) {
         dacq_total += amount;
 
         if(today_limit.dacq_limit == 0) {
-            content = `<div id='kor'>죄송합니다, 이 날의 다쿠아즈는 모두 마감되었습니다.</div>`;
+            content = `Sorry, dacq is sold out`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(dacq_total > today_limit.dacq_limit) {
-            content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
+            content = `Sorry, You cannot put dacqouise more than ${today_limit.dacq_limit}`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
@@ -540,7 +538,7 @@ function fixCart(p) {
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
 
-    var content = "<div id='kor'> 수정되었습니다.</div>";
+    var content = `Succesfully fixed`;
 
     if(type.id == 'cake' || type.id == 'custom-cake') {
         
@@ -554,7 +552,7 @@ function fixCart(p) {
                     check = true;
 
                     if(cake_total > today_limit.cake_limit) {
-                        content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
+                        content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
                         cake_total -= difference;
                         amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
                     }
@@ -588,7 +586,7 @@ function fixCart(p) {
                 check = true;
 
                 if(dacq_total > today_limit.dacq_limit) {
-                    content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
+                    content = `Sorry, You cannot put dacquoise more than ${today_limit.dacq_limit}`;
                     dacq_total -= difference;
                     amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
 
@@ -655,7 +653,7 @@ next_customer_button.addEventListener('click', e => {
 
     if(sumOrder == null || sumOrder == '' || sumOrder == 0) {
     
-        var content = "<div id='kor'>메뉴를 선택해주세요</div>"
+        var content = "You selected nothing"
         modal_content.innerHTML = content;   
         modal.style.display = "flex";
     }
@@ -793,17 +791,17 @@ function pickup_apply() {
 
     if(selected_time.value == "") {
 
-        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>시간 대를 먼저 선택해주세요</div>"
+        document.querySelector('.pickup_err').innerHTML = "Please choose a time";
     }
 
     else if(specific_time.value == "") {
 
-        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>몇분에 오실지 적어주세요</div>"
+        document.querySelector('.pickup_err').innerHTML = "Please write a specific minute";
     }
 
     else if(specific_time.value > 59 || specific_time.value < 0) {
 
-        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>잘못된 숫자를 적으셨습니다</div>"
+        document.querySelector('.pickup_err').innerHTML = "Please write a correct minute";
     }
 
     else {
@@ -811,7 +809,7 @@ function pickup_apply() {
         delivery_option_modal.style.height = '0vh';
         
         delivery_option_info.innerHTML=
-        `<p>Pickup Service at ${selected_time.value}:${specific_time.value}</p>`;
+        `<p>Pickup Service at ${selected_time.value}:${specific_time.value}`;
         
         customer_info.pickup_time = selected_time.value+":"+specific_time.value;
     }
@@ -833,7 +831,7 @@ delivery_button.addEventListener('click', e => {
         }
 
         else {
-            var content = "<div id='kor'> 죄송합니다. 딜리버리는 금요일에서 토요일까지만 가능합니다.</div>";
+            var content = "Sorry delivery is avaiable only for Friday ~ Saturday";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -841,7 +839,7 @@ delivery_button.addEventListener('click', e => {
     }
 
     else {
-        var content = "<div id='kor'> 죄송합니다. 딜리버리는 $ 50 이상 구매하셔야 가능합니다.</div>";
+        var content = "Sorry you should buy more than $ 50";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -855,11 +853,11 @@ function delivery_apply() {
     
     if(customer_delivery_fee == null || specific_address.value == undefined) {        
 
-        document.querySelector('.delivery_err').innerHTML = "<div id='kor'> 우편 번호 확인을 먼저 부탁드려요</div>";
+        document.querySelector('.delivery_err').innerHTML = "Please finish to check your address";
     }
 
     else if(specific_address.value == "") {
-        document.querySelector('.delivery_err').innerHTML = "<div id='kor'> 상세 주소를 적어주셔야해요</div>";
+        document.querySelector('.delivery_err').innerHTML = "Please write the specific address";
     }
 
     else {
@@ -917,7 +915,7 @@ address_check.addEventListener('click', e=> {
             
             if(response.rows[0].elements[0].distance == undefined || response.rows[0].elements[0].status == "NOT_FOUND") {
                 
-                    delivery_fee.innerHTML = "<p id='kor'>구글맵에서 확인되는 정확한 우편 번호를 적어주세요</p>";
+                    delivery_fee.innerHTML = "<p>Please right the right postal code which can be searched on Google map</p>";
                     post_code.value = null;
                     delivery_fee.style.display = 'block';                    
                     customer_delivery_fee = null;
@@ -963,7 +961,7 @@ address_check.addEventListener('click', e=> {
                 }
 
                 else {
-                    content = "<div id='kor'> 죄송합니다. 이 지역은 딜리버리가 불가능합니다.</div>";
+                    content = "<p> Sorry, this place is not available</p>";
                     post_code.value = null;
                     modal_content.innerHTML = content;   
                     modal.style.display = "flex";
@@ -1010,7 +1008,7 @@ next_check_button.addEventListener('click', e =>{
 
         if(customer_info.pickup_time == 0) {
             error_check.check = true;
-            error_check.message = "<div id='kor'>픽업 메뉴에서 시간대를 선택해주세요</div>";
+            error_check.message = "you didn't select the pickup time on pickup menu";    
         }
     }
 
@@ -1021,26 +1019,26 @@ next_check_button.addEventListener('click', e =>{
             
             if(!address_check_validation) {
                 error_check.check = true;
-                error_check.message = "<div id='kor'>딜리버리 메뉴에서 Check Address 버튼을 꼭 눌러주세요</div>";
+                error_check.message = 'you should finish to check your address first';    
             }
         }
 
         else {
             error_check.check = true;
-            error_check.message = "<div id='kor'>주소 칸이 비었습니다.</div>";
+            error_check.message = 'address is empty';
         }
     }
 
     else {
         error_check.check = true;
-        error_check.message = "<div id='kor'>딜리버리 옵션을 선택해주세요</div>";
+        error_check.message = "didn't select the delivery option";
     }
 
     if(name == null || phone == null || name == '' || phone == '' || name == 0 || phone == 0 ||
         insta == null || insta == '' || allergy == null || allergy == '' || etransfer == null 
         || etransfer == '') {
         error_check.check = true;
-        error_check.message = "<div id='kor'>other inquiries와 lettering을 제외한 모든 내용을 적어주셔야 합니다.</div>";        
+        error_check.message = "Please write all information except 'other inquiries' & 'lettering'";
     }
 
     if(error_check.check == false) {
@@ -1132,7 +1130,7 @@ function confirmation(cust, ord, deliv) {
         
         for(var t=0; t<ord[i].amount; t++) {
         
-            div +=`<tr><td id="item" colspan=3><input type="text" name="lettering_${l}" value="lettering: ${cust.lettering[l]}" style="font-size:12px;" readonly/>`;        
+            div +=`<tr><td id="item" colspan=3><input type="text" name="lettering_${l}" value="lettering: ${cust.lettering[l]}" style="font-size:12px;" readonly/>`;
             l++;
             }
         }

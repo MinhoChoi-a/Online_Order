@@ -45,7 +45,7 @@ let transporter = nodemailer.createTransport({
 
 let mailOptions = {
   from: process.env.mail_account,
-  to: 'minhocalgary@gmail.com',
+  to: 'bakingbunny.yyc@gmail.com',
   subject: '',
   html: ''
 }
@@ -105,7 +105,7 @@ router.get('/order/eng', function (req, res) {
 
     console.log(results.limits);
     console.log(JSON.stringify(results.limits));
-    res.render('order_eng', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_eng_1122', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -470,7 +470,7 @@ router.get('/order/kor', function (req, res) {
     
     console.log(results.limits);
 
-    res.render('order_kor_up', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_kor_1122', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -831,27 +831,26 @@ router.post('/management', (req,res) => {
       var n = 1;
 
 			while(n < limit_data.length) {
-
                    
           //save on mongo
-          //var limit = new Limit(limit_data[n]);
+          var limit = new Limit(limit_data[n]);
           //limit.save(function (err) {
           
           //update mongo
 
-          var pickup_array = (limit_data[n].pickup_time).split(",");
-          var pick_obj_arr = [];
+           var pickup_array = (limit_data[n].pickup_time).split(",");
+           var pick_obj_arr = [];
 
-          for(var i=0; i < pickup_array.length; i++) {
+           for(var i=0; i < pickup_array.length; i++) {
           
-          var pickup_obj = {
-            timeline: pickup_array[i],
-            limit: 2
-          }
+           var pickup_obj = {
+             timeline: pickup_array[i],
+             limit: 2
+           }
 
-          pick_obj_arr.push(pickup_obj);
+           pick_obj_arr.push(pickup_obj);
 
-          }
+           }
 
           Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit, pickup_time: pick_obj_arr}}, function(err) {
 

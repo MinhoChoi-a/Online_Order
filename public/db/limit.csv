@@ -1,1 +1,6 @@
-date,dacq_limit,cake_limit,pickup_time
+date,day_num,dacq_limit,cake_limit
+20201201,2,0,10
+20201202,3,0,10
+20201203,4,0,10
+20201204,5,0,10
+20201205,6,0,10
