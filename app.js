@@ -45,7 +45,7 @@ let transporter = nodemailer.createTransport({
 
 let mailOptions = {
   from: process.env.mail_account,
-  to: 'minhocalgary@gmail.com',
+  to: 'bakingbunny.yyc@gmail.com',
   subject: '',
   html: ''
 }
