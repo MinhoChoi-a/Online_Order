@@ -542,11 +542,11 @@ function addCart(p) {
     var content = ""
 
     if(title == "크리스마스-산타") {
-        content = `<p id='kor'>빨강 & 초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. </p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+        content = `<p>We used food coloring to make red and green color. The decoration is made with butter cream. <p>if you want to change the amount, change it and click the Added button.</p>`;
     }
 
     else if(title == "크리스마스-트리") {
-        content = `<p id='kor'>초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. 소독 세척된 x-mas 피규어가 포함되어 있습니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+        content = `<p>We used food coloring to make green color. The decoration is made with butter cream. <p>if you want to change the amount, change it and click the Added button.</p>`;
     }
 
     else {
