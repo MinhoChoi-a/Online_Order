@@ -2,7 +2,7 @@
     {
         "type": "dacquoise-set",
         "item_name": "Christmas-Edition",
-        "item_name_kor": "Christmas-Edition",
+        "item_name_kor": "크리스마스-다쿠아즈-세트",
         "tastes": ["Mugwort", "SweetPotato", "Injeolmi", "EarlGrey", "RedBean&Butter","Corn","Choco-Banana"],
         "tastes_kor": ["쑥", "고구마", "인절미","얼그레이","앙버터","옥수수", "초코바나나"],
         "price": 45,
@@ -17,9 +17,9 @@
         "type": "cake",
         "item_name": "Christmas-Santa",
         "item_name_kor": "크리스마스-산타",
-        "tastes": ["Pineapple", "Mango", "Strawberry", "None"],
-        "tastes_kor": ["Pineapple", "Mango", "Strawberry", "None"],
-        "price": 45,
+        "tastes": ["Pineapple", "Mango", "Strawberry", "None(Fresh-Milk)"],
+        "tastes_kor": ["Pineapple", "Mango", "Strawberry", "None(Fresh-Milk)"],
+        "price": 52,
         "available_date": 
         [  
             20201223, 20201224, 20201225, 20201226
@@ -31,9 +31,9 @@
         "type": "cake",
         "item_name": "Christmas-Tree",
         "item_name_kor": "크리스마스-트리",
-        "tastes": ["Mugwort", "SweetPotato", "Injeolmi"],
-        "tastes_kor": ["Pineapple", "Mango", "Strawberry", "None"],
-        "price": 55,
+        "tastes": ["Pineapple", "Mango", "Strawberry", "None(Fresh-Milk)"],
+        "tastes_kor": ["Pineapple", "Mango", "Strawberry", "None(Fresh-Milk)"],
+        "price": 45,
         "available_date": 
         [  
             20201223, 20201224, 20201225, 20201226

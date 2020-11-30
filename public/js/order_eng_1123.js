@@ -1,8 +1,8 @@
 /* Schedule Section*/
-var closed_list = [20201130, 20201207, 20201214, 20201221];
+var closed_list = [20201130, 20201207, 20201214, 20201221, 20201228];
 
 var holiday = [
-    20201227, 20201228, 20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
+    20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
 ];
 
 var christmas = [
@@ -86,14 +86,14 @@ function updateSchedule() {
         }
 
         if(holiday.includes(parseInt(schedule__date[i].id))) {
-             schedule__date[i].style.background = '#efdcbe';
+             schedule__date[i].style.background = '#f8f4ec';
              schedule__date[i].style.fontSize = '8px';
              schedule__date[i].innerHTML = 'holiday';
              schedule__date[i].setAttribute('disabled', 'disabled');
          }
 
          if(christmas.includes(parseInt(schedule__date[i].id))) {
-            schedule__date[i].style.background = '#cd5c5c';
+            schedule__date[i].style.background = '#f19e9d';
          }
     }
 }
@@ -541,16 +541,16 @@ function addCart(p) {
     
     var content = ""
 
-    if(title == "크리스마스-산타") {
-        content = `<p>We used food coloring to make red and green color. The decoration is made with butter cream. <p>if you want to change the amount, change it and click the Added button.</p>`;
+    if(title == "Christmas-Santa") {
+        content = `<p>We use food coloring to make red and green color. The decoration is made with butter cream.<p>if you want to change the amount, change and click the Added button.</p>`;
     }
 
-    else if(title == "크리스마스-트리") {
-        content = `<p>We used food coloring to make green color. The decoration is made with butter cream. <p>if you want to change the amount, change it and click the Added button.</p>`;
+    else if(title == "Christmas-Tree") {
+        content = `<p>We use food coloring to make green color. The decoration is made with butter cream. <p>if you want to change the amount, change and click the Added button.</p>`;
     }
 
     else {
-        content = `<p>Succesfully added, you can add other items more, otherwise click the next button below.</p><p>if you want to change the amount, change it and click the Added button.</p>`;
+        content = `<p>Succesfully added, you can add more items, otherwise click the next button below.</p><p>if you want to change the amount, change and click the Added button.</p>`;
     }
 
     if(type.id == 'cake') {
@@ -1141,16 +1141,16 @@ delivery_button.addEventListener('click', e => {
 
     if(order_sum > 49.99) {
 
-        if(order_day_num == 5 || order_day_num == 6) {
-                delivery_info.style.display = "block";
-                delivery_option_modal.style.height = '100vh';
-        }
-
-        else if(order_day == 20201225 ||order_day == 20201226) {
+        if(order_day == "20201225" ||order_day == "20201226") {
             var content = "Sorry, but delivery is not avaiable for this day";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
+        }
+        
+        else if(order_day_num == 5 || order_day_num == 6) {
+                delivery_info.style.display = "block";
+                delivery_option_modal.style.height = '100vh';
         }
 
         else {

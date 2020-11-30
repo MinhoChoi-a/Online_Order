@@ -1,9 +1,9 @@
 /* Schedule Section*/
 
-var closed_list = [20201130, 20201207, 20201214, 20201221];
+var closed_list = [20201130, 20201207, 20201214, 20201221, 20201228];
 
 var holiday = [
-    20201227, 20201228, 20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
+    20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
 ];
 
 var christmas = [
@@ -91,14 +91,14 @@ function updateSchedule() {
         }
 
         if(holiday.includes(parseInt(schedule__date[i].id))) {
-             schedule__date[i].style.background = '#efdcbe';
+             schedule__date[i].style.background = '#f8f4ec';
              schedule__date[i].style.fontSize = '8px';
              schedule__date[i].innerHTML = 'holiday';
              schedule__date[i].setAttribute('disabled', 'disabled');
          }
 
          if(christmas.includes(parseInt(schedule__date[i].id))) {
-            schedule__date[i].style.background = '#cd5c5c';
+            schedule__date[i].style.background = '#f19e9d';
          }
       
     }
@@ -548,11 +548,11 @@ function addCart(p) {
     var content = ""
 
     if(title == "크리스마스-산타") {
-        content = `<p id='kor'>빨강 & 초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. </p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+        content = `<p id='kor'>빨강 & 초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. 소독 세척된 x-mas 피규어가 포함되어 있습니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
     }
 
     else if(title == "크리스마스-트리") {
-        content = `<p id='kor'>초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. 소독 세척된 x-mas 피규어가 포함되어 있습니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+        content = `<p id='kor'>초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
     }
 
     else {
@@ -1147,16 +1147,16 @@ delivery_button.addEventListener('click', e => {
 
     if(order_sum > 49.99) {
 
-        if(order_day_num == 5 || order_day_num == 6) {
-                delivery_info.style.display = "block";
-                delivery_option_modal.style.height = '100vh';
-        }
-
-        else if(order_day == 20201225 ||order_day == 20201226) {
+        if(order_day == "20201225" ||order_day == "20201226") {
             var content = "<div id='kor'> 죄송합니다. 이 날은 딜리버리 서비스가 불가능합니다.</div>";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
+        }
+        
+        else if(order_day_num == 5 || order_day_num == 6) {
+                delivery_info.style.display = "block";
+                delivery_option_modal.style.height = '100vh';
         }
 
         else {
