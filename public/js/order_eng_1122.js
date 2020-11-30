@@ -7,8 +7,15 @@ var today = new Date();
 var today__num = today.getDay();
 var availalbeDate = '';
 
-if(today__num == 7) {
-    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+8);
+if(today__num == 1) {
+    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
+    let fullDate = closeDate.toISOString().slice(0,10);
+    let date = fullDate.split('-');
+    availalbeDate = date[0]+date[1]+date[2];
+}
+
+else if(today__num ==0) {
+    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1);
     let fullDate = closeDate.toISOString().slice(0,10);
     let date = fullDate.split('-');
     availalbeDate = date[0]+date[1]+date[2];
@@ -16,11 +23,14 @@ if(today__num == 7) {
 
 else {
     let available_day_duration = 7 - today__num;
-    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + available_day_duration+1);
+    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + available_day_duration);
     let fullDate = closeDate.toISOString().slice(0,10);
     let date = fullDate.split('-');
     availalbeDate = date[0]+date[1]+date[2];
 }
+
+console.log(today__num);
+console.log(availalbeDate);
 
 const calendar = document.querySelector('.calendar');
 const schedule__date = document.querySelectorAll('.date');

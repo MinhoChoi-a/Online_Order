@@ -468,7 +468,7 @@ img.bunny_icon {
     position: relative;
     width: 100%;
     display: grid;
-    grid-gap: 2px;
+    grid-gap: 5px;
     grid-template-columns: repeat(2, 1fr);
     padding: 0;
     margin-top: 20px;
@@ -495,6 +495,7 @@ img.bunny_icon {
 
 .second .item__list img {
     width: 100%;
+    border-radius: 5px;
 }
 
 .second .item__list #type {
@@ -578,7 +579,7 @@ img.bunny_icon {
     color: var(--font_color);
 }
 
-.second .dessert_nav_modal, .second .cake_size_modal, .second .alret_modal {
+.second .dessert_nav_modal, .second .cake_size_modal, .second .alret_modal, .dacq_set_modal, .request_modal {
     display: flex; /* Hidden by default */
     flex-direction: row;
     justify-content: center;
@@ -597,7 +598,7 @@ img.bunny_icon {
 
 }
 
-.second .dessert_modal_content, .second .cake_size_modal_content, .second .alret_content {
+.second .dessert_modal_content, .second .cake_size_modal_content, .second .alret_content, .dacq_set_modal_content, .request_content {
     display: flex; /* Hidden by default */
     flex-direction: column;
     justify-content: center;
@@ -610,6 +611,41 @@ img.bunny_icon {
     
 }
 
+#cake_taste_list {
+    margin-bottom: 10px;    
+}
+
+#cake_taste_list tr {
+    margin-bottom: 2px;
+}
+
+#cake_size_op h3, #cake_taste h3 {
+    margin-bottom: 5px;
+}
+
+#cake_message {
+    margin-top: 10px;
+}
+
+#tastes h3 {
+    margin-bottom: 5px;
+}
+
+#taste_list {
+    margin-bottom: 10px;
+    width: 80%;    
+}
+
+#taste_td {
+    width: 200px;
+    padding-right: 5px;
+    text-align: right;    
+}
+
+#taste_no input{
+    width: 50px;    
+    font-size: 16px;
+}
 
 
 .total_check {
@@ -638,7 +674,7 @@ img.bunny_icon {
 .nav {
     width: 100%;
     position: fixed;
-    bottom: 0;
+    bottom: 2;
     left: 0;
     z-index: 9;
     display: flex;

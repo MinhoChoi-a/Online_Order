@@ -25,13 +25,12 @@ body
       div.information
         h2 Information
         p#kor - 주문을 진행하려면 픽업 날짜를 선택해주세요.
-        p#kor - 다쿠아즈 라인업은 매주 다릅니다.
-        p#kor - 11월 다쿠아즈 픽업은 매주 목,금,토요일에 가능합니다.
+        p#kor - 다쿠아즈 픽업은 매주 목,금,토요일에 가능합니다.
         p#kor - 커스텀 케익 주문은 카톡:Baking Bunny 로 문의주세요.
         p#kor - 딜리버리는 $50 이상 금, 토요일에 가능합니다.
         p#kor - 거리에 따라 $0 ~ $10(다운타운에서 20km 이상 떨어진 경우) 까지 딜리버리 요금이 발생합니다.
       div.calendar__table
-        h2.month November
+        h2.month December
         .calendar
           .day
             .div(id="td") Sun
@@ -41,51 +40,6 @@ body
             .div(id="td") Thu
             .div(id="td") Fri
             .div(id="td") Sat
-          .week
-            .div(id="td")
-              button#20201108.date 8
-            .div(id="td")
-              button#20201109.date 9
-            .div(id="td")
-              button#20201110.date 10
-            .div(id="td")
-              button#20201111.date 11
-            .div(id="td")
-              button#20201112.date 12
-            .div(id="td")
-              button#20201113.date 13
-            .div(id="td")
-              button#20201114.date 14
-          .week
-            .div(id="td")
-              button#20201115.date 15
-            .div(id="td")
-              button#20201116.date 16
-            .div(id="td")
-              button#20201117.date 17
-            .div(id="td")
-              button#20201118.date 18
-            .div(id="td")
-              button#20201119.date 19
-            .div(id="td")
-              button#20201120.date 20
-            .div(id="td")
-              button#20201121.date 21
-          .week
-            .div(id="td")
-              button#20201122.date 22
-            .div(id="td")
-              button#20201123.date 23
-            .div(id="td")
-              button#20201124.date 24
-            .div(id="td")
-              button#20201125.date 25
-            .div(id="td")
-              button#20201126.date 26
-            .div(id="td")
-              button#20201127.date 27
-            .div(id="td")
-              button#20201128.date 28
           .week
             .div(id="td")
               button#20201129.date 29
@@ -101,6 +55,66 @@ body
               button#20201204.date 4
             .div(id="td")
               button#20201205.date 5
+          .week
+            .div(id="td")
+              button#20201206.date 6
+            .div(id="td")
+              button#20201207.date 7
+            .div(id="td")
+              button#20201208.date 8
+            .div(id="td")
+              button#20201209.date 9
+            .div(id="td")
+              button#20201210.date 10
+            .div(id="td")
+              button#20201211.date 11
+            .div(id="td")
+              button#20201212.date 12
+          .week
+            .div(id="td")
+              button#20201213.date 13
+            .div(id="td")
+              button#20201214.date 14
+            .div(id="td")
+              button#20201215.date 15
+            .div(id="td")
+              button#20201216.date 16
+            .div(id="td")
+              button#20201217.date 17
+            .div(id="td")
+              button#20201218.date 18
+            .div(id="td")
+              button#20201219.date 19
+          .week
+            .div(id="td")
+              button#20201220.date 20
+            .div(id="td")
+              button#20201221.date 21
+            .div(id="td")
+              button#20201222.date 22
+            .div(id="td")
+              button#20201223.date 23
+            .div(id="td")
+              button#20201224.date 24
+            .div(id="td")
+              button#20201225.date 25
+            .div(id="td")
+              button#20201226.date 26
+          .week
+            .div(id="td")
+              button#20201227.date 27
+            .div(id="td")
+              button#20201228.date 28
+            .div(id="td")
+              button#20201229.date 29
+            .div(id="td")
+              button#20201230.date 30
+            .div(id="td")
+              button#20201231.date 31
+            .div(id="td")
+              button#20210101.date 1
+            .div(id="td")
+              button#20210102.date 2
          
       .hidden_block
 
@@ -127,10 +141,24 @@ body
           button.nav_dacq(type="button") Dacquoise
 
       .cake_size_modal
-        .cake_size_modal_content(value='') 
-          button(type="button" value=1 onclick="sizeValue(this.value, this.parentElement.value)") 6 inch
-          button(type="button" value=1.2 onclick="sizeValue(this.value, this.parentElement.value)") 8 inch
+        .cake_size_modal_content(value='')
+          button(value="" class="xIcon" onclick="xButton_cake_taste()") Close 
+          p#kor 아래 옵션을 선택해주세요
+          div(id="cake_size_op")
+          div(id="cake_taste")
+          div(id="cake_message")
+          button(id="apply" type="button" value='' onclick="cakeOption(this.parentElement.value)") Apply
+          
       
+      .dacq_set_modal
+        .dacq_set_modal_content(value='')
+          button(value="" class="xIcon" onclick="xButton_taste()") Close 
+          div.taste_info(value='')
+            p#kor 원하시는 맛을 골라 10개 골라 주세요
+            div(id="tastes")
+            div(id="taste_message")
+            button(id="apply" type="button" value='' onclick="tasteValue(this.parentElement.value)") Apply
+
       .hidden_block 
       
       .nav
@@ -190,7 +218,7 @@ body
             div.pickup_location            
             div.pickup_selection
             div.pickup_specific
-              p#kor 몇분에 오시게 될지 숫자로 적어주세요 (any number between 0 - 59)
+              p#kor 몇분에 도착 예정인지 숫자를 적어주세요 (ex. 50))
               input(type="number" max="59" id= 'specific_pick' name='specific_pick')               
             div.pickup_err
             button(id="apply" type="button" value='' onclick="pickup_apply()") Apply
@@ -227,12 +255,16 @@ body
         
         .nav
           button(type="button")#prev__customer Previous
-          button(type="submit" onsubmit="return onSubmit()")#next_check Request
+          button(type="submit" onsubmit="return onSubmit()")#next_request Request
 
       .hidden_block
+    
+    .request_modal
+      .request_content
+        p#kor Request를 처리 중입니다. 잠시만 기달려주세요 :)
       
     .modal
       .modal__content
 
 
-script(type='text/javascript' src='/js/order_kor_1122.js')
+script(type='text/javascript' src='/js/order_kor_1123.js')

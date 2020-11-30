@@ -40,6 +40,11 @@ const SalesSchema = new mongoose.Schema({
 			set_value  : {
 				type     : Number,
 				required : true
+			},
+
+			taste_set  : {
+				type     : String,
+				required : true
 			}
 		}
 	],

@@ -45,7 +45,7 @@ let transporter = nodemailer.createTransport({
 
 let mailOptions = {
   from: process.env.mail_account,
-  to: 'bakingbunny.yyc@gmail.com',
+  to: 'minhocalgary@gmail.com',
   subject: '',
   html: ''
 }
@@ -103,9 +103,7 @@ router.get('/order/eng', function (req, res) {
             return next(err);
         }
 
-    console.log(results.limits);
-    console.log(JSON.stringify(results.limits));
-    res.render('order_eng_1122', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_eng_1123', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -161,6 +159,24 @@ router.post('/order/eng', async function (req, res) {
           `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           }
 
+          if(order[i].type == 'dacquoise-set') {
+          
+            let tasteList = JSON.parse(order[i].taste_set);
+            let tasteText = "";
+
+            for(var t=0; t<tasteList.length; t++) {
+              tasteText += tasteList[t].taste+`(${tasteList[t].amount})`+" ";
+            }
+            
+              dacq_num += parseInt(order[i].amount);
+              sold_content +=
+            `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+  
+            sold_content +=
+            `<tr><td colspan=3>${tasteText} x${order[i].amount}</td></tr>`;
+  
+            }
+
           if(order[i].type == 'cake') {
             cake_num += parseInt(order[i].amount);
 
@@ -175,10 +191,10 @@ router.post('/order/eng', async function (req, res) {
             }
             
             sold_content +=
-          `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+          `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
           for(var c=0; c<order[i].amount; c++) {
-            sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
+            sold_content += `<tr><td colspan=3>lettering: ${customer.lettering[l]}</td></tr>`;
             l++; }
           }
           
@@ -187,7 +203,7 @@ router.post('/order/eng', async function (req, res) {
           i++;
         }
         
-        sum += parseFloat(customer.delivery_fee);       
+        sum += parseFloat(customer.delivery_fee);
                 
         sold_content +=
         `<tr><td colspan=2>Delivery Fee</td><td style="text-align:center">${customer.delivery_fee}</td>`+
@@ -204,7 +220,7 @@ router.post('/order/eng', async function (req, res) {
       
       var i = 1;
         var l = 0;
-        
+
         while(i < order.length) {
           
           var sold = parseFloat(order[i].amount) *  parseFloat(order[i].price) * parseFloat(order[i].set_value);
@@ -214,6 +230,24 @@ router.post('/order/eng', async function (req, res) {
             sold_content +=
           `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           }
+
+          if(order[i].type == 'dacquoise-set') {
+          
+            let tasteList = JSON.parse(order[i].taste_set);
+            let tasteText = "";
+
+            for(var t=0; t<tasteList.length; t++) {
+              tasteText += tasteList[t].taste+`(${tasteList[t].amount})`+" ";
+            }
+            
+              dacq_num += parseInt(order[i].amount);
+              sold_content +=
+            `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+  
+            sold_content +=
+            `<tr><td colspan=3>${tasteText} x${order[i].amount}</td></tr>`;
+  
+            }
 
           if(order[i].type == 'cake') {
             cake_num += parseInt(order[i].amount);
@@ -229,10 +263,10 @@ router.post('/order/eng', async function (req, res) {
             }
             
             sold_content +=
-          `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+          `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
           for(var c=0; c<order[i].amount; c++) {
-            sold_content += `<tr><td colspan=3>lettering: ${customer.lettering[l]}</td></tr>`;
+            sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
             l++; }
           }
                     
@@ -275,8 +309,6 @@ router.post('/order/eng', async function (req, res) {
                   total_price: sum.toFixed(2)
                 }
 
-                console.log(sales_info);
-                
                 var new_sales = new Sales(sales_info);
                 new_sales.save(function (err) {
                   if(err) {
@@ -284,10 +316,7 @@ router.post('/order/eng', async function (req, res) {
                   }
                   
                   if(!err) {
-                    console.log(new_sales._id);
                     console.log("sales info added");
-
-                    console.log(date);
 
                     async.parallel({
                       
@@ -300,9 +329,6 @@ router.post('/order/eng', async function (req, res) {
                         else{
                           console.log(results);
                           
-                          console.log(results.limit[0].pickup_time);
-                          console.log(results.limit[0].pickup_time[0].timeline);
-
                           //var pickup_time = results.limit[0];
                           
                           var pp =0;
@@ -312,7 +338,7 @@ router.post('/order/eng', async function (req, res) {
                             
                               if(results.limit[0].pickup_time[pp].timeline == pick_time) {
                                 check = true;
-                                console.log("find pick time");
+                                
                                 results.limit[0].pickup_time[pp].limit = results.limit[0].pickup_time[pp].limit - 1;
                                 console.log("pick limi: "+results.limit[0].pickup_time[pp].limit);
                               }
@@ -338,7 +364,7 @@ router.post('/order/eng', async function (req, res) {
                             
                             else {
                               console.log('Success Email');
-                              res.redirect('/end/eng');
+                              res.redirect('/end/kor');
                             }
                           
                           });
@@ -377,11 +403,7 @@ router.post('/order/eng', async function (req, res) {
             }}, async (err, results) => {
               if(err) {console.log(err.message);}
                         else{
-                          console.log(results);
                           
-                          console.log(cake_num);
-                          console.log(dacq_num);
-
                           //var pickup_time = results.limit[0];
                           
                           var pp =0;
@@ -405,7 +427,7 @@ router.post('/order/eng', async function (req, res) {
                           results.limit[0].cake_limit = cake_limit;
                           results.limit[0].dacq_limit = dacq_limit;
 
-                          console.log(results.limit[0].dacq_limit);
+                          
 
                           let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                 
@@ -468,9 +490,7 @@ router.get('/order/kor', function (req, res) {
             return next(err);
         }
     
-    console.log(results.limits);
-
-    res.render('order_kor_1122', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_kor_1123', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -480,8 +500,7 @@ router.post('/order/kor', async function (req, res) {
   var customer = JSON.parse(req.body.cust_obj);
   var order = JSON.parse(req.body.ord_obj);
   
-  console.log(customer);
-
+  
   let cake_num = 0;
   let dacq_num = 0;
 
@@ -529,6 +548,24 @@ router.post('/order/kor', async function (req, res) {
           `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           }
 
+          if(order[i].type == 'dacquoise-set') {
+          
+            let tasteList = JSON.parse(order[i].taste_set);
+            let tasteText = "";
+
+            for(var t=0; t<tasteList.length; t++) {
+              tasteText += tasteList[t].taste+`(${tasteList[t].amount})`+" ";
+            }
+            
+              dacq_num += parseInt(order[i].amount);
+              sold_content +=
+            `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+  
+            sold_content +=
+            `<tr><td colspan=3>${tasteText} x${order[i].amount}</td></tr>`;
+  
+            }
+
           if(order[i].type == 'cake') {
             cake_num += parseInt(order[i].amount);
 
@@ -543,7 +580,7 @@ router.post('/order/kor', async function (req, res) {
             }
             
             sold_content +=
-          `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+          `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
           for(var c=0; c<order[i].amount; c++) {
             sold_content += `<tr><td colspan=3>lettering: ${customer.lettering[l]}</td></tr>`;
@@ -572,7 +609,7 @@ router.post('/order/kor', async function (req, res) {
       
       var i = 1;
         var l = 0;
-        
+
         while(i < order.length) {
           
           var sold = parseFloat(order[i].amount) *  parseFloat(order[i].price) * parseFloat(order[i].set_value);
@@ -582,6 +619,24 @@ router.post('/order/kor', async function (req, res) {
             sold_content +=
           `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           }
+
+          if(order[i].type == 'dacquoise-set') {
+          
+            let tasteList = JSON.parse(order[i].taste_set);
+            let tasteText = "";
+
+            for(var t=0; t<tasteList.length; t++) {
+              tasteText += tasteList[t].taste+`(${tasteList[t].amount})`+" ";
+            }
+            
+              dacq_num += parseInt(order[i].amount);
+              sold_content +=
+            `<tr><td>${order[i].item_name}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+  
+            sold_content +=
+            `<tr><td colspan=3>${tasteText} x${order[i].amount}</td></tr>`;
+  
+            }
 
           if(order[i].type == 'cake') {
             cake_num += parseInt(order[i].amount);
@@ -597,7 +652,7 @@ router.post('/order/kor', async function (req, res) {
             }
             
             sold_content +=
-          `<tr><td>${order[i].item_name} ${inchT}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
+          `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
           for(var c=0; c<order[i].amount; c++) {
             sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
@@ -643,8 +698,6 @@ router.post('/order/kor', async function (req, res) {
                   total_price: sum.toFixed(2)
                 }
 
-                console.log(sales_info);
-                
                 var new_sales = new Sales(sales_info);
                 new_sales.save(function (err) {
                   if(err) {
@@ -666,11 +719,7 @@ router.post('/order/kor', async function (req, res) {
                       }}, async (err, results) => {
                         if(err) {console.log(err.message);}
                         else{
-                          console.log(results);
                           
-                          console.log(results.limit[0].pickup_time);
-                          console.log(results.limit[0].pickup_time[0].timeline);
-
                           //var pickup_time = results.limit[0];
                           
                           var pp =0;
@@ -706,7 +755,7 @@ router.post('/order/kor', async function (req, res) {
                             
                             else {
                               console.log('Success Email');
-                              res.redirect('/end/eng');
+                              res.redirect('/end/kor');
                             }
                           
                           });
@@ -745,11 +794,6 @@ router.post('/order/kor', async function (req, res) {
             }}, async (err, results) => {
               if(err) {console.log(err.message);}
                         else{
-                          console.log(results);
-                          
-                          console.log(cake_num);
-                          console.log(dacq_num);
-
                           //var pickup_time = results.limit[0];
                           
                           var pp =0;
@@ -772,8 +816,6 @@ router.post('/order/kor', async function (req, res) {
 
                           results.limit[0].cake_limit = cake_limit;
                           results.limit[0].dacq_limit = dacq_limit;
-
-                          console.log(results.limit[0].dacq_limit);
 
                           let update = await Limit.findByIdAndUpdate(results.limit[0]._id, results.limit[0], {});
                 
@@ -825,7 +867,6 @@ router.post('/management', (req,res) => {
 			limit_data.push(row);			
 		})
 		.on('end', () => {
-      console.log(limit_data);
       console.log("finished to load csv");
       
       var n = 1;
@@ -838,19 +879,19 @@ router.post('/management', (req,res) => {
           
           //update mongo
 
-           var pickup_array = (limit_data[n].pickup_time).split(",");
-           var pick_obj_arr = [];
+            var pickup_array = (limit_data[n].pickup_time).split(",");
+            var pick_obj_arr = [];
 
-           for(var i=0; i < pickup_array.length; i++) {
+            for(var i=0; i < pickup_array.length; i++) {
           
-           var pickup_obj = {
-             timeline: pickup_array[i],
-             limit: 2
-           }
+            var pickup_obj = {
+              timeline: pickup_array[i],
+              limit: 2
+            }
 
-           pick_obj_arr.push(pickup_obj);
+            pick_obj_arr.push(pickup_obj);
 
-           }
+            }
 
           Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit, pickup_time: pick_obj_arr}}, function(err) {
 
@@ -872,8 +913,6 @@ router.post('/management', (req,res) => {
 router.post('/email', async function (req, res, next) {
 
   console.log(req.body.date);
-
-
 
   mailOptions.subject = 'Baking Bunny Inquiry from '+ req.body.name;
   mailOptions.html =
