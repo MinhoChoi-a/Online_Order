@@ -831,6 +831,7 @@ img.bunny_icon {
     width: 80px;
     font-size: 10px;    
     text-align: center;
+    background-color: none;
     top: 0;
     right: 0;
     
