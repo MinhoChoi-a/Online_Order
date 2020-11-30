@@ -92,7 +92,7 @@ function updateSchedule() {
 
         if(holiday.includes(parseInt(schedule__date[i].id))) {
              schedule__date[i].style.background = '#f8f4ec';
-             schedule__date[i].style.fontSize = '8px';
+             schedule__date[i].style.fontSize = '7px';
              schedule__date[i].innerHTML = 'holiday';
              schedule__date[i].setAttribute('disabled', 'disabled');
          }
