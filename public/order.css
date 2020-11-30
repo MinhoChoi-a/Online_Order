@@ -829,9 +829,9 @@ img.bunny_icon {
     position: absolute;
     height: 30px;
     width: 80px;
-    font-size: 10px;    
+    font-size: 10px;
+    background-color: #efdcbe;
     text-align: center;
-    background-color: none;
     top: 0;
     right: 0;
     
