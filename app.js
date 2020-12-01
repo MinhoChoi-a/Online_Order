@@ -103,7 +103,7 @@ router.get('/order/eng', function (req, res) {
             return next(err);
         }
 
-    res.render('order_eng_1123', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_eng_1125', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -193,9 +193,11 @@ router.post('/order/eng', async function (req, res) {
             sold_content +=
           `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
-          for(var c=0; c<order[i].amount; c++) {
+            //christmas
+            if((customer.lettering).length > 0) {
+            for(var c=0; c<order[i].amount; c++) {
             sold_content += `<tr><td colspan=3>lettering: ${customer.lettering[l]}</td></tr>`;
-            l++; }
+            l++; }}
           }
           
           sum += parseFloat(sold);
@@ -265,9 +267,11 @@ router.post('/order/eng', async function (req, res) {
             sold_content +=
           `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
+          //christmas
+          if((customer.lettering).length > 0) {
           for(var c=0; c<order[i].amount; c++) {
             sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
-            l++; }
+            l++; }}
           }
                     
           sum += parseFloat(sold);
@@ -490,7 +494,7 @@ router.get('/order/kor', function (req, res) {
             return next(err);
         }
     
-    res.render('order_kor_1124', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_kor_1125', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -582,9 +586,11 @@ router.post('/order/kor', async function (req, res) {
             sold_content +=
           `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
+          //christmas
+          if((customer.lettering).length > 0) {
           for(var c=0; c<order[i].amount; c++) {
             sold_content += `<tr><td colspan=3>lettering: ${customer.lettering[l]}</td></tr>`;
-            l++; }
+            l++; }}
           }
           
           sum += parseFloat(sold);
@@ -654,9 +660,11 @@ router.post('/order/kor', async function (req, res) {
             sold_content +=
           `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
+          //christmas
+          if((customer.lettering).length > 0) {
           for(var c=0; c<order[i].amount; c++) {
             sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
-            l++; }
+            l++; }}
           }
                     
           sum += parseFloat(sold);
@@ -883,7 +891,7 @@ router.post('/management', (req,res) => {
             var pick_obj_arr = [];
 
             for(var i=0; i < pickup_array.length; i++) {
-          
+              
             var pickup_obj = {
               timeline: pickup_array[i],
               limit: 2

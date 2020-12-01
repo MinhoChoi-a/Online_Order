@@ -983,6 +983,9 @@ next_customer_button.addEventListener('click', e => {
         delivery_info.style.display = "none";
     }
 
+    //christmas
+    if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") { 
+
     for(var i=1; i<orderObjectArray.length; i++) {
         
         if(orderObjectArray[i].type == 'cake' && orderObjectArray[i].amount != 0) {
@@ -1021,7 +1024,7 @@ next_customer_button.addEventListener('click', e => {
                 }
             }
         }
-    }
+    }}
         item_section.style.display = 'none';
         customer_section.style.display = 'block';   
     }
@@ -1377,10 +1380,12 @@ next_check_button.addEventListener('click', e =>{
 
         var lettering_array = [];
 
+        //christmas
+        if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
         for(var t=0; t<(customer_info.lettering_id).length; t++) {
 
             lettering_array.push(document.querySelector(`#${customer_info.lettering_id[t]}`).value);
-        }
+        } }
 
         customer_info.lettering = lettering_array;
 
@@ -1450,13 +1455,14 @@ function confirmation(cust, ord, deliv) {
         }
 
         div = `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size} ${ord[i].taste_set}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
-        
+          //christmas
+          if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
         for(var t=0; t<ord[i].amount; t++) {
         
             div +=`<tr><td id="item" colspan=3><input type="text" name="lettering_${l}" value="lettering: ${cust.lettering[l]}" style="font-size:12px;" readonly/>`;        
             l++;
             }
-        }
+        }}
 
         else {
 

@@ -1,6 +1,13 @@
 /* Schedule Section*/
+
+var closed_list = [20201130, 20201207, 20201214, 20201221, 20201228];
+
 var holiday = [
-    20201228, 20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
+    20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
+];
+
+var christmas = [
+    20201223, 20201224, 20201225, 20201226
 ];
 
 var today = new Date();
@@ -23,7 +30,7 @@ else if(today__num ==0) {
 
 else {
     let available_day_duration = 7 - today__num;
-    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + available_day_duration);
+    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + available_day_duration+1);
     let fullDate = closeDate.toISOString().slice(0,10);
     let date = fullDate.split('-');
     availalbeDate = date[0]+date[1]+date[2];
@@ -58,6 +65,10 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fff8d4';
         }
 
+        if( parseInt((schedule__date[i].id).substring(4,6)) == 2 + parseInt(availalbeDate.substring(4,6))) {
+            schedule__date[i].style.background = '#efdcbe';
+        }
+
         if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = '#ececec';
             schedule__date[i].style.fontSize = '10px';
@@ -72,11 +83,22 @@ function updateSchedule() {
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
 
-         if(holiday.includes(parseInt(schedule__date[i].id))) {
-             schedule__date[i].style.background = '#fffdee';
-             schedule__date[i].style.fontSize = '8px';
-             schedule__date[i].innerHTML = 'closed';
+        if(closed_list.includes(parseInt(schedule__date[i].id))) {
+            schedule__date[i].style.background = '#fffdee';
+            schedule__date[i].style.fontSize = '8px';
+            schedule__date[i].innerHTML = 'closed';
+            schedule__date[i].setAttribute('disabled', 'disabled');
+        }
+
+        if(holiday.includes(parseInt(schedule__date[i].id))) {
+             schedule__date[i].style.background = '#f8f4ec';
+             schedule__date[i].style.fontSize = '7px';
+             schedule__date[i].innerHTML = 'holiday';
              schedule__date[i].setAttribute('disabled', 'disabled');
+         }
+
+         if(christmas.includes(parseInt(schedule__date[i].id))) {
+            schedule__date[i].style.background = '#f19e9d';
          }
       
     }
@@ -526,11 +548,11 @@ function addCart(p) {
     var content = ""
 
     if(title == "크리스마스-산타") {
-        content = `<p id='kor'>빨강 & 초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. </p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+        content = `<p id='kor'>빨강 & 초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. 소독 세척된 x-mas 피규어가 포함되어 있습니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
     }
 
     else if(title == "크리스마스-트리") {
-        content = `<p id='kor'>초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. 소독 세척된 x-mas 피규어가 포함되어 있습니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
+        content = `<p id='kor'>초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
     }
 
     else {
@@ -967,6 +989,9 @@ next_customer_button.addEventListener('click', e => {
         delivery_info.style.display = "none";
     }
 
+    //christmas
+    if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") { 
+    
     for(var i=1; i<orderObjectArray.length; i++) {
         
         if(orderObjectArray[i].type == 'cake' && orderObjectArray[i].amount != 0) {
@@ -1006,6 +1031,7 @@ next_customer_button.addEventListener('click', e => {
             }
         }
     }
+    } //christmas
         item_section.style.display = 'none';
         customer_section.style.display = 'block';   
     }
@@ -1125,16 +1151,16 @@ delivery_button.addEventListener('click', e => {
 
     if(order_sum > 49.99) {
 
-        if(order_day_num == 5 || order_day_num == 6) {
-                delivery_info.style.display = "block";
-                delivery_option_modal.style.height = '100vh';
-        }
-
-        else if(order_day == 20201225 ||order_day == 20201226) {
+        if(order_day == "20201225" ||order_day == "20201226") {
             var content = "<div id='kor'> 죄송합니다. 이 날은 딜리버리 서비스가 불가능합니다.</div>";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
+        }
+        
+        else if(order_day_num == 5 || order_day_num == 6) {
+                delivery_info.style.display = "block";
+                delivery_option_modal.style.height = '100vh';
         }
 
         else {
@@ -1361,10 +1387,14 @@ next_check_button.addEventListener('click', e =>{
 
         var lettering_array = [];
 
+        //christmas
+        if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+
         for(var t=0; t<(customer_info.lettering_id).length; t++) {
 
             lettering_array.push(document.querySelector(`#${customer_info.lettering_id[t]}`).value);
         }
+    }
 
         customer_info.lettering = lettering_array;
 
@@ -1435,12 +1465,15 @@ function confirmation(cust, ord, deliv) {
 
         div = `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size} ${ord[i].taste_set}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
         
+         //christmas
+         if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+
         for(var t=0; t<ord[i].amount; t++) {
         
             div +=`<tr><td id="item" colspan=3><input type="text" name="lettering_${l}" value="lettering: ${cust.lettering[l]}" style="font-size:12px;" readonly/>`;        
             l++;
             }
-        }
+        } }
 
         else {
 

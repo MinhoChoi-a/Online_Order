@@ -44,7 +44,7 @@ const SalesSchema = new mongoose.Schema({
 
 			taste_set  : {
 				type     : String,
-				required : true
+				required : false
 			}
 		}
 	],
