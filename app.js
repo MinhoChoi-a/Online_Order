@@ -490,7 +490,7 @@ router.get('/order/kor', function (req, res) {
             return next(err);
         }
     
-    res.render('order_kor_1123', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_kor_1124', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
