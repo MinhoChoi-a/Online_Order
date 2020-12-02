@@ -15,8 +15,8 @@
 
     {
         "type": "cake",
-        "item_name": "Christmas-Santa",
-        "item_name_kor": "크리스마스-산타",
+        "item_name": "Santa's-Village",
+        "item_name_kor": "산타마을",
         "tastes": ["Pineapple", "Mango", "Strawberry", "None(Fresh-Milk)"],
         "tastes_kor": ["Pineapple", "Mango", "Strawberry", "None(Fresh-Milk)"],
         "price": 52,
