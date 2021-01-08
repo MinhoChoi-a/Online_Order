@@ -1,13 +1,5 @@
 /* Schedule Section*/
-var closed_list = [20201130, 20201207, 20201214, 20201221, 20201228];
-
-var holiday = [
-    20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
-];
-
-var christmas = [
-    20201223, 20201224, 20201225, 20201226
-];
+var closed_list = [20210111, 20210118, 20210125, 20210201];
 
 var today = new Date();
 var today__num = today.getDay();
@@ -29,7 +21,7 @@ else if(today__num ==0) {
 
 else {
     let available_day_duration = 7 - today__num;
-    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + available_day_duration);
+    let closeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + available_day_duration+1);
     let fullDate = closeDate.toISOString().slice(0,10);
     let date = fullDate.split('-');
     availalbeDate = date[0]+date[1]+date[2];
@@ -64,6 +56,10 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fff8d4';
         }
 
+        if( parseInt((schedule__date[i].id).substring(4,6)) == 2 + parseInt(availalbeDate.substring(4,6))) {
+            schedule__date[i].style.background = '#efdcbe';
+        }
+
         if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = '#ececec';
             schedule__date[i].style.fontSize = '10px';
@@ -84,7 +80,7 @@ function updateSchedule() {
             schedule__date[i].innerHTML = 'closed';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
-
+        /*
         if(holiday.includes(parseInt(schedule__date[i].id))) {
              schedule__date[i].style.background = '#f8f4ec';
              schedule__date[i].style.fontSize = '7px';
@@ -94,7 +90,8 @@ function updateSchedule() {
 
          if(christmas.includes(parseInt(schedule__date[i].id))) {
             schedule__date[i].style.background = '#f19e9d';
-         }
+         }*/
+      
     }
 }
 
@@ -178,18 +175,18 @@ calendar.addEventListener('click', (e) => {
                         <img id="img" src="/img/${items[t].image}"/>    
                     </li>
                     <li id="name">
-                        <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name}</div>
-                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>option select</div>
-                        <input id="taste_size_button_${items[t].item_name}" type="hidden" value=${items[t].tastes}>
+                        <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name_kor}</div>
+                        <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name_kor}" value="none"/>option select</div>
+                        <input id="taste_size_button_${items[t].item_name_kor}" type="hidden" value=${items[t].tastes_kor}>
                     </li>
                     <li id="amount">
                         <div id="p">$ ${cake_price}</div>
                         <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
                     </li>
-                    <li class="add_button" id="button_${items[t].item_name}">
+                    <li class="add_button" id="button_${items[t].item_name_kor}">
                         <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                     </li>
-                    <li class="fix_button" id="fixCart_${items[t].item_name}">
+                    <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
                         <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                     </li>
                 </ul>`;
@@ -214,17 +211,17 @@ calendar.addEventListener('click', (e) => {
                             <img id="img" src="/img/${items[t].image}"/>    
                         </li>
                         <li id="name">
-                            <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name}</div>
-                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name}" value="none"/>size select</div>
+                            <div id="cake_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name_kor}</div>
+                            <div id="cake_size"><button type="button" class="set_size_cake" id="size_button_${items[t].item_name_kor}" value="none"/>size select</div>
                         </li>
                         <li id="amount">
                             <div id="p">$ ${cake_price}</div>
-                            <input type='number' value=1 min='0' max='${today_limit.cake_limit}'/>       
+                            <input type='number' value=1 min='0' max='${today_limit.cake_limit_kor}'/>       
                         </li>
-                        <li class="add_button" id="button_${items[t].item_name}">
+                        <li class="add_button" id="button_${items[t].item_name_kor}">
                             <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                         </li>
-                        <li class="fix_button" id="fixCart_${items[t].item_name}">
+                        <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
                             <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                         </li>
                     </ul>`; }
@@ -237,7 +234,7 @@ calendar.addEventListener('click', (e) => {
                                 <img id="img" src="/img/${items[t].image}"/>    
                             </li>
                             <li id="name">
-                                <div id="cake_name">${items[t].item_name}</div>
+                                <div id="cake_name">${items[t].item_name_kor}</div>
                             </li>                
                             <li class="inq_button">
                                 <button type='button' onclick="cake__inquiry()" class="inquiry" style="height:45px;">Inquiry</button>                    
@@ -257,16 +254,16 @@ calendar.addEventListener('click', (e) => {
                             <img id="img" src="/img/${items[t].image}"/>
                         </li>                
                         <li id="name">
-                            <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name}</div>
+                            <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name_kor}</div>
                             <div id="dacq_size" style="display:none;"></div></li>
                         <li id="amount">
                             <div id="p">$ ${items[t].price}</div>
                             <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
                         </li>
-                        <li class="add_button" id="button_${items[t].item_name}">
+                        <li class="add_button" id="button_${items[t].item_name_kor}">
                             <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                         </li>
-                        <li class="fix_button" id="fixCart_${items[t].item_name}">
+                        <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
                             <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                         </li>
                     </ul>`;
@@ -283,17 +280,17 @@ calendar.addEventListener('click', (e) => {
                             <img id="img" src="/img/${items[t].image}"/>
                         </li>                
                         <li id="name">
-                            <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name}</div>
-                            <div id="dacq_taste"><button type="button" class="dacq_taste" id="dacq_taste_${items[t].item_name}" value="none"/>taste select</div>
-                            <input id="dacq_taste_list" type="hidden" value=${items[t].tastes}>
+                            <div id="dacq_name" style="font-family:'Noto Serif KR', serif;">${items[t].item_name_kor}</div>
+                            <div id="dacq_taste"><button type="button" class="dacq_taste" id="dacq_taste_${items[t].item_name_kor}" value="none"/>taste select</div>
+                            <input id="dacq_taste_list" type="hidden" value=${items[t].tastes_kor}>
                         <li id="amount">
                             <div id="p">$ ${items[t].price}</div>
                             <input type='number' value=1 min=0 max='${today_limit.dacq_limit}'/>       
                         </li>
-                        <li class="add_button" id="button_${items[t].item_name}">
+                        <li class="add_button" id="button_${items[t].item_name_kor}">
                             <button type="button" onclick="addCart(this.parentElement)">Add to cart</button>
                         </li>
-                        <li class="fix_button" id="fixCart_${items[t].item_name}">
+                        <li class="fix_button" id="fixCart_${items[t].item_name_kor}">
                             <button type="button" onclick="fixCart(this.parentElement)">Added</button>
                         </li>
                     </ul>`;
@@ -315,6 +312,7 @@ calendar.addEventListener('click', (e) => {
         cake_list.innerHTML += custom_cake_div;
         dacq_list.innerHTML = dacq_div;
 
+        /*
         if(order_day == "20201223" || order_day == "20201224" || order_day == "20201225" || order_day == "20201226") {
             document.querySelector('.cake_list').style.gridTemplateColumns = "repeat(1,1fr)";
             document.querySelector('.dacq_list').style.gridTemplateColumns = "repeat(1,1fr)";
@@ -325,7 +323,7 @@ calendar.addEventListener('click', (e) => {
                 imgList[i].style.width = "50%";
             }
 
-        }
+        }*/
         
         item_section.style.display = 'block';
     });
@@ -336,7 +334,7 @@ alret_modal.addEventListener('click', e => {
 })
 
 function cake__inquiry() {
-    var content = `<p>Please inquire this cake to Baking Bunny's email (bakingbunny.yyc@gmail.com). Thank you :)</p>`;
+    var content = `<p id='kor'>해당 케이크는 이메일(bakingbunny.yyc@gmail.com)로 별도 문의 부탁드립니다.</p>`;
     modal_content.innerHTML = content;   
     modal.style.display = "flex";
 }
@@ -466,11 +464,11 @@ function cakeOption(id) {
 
 
     if(size_value == "") {
-        document.querySelector("#cake_message").innerHTML = "Please select the size";
+        document.querySelector("#cake_message").innerHTML = "사이즈를 선택해 주세요";
     }
 
     else if(taste_value == 1) {
-        document.querySelector("#cake_message").innerHTML = "Please select the fruit";
+        document.querySelector("#cake_message").innerHTML = "과일을 선택해 주세요";
     }
 
     else {
@@ -506,13 +504,13 @@ function tasteValue(v) {
     console.log(tasteObjectList);
     
 
-    if(sum == 10) {
+    if(sum == 5) {
         document.querySelector(`#${v}`).value = JSON.stringify(tasteObjectList);
         taste_modal.style.height = 0;
     }
 
     else {
-        document.querySelector("#taste_message").innerHTML = "The total amount of dacquoise should be 10";
+        document.querySelector("#taste_message").innerHTML = "다쿠아즈 수량은 5개여야합니다";
     }
     
 }
@@ -541,16 +539,16 @@ function addCart(p) {
     
     var content = ""
 
-    if(title == "Christmas-Santa") {
-        content = `<p>We use food coloring to make red and green color. The decoration is made with butter cream.<p>if you want to change the amount, change and click the Added button.</p>`;
+    if(title == "크리스마스-산타") {
+        content = `<p id='kor'>빨강 & 초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다. 소독 세척된 x-mas 피규어가 포함되어 있습니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
     }
 
-    else if(title == "Christmas-Tree") {
-        content = `<p>We use food coloring to make green color. The decoration is made with butter cream. <p>if you want to change the amount, change and click the Added button.</p>`;
+    else if(title == "크리스마스-트리") {
+        content = `<p id='kor'>초록 색소를 사용해 색소에 민감하신 분들은 주문에 유의하시기 바랍니다. 생크림 케익 위에 올려진 데코는 버터크림입니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
     }
 
     else {
-        content = `<p>Succesfully added, you can add more items, otherwise click the next button below.</p><p>if you want to change the amount, change and click the Added button.</p>`;
+        content = `<p id='kor'>추가되었습니다. 다른 메뉴를 더 선택하시거나, 하단의 Next 버튼을 누르시고 다음 단계로 가셔도 됩니다.</p><p id='kor'>수정을 원하시면 수량을 변경하신 후 Added 버튼을 눌러주세요</p>`;
     }
 
     if(type.id == 'cake') {
@@ -558,20 +556,20 @@ function addCart(p) {
         cake_total += amount;
         
         if(today_limit.cake_limit == 0) {
-            content = `Sorry, cake is sold out today`;
+            content = `<div id='kor'>죄송합니다, 이 날의 케익은 모두 마감되었습니다.</div>`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(cake_total > today_limit.cake_limit) {
-            content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
+            content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
             cake_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(set_value.value == "none" || set_value.value == undefined) {
             
-            content = "Please select the cake option first";
+            content = "<div id='kor'> 케익 옵션을 먼저 선택해 주세요 </div>";
             cake_total -= amount;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -659,13 +657,13 @@ function addCart(p) {
         dacq_total += amount;
 
         if(today_limit.dacq_limit == 0) {
-            content = `Sorry, dacquoise is sold out today`;
+            content = `<div id='kor'>죄송합니다, 이 날의 다쿠아즈는 sold-out 되었습니다.</div>`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(dacq_total > today_limit.dacq_limit) {
-            content = `Sorry, You cannot put dacqouise more than ${today_limit.dacq_limit}`;
+            content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
@@ -700,20 +698,20 @@ function addCart(p) {
         dacq_total += amount;
 
         if(today_limit.dacq_limit == 0) {
-            content = `Sorry, dacquoise is sold out today`;
+            content = `<div id='kor'>죄송합니다, 이 날의 다쿠아즈는 sold-out 되었습니다.</div>`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(dacq_total > today_limit.dacq_limit) {
-            content = `Sorry, You cannot put dacqouise more than ${today_limit.dacq_limit}`;
+            content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
 
         else if(set_value.value == "none" || set_value.value == undefined) {
             
-            content = `Please select the taste option`;
+            content = "<div id='kor'> 테이스트를 먼저 선택해 주세요 </div>";
             cake_total -= amount;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
@@ -811,7 +809,7 @@ function fixCart(p) {
     const type = p.parentElement;
     const amount = parseInt(amount_class.firstElementChild.nextElementSibling.value);
 
-    var content = `Succesfully fixed`;
+    var content = "<div id='kor'> 수정되었습니다.</div>";
 
     if(type.id == 'cake' || type.id == 'custom-cake') {
         
@@ -825,7 +823,7 @@ function fixCart(p) {
                     check = true;
 
                     if(cake_total > today_limit.cake_limit) {
-                        content = `Sorry, You cannot put cake more than ${today_limit.cake_limit}`;
+                        content = `<div id='kor'>죄송합니다, 이 날 가능한 케익의 수량은 총 ${today_limit.cake_limit} 개 입니다.</div>`;
                         cake_total -= difference;
                         amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
                     }
@@ -862,7 +860,7 @@ function fixCart(p) {
                 check = true;
 
                 if(dacq_total > today_limit.dacq_limit) {
-                    content = `Sorry, You cannot put dacquoise more than ${today_limit.dacq_limit}`;
+                    content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
                     dacq_total -= difference;
                     amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
 
@@ -898,7 +896,7 @@ function fixCart(p) {
                 check = true;
 
                 if(dacq_total > today_limit.dacq_limit) {
-                    content = `Sorry, You cannot put dacquoise more than ${today_limit.dacq_limit}`;
+                    content = `<div id='kor'>죄송합니다, 이 날 가능한 다쿠아즈의 수량은 총 ${today_limit.dacq_limit} 개 입니다.</div>`;
                     dacq_total -= difference;
                     amount_class.firstElementChild.nextElementSibling.value = orderObjectArray[i].amount;
 
@@ -969,7 +967,7 @@ next_customer_button.addEventListener('click', e => {
 
     if(sumOrder == null || sumOrder == '' || sumOrder == 0) {
     
-        var content = "Sorry, but you selected nothing"
+        var content = "<div id='kor'>메뉴를 선택해주세요</div>"
         modal_content.innerHTML = content;   
         modal.style.display = "flex";
     }
@@ -984,8 +982,8 @@ next_customer_button.addEventListener('click', e => {
     }
 
     //christmas
-    if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") { 
-
+    //if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") { 
+    
     for(var i=1; i<orderObjectArray.length; i++) {
         
         if(orderObjectArray[i].type == 'cake' && orderObjectArray[i].amount != 0) {
@@ -1024,7 +1022,8 @@ next_customer_button.addEventListener('click', e => {
                 }
             }
         }
-    }}
+    }
+    //} //christmas
         item_section.style.display = 'none';
         customer_section.style.display = 'block';   
     }
@@ -1110,17 +1109,17 @@ function pickup_apply() {
 
     if(selected_time.value == "") {
 
-        document.querySelector('.pickup_err').innerHTML = "Please choose a time";
+        document.querySelector('.pickup_err').innerHTML = "Please select a time first"
     }
 
     else if(specific_time.value == "") {
 
-        document.querySelector('.pickup_err').innerHTML = "Sorry, but you missed to write a specific minute";
+        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>몇분에 오실지 적어주세요</div>"
     }
 
     else if(specific_time.value > 59 || specific_time.value < 0) {
 
-        document.querySelector('.pickup_err').innerHTML = "Please write a correct number for minute";
+        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>잘못된 숫자를 적으셨습니다</div>"
     }
 
     else {
@@ -1142,33 +1141,26 @@ delivery_button.addEventListener('click', e => {
     
     var order_sum = getSumOrder();
 
-    if(order_sum > 49.99) {
-
-        if(order_day == "20201225" ||order_day == "20201226") {
-            var content = "Sorry, but delivery is not avaiable for this day";
+    if(order_day_num != 6) {
+        var content = "<div id='kor'> 죄송합니다. 딜리버리는 토요일만 가능합니다.</div>";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
-        }
-        
-        else if(order_day_num == 5 || order_day_num == 6) {
-                delivery_info.style.display = "block";
-                delivery_option_modal.style.height = '100vh';
+    }
+    
+    else {
+        if(order_sum > 49.99) {
+
+            delivery_info.style.display = "block";
+            delivery_option_modal.style.height = '100vh';
         }
 
         else {
-            var content = "Sorry, but delivery is avaiable only for Friday ~ Saturday";
-            delivery_button.checked = false;
-            modal_content.innerHTML = content;   
-            modal.style.display = "flex";
+            var content = "<div id='kor'> 죄송합니다. 딜리버리는 $50 이상 구매하셔야 가능합니다.</div>";
+                delivery_button.checked = false;
+                modal_content.innerHTML = content;   
+                modal.style.display = "flex";
         }
-    }
-
-    else {
-        var content = "Sorry you should buy more than $ 50";
-            delivery_button.checked = false;
-            modal_content.innerHTML = content;   
-            modal.style.display = "flex";
     }
 })
 
@@ -1179,11 +1171,11 @@ function delivery_apply() {
     
     if(customer_delivery_fee == null || specific_address.value == undefined) {        
 
-        document.querySelector('.delivery_err').innerHTML = "Please finish to check your postal code";
+        document.querySelector('.delivery_err').innerHTML = "<div id='kor'> 우편 번호 확인을 먼저 부탁드려요</div>";
     }
 
     else if(specific_address.value == "") {
-        document.querySelector('.delivery_err').innerHTML = "Please write the specific address";
+        document.querySelector('.delivery_err').innerHTML = "<div id='kor'> 상세 주소를 적어주셔야해요</div>";
     }
 
     else {
@@ -1241,7 +1233,7 @@ address_check.addEventListener('click', e=> {
             
             if(response.rows[0].elements[0].distance == undefined || response.rows[0].elements[0].status == "NOT_FOUND") {
                 
-                delivery_fee.innerHTML = "<p>Please write the right postal code which can be searched on Google map</p>";
+                    delivery_fee.innerHTML = "<p id='kor'>구글맵에서 확인되는 정확한 우편 번호를 적어주세요</p>";
                     post_code.value = null;
                     delivery_fee.style.display = 'block';                    
                     customer_delivery_fee = null;
@@ -1287,7 +1279,7 @@ address_check.addEventListener('click', e=> {
                 }
 
                 else {
-                    content = "<p> Sorry, this place is not available</p>";
+                    content = "<div id='kor'> 죄송합니다. 이 지역은 딜리버리가 불가능합니다.</div>";
                     post_code.value = null;
                     modal_content.innerHTML = content;   
                     modal.style.display = "flex";
@@ -1334,7 +1326,7 @@ next_check_button.addEventListener('click', e =>{
 
         if(customer_info.pickup_time == 0) {
             error_check.check = true;
-            error_check.message = "you didn't select the pickup time on pickup menu";    
+            error_check.message = "Sorry, but you didn't select a time";
         }
     }
 
@@ -1345,26 +1337,26 @@ next_check_button.addEventListener('click', e =>{
             
             if(!address_check_validation) {
                 error_check.check = true;
-                error_check.message = 'you should finish to check your address first';    
+                error_check.message = "<div id='kor'>딜리버리 메뉴에서 Check Address 버튼을 꼭 눌러주세요</div>";
             }
         }
 
         else {
             error_check.check = true;
-            error_check.message = 'address is empty';
+            error_check.message = "<div id='kor'>주소 칸이 비었습니다.</div>";
         }
     }
 
     else {
         error_check.check = true;
-        error_check.message = "didn't select the delivery option";
+        error_check.message = "<div id='kor'>딜리버리 옵션을 선택해주세요</div>";
     }
 
     if(name == null || phone == null || name == '' || phone == '' || name == 0 || phone == 0 ||
         insta == null || insta == '' || allergy == null || allergy == '' || etransfer == null 
         || etransfer == '') {
         error_check.check = true;
-        error_check.message = "Please write all information except 'other inquiries' & 'lettering'";
+        error_check.message = "<div id='kor'>other inquiries와 lettering을 제외한 모든 내용을 적어주셔야 합니다.</div>";        
     }
 
     if(error_check.check == false) {
@@ -1381,11 +1373,13 @@ next_check_button.addEventListener('click', e =>{
         var lettering_array = [];
 
         //christmas
-        if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+        //if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+
         for(var t=0; t<(customer_info.lettering_id).length; t++) {
 
             lettering_array.push(document.querySelector(`#${customer_info.lettering_id[t]}`).value);
-        } }
+        }
+    //}
 
         customer_info.lettering = lettering_array;
 
@@ -1455,14 +1449,17 @@ function confirmation(cust, ord, deliv) {
         }
 
         div = `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size} ${ord[i].taste_set}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
-          //christmas
-          if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+        
+         //christmas
+      //   if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+
         for(var t=0; t<ord[i].amount; t++) {
         
             div +=`<tr><td id="item" colspan=3><input type="text" name="lettering_${l}" value="lettering: ${cust.lettering[l]}" style="font-size:12px;" readonly/>`;        
             l++;
             }
-        }}
+    //    } 
+    }
 
         else {
 
@@ -1511,10 +1508,7 @@ function confirmation(cust, ord, deliv) {
     order_info += `<input type="hidden" name="cust_obj" value='${obj_cust}'/></tr>`;
     
     order_table.innerHTML = order_info;
-    
-    
-
-    //sessiong storage
+       
 
 }
 

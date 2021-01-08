@@ -103,7 +103,7 @@ router.get('/order/eng', function (req, res) {
             return next(err);
         }
 
-    res.render('order_eng_1125', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_eng_0107', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -193,7 +193,6 @@ router.post('/order/eng', async function (req, res) {
             sold_content +=
           `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
-            //christmas
             if((customer.lettering).length > 0) {
             for(var c=0; c<order[i].amount; c++) {
             sold_content += `<tr><td colspan=3>lettering: ${customer.lettering[l]}</td></tr>`;
@@ -267,7 +266,7 @@ router.post('/order/eng', async function (req, res) {
             sold_content +=
           `<tr><td>${order[i].item_name} ${inchT} ${order[i].taste_set}</td><td style="text-align:center">${order[i].amount}</td><td style="text-align:center">${sold.toFixed(2)}</td></tr>`;
           
-          //christmas
+        
           if((customer.lettering).length > 0) {
           for(var c=0; c<order[i].amount; c++) {
             sold_content += `<tr><td colspan=3>${customer.lettering[l]}</td></tr>`;
@@ -494,7 +493,7 @@ router.get('/order/kor', function (req, res) {
             return next(err);
         }
     
-    res.render('order_kor_1125', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_kor_0107', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -869,7 +868,7 @@ router.post('/management', (req,res) => {
 	}];
 	
 	//CSV is much easier to manage data than txt.
-	fs.createReadStream('./public/db/limit_update.csv')
+	fs.createReadStream('./public/db/limit.csv')
 		.pipe(csv()) //to use this we need csv-parser module
 		.on('data', (row) => {
 			limit_data.push(row);			
@@ -880,13 +879,38 @@ router.post('/management', (req,res) => {
       var n = 1;
 
 			while(n < limit_data.length) {
-                   
-          //save on mongo
-          var limit = new Limit(limit_data[n]);
-          //limit.save(function (err) {
-          
-          //update mongo
+        
+        //save on mongo
+        var pickup_array = (limit_data[n].pickup_time).split(",");
+        var pick_obj_arr = [];
 
+        for(var i=0; i < pickup_array.length; i++) {
+          
+        var pickup_obj = {
+          timeline: pickup_array[i],
+          limit: 2
+        }
+
+        pick_obj_arr.push(pickup_obj);
+        }
+
+        var saveData = limit_data[n]
+        saveData.pickup_time = pick_obj_arr
+        
+        var limit = new Limit(saveData);
+        
+        limit.save(function (err) {
+          if(!err) {
+            console.log("mongo success");
+            }
+
+            else {
+              console.log(err.message)
+            }
+          });  
+        
+          //update mongo
+          /*
             var pickup_array = (limit_data[n].pickup_time).split(",");
             var pick_obj_arr = [];
 
@@ -907,9 +931,11 @@ router.post('/management', (req,res) => {
             console.log("mongo success");
             }
           });
+          */
+        
+        n++;
           
-          n++;
-          };
+        };
           
           console.log('finished update');
           //console.log('finished conversion');

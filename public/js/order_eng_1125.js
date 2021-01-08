@@ -1110,7 +1110,7 @@ function pickup_apply() {
 
     if(selected_time.value == "") {
 
-        document.querySelector('.pickup_err').innerHTML = "Please choose a time";
+        document.querySelector('.pickup_err').innerHTML = "Please choose a time first";
     }
 
     else if(specific_time.value == "") {
@@ -1151,13 +1151,13 @@ delivery_button.addEventListener('click', e => {
             modal.style.display = "flex";
         }
         
-        else if(order_day_num == 5 || order_day_num == 6) {
+        else if(order_day_num == 6) {
                 delivery_info.style.display = "block";
                 delivery_option_modal.style.height = '100vh';
         }
 
         else {
-            var content = "Sorry, but delivery is avaiable only for Friday ~ Saturday";
+            var content = "Sorry, but delivery is avaiable only for Saturday";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";

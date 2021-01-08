@@ -17,6 +17,7 @@
     "fs": "0.0.1-security",
     "mongoose": "^5.10.2",
     "nodemailer": "^6.4.11",
+    "package": "^1.0.1",
     "pug": "^3.0.0"
   },
   "devDependencies": {
