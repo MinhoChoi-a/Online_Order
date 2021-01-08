@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "baking-bunny",
   "version": "1.0.0",
@@ -24,3 +25,30 @@
     "nodemon": "^2.0.4"
   }
 }
+=======
+{
+  "name": "baking-bunny",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www",
+    "serverstart": "DEBUG=test_rental:* npm run devstart"
+  },
+  "dependencies": {
+    "async": "^3.2.0",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "csv-parser": "^2.3.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.10.2",
+    "nodemailer": "^6.4.11",
+    "pug": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
+>>>>>>> 8ec0c0752d42be17e605d0f1825b05b3e53d017d
