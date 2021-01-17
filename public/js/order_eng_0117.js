@@ -1,13 +1,5 @@
 /* Schedule Section*/
-var closed_list = [20201130, 20201207, 20201214, 20201221, 20201228];
-
-var holiday = [
-    20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
-];
-
-var christmas = [
-    20201223, 20201224, 20201225, 20201226
-];
+var closed_list = [20210111, 20210118, 20210125, 20210201, 20210208, 20210215, 20210222];
 
 var today = new Date();
 var today__num = today.getDay();
@@ -85,6 +77,13 @@ function updateSchedule() {
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
 
+        if( parseInt((schedule__date[i].id).substring(4,6)) == 2 + parseInt(availalbeDate.substring(4,6))) {
+            schedule__date[i].style.background = '#fffdee';
+            schedule__date[i].innerHTML = '';
+            schedule__date[i].setAttribute('disabled', 'disabled');
+        }
+        
+        /*
         if(holiday.includes(parseInt(schedule__date[i].id))) {
              schedule__date[i].style.background = '#f8f4ec';
              schedule__date[i].style.fontSize = '7px';
@@ -94,7 +93,7 @@ function updateSchedule() {
 
          if(christmas.includes(parseInt(schedule__date[i].id))) {
             schedule__date[i].style.background = '#f19e9d';
-         }
+        }*/
     }
 }
 
@@ -315,6 +314,7 @@ calendar.addEventListener('click', (e) => {
         cake_list.innerHTML += custom_cake_div;
         dacq_list.innerHTML = dacq_div;
 
+        /*
         if(order_day == "20201223" || order_day == "20201224" || order_day == "20201225" || order_day == "20201226") {
             document.querySelector('.cake_list').style.gridTemplateColumns = "repeat(1,1fr)";
             document.querySelector('.dacq_list').style.gridTemplateColumns = "repeat(1,1fr)";
@@ -325,7 +325,7 @@ calendar.addEventListener('click', (e) => {
                 imgList[i].style.width = "50%";
             }
 
-        }
+        }*/
         
         item_section.style.display = 'block';
     });
@@ -506,13 +506,13 @@ function tasteValue(v) {
     console.log(tasteObjectList);
     
 
-    if(sum == 10) {
+    if(sum == 5) {
         document.querySelector(`#${v}`).value = JSON.stringify(tasteObjectList);
         taste_modal.style.height = 0;
     }
 
     else {
-        document.querySelector("#taste_message").innerHTML = "The total amount of dacquoise should be 10";
+        document.querySelector("#taste_message").innerHTML = "The total amount of dacquoise should be 5";
     }
     
 }
@@ -541,6 +541,7 @@ function addCart(p) {
     
     var content = ""
 
+    /*
     if(title == "Christmas-Santa") {
         content = `<p>We use food coloring to make red and green color. The decoration is made with butter cream.<p>if you want to change the amount, change and click the Added button.</p>`;
     }
@@ -549,9 +550,9 @@ function addCart(p) {
         content = `<p>We use food coloring to make green color. The decoration is made with butter cream. <p>if you want to change the amount, change and click the Added button.</p>`;
     }
 
-    else {
+    else { */
         content = `<p>Succesfully added, you can add more items, otherwise click the next button below.</p><p>if you want to change the amount, change and click the Added button.</p>`;
-    }
+    //}
 
     if(type.id == 'cake') {
         
@@ -983,8 +984,8 @@ next_customer_button.addEventListener('click', e => {
         delivery_info.style.display = "none";
     }
 
-    //christmas
-    if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") { 
+    //christmas 
+    //if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") { 
 
     for(var i=1; i<orderObjectArray.length; i++) {
         
@@ -1024,7 +1025,8 @@ next_customer_button.addEventListener('click', e => {
                 }
             }
         }
-    }}
+    }
+//}
         item_section.style.display = 'none';
         customer_section.style.display = 'block';   
     }
@@ -1142,33 +1144,26 @@ delivery_button.addEventListener('click', e => {
     
     var order_sum = getSumOrder();
 
-    if(order_sum > 49.99) {
-
-        if(order_day == "20201225" ||order_day == "20201226") {
-            var content = "Sorry, but delivery is not avaiable for this day";
+    if(order_day_num != 6) {
+        var content = "Sorry, but delivery is avaiable only for Saturday";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
-        }
-        
-        else if(order_day_num == 6) {
-                delivery_info.style.display = "block";
-                delivery_option_modal.style.height = '100vh';
-        }
-
-        else {
-            var content = "Sorry, but delivery is avaiable only for Saturday";
-            delivery_button.checked = false;
-            modal_content.innerHTML = content;   
-            modal.style.display = "flex";
-        }
     }
 
     else {
-        var content = "Sorry you should buy more than $ 50";
+        if(order_sum > 49.99) {
+
+            delivery_info.style.display = "block";
+            delivery_option_modal.style.height = '100vh';
+        }
+
+        else {
+            var content = "Sorry you should buy more than $ 50";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
+        }
     }
 })
 
@@ -1381,11 +1376,12 @@ next_check_button.addEventListener('click', e =>{
         var lettering_array = [];
 
         //christmas
-        if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+        //if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
         for(var t=0; t<(customer_info.lettering_id).length; t++) {
 
             lettering_array.push(document.querySelector(`#${customer_info.lettering_id[t]}`).value);
-        } }
+        } 
+        //}
 
         customer_info.lettering = lettering_array;
 
@@ -1455,14 +1451,15 @@ function confirmation(cust, ord, deliv) {
         }
 
         div = `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size} ${ord[i].taste_set}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
-          //christmas
-          if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+        //christmas
+        //if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
         for(var t=0; t<ord[i].amount; t++) {
         
             div +=`<tr><td id="item" colspan=3><input type="text" name="lettering_${l}" value="lettering: ${cust.lettering[l]}" style="font-size:12px;" readonly/>`;        
             l++;
             }
-        }}
+        //}
+        }
 
         else {
 
@@ -1511,11 +1508,6 @@ function confirmation(cust, ord, deliv) {
     order_info += `<input type="hidden" name="cust_obj" value='${obj_cust}'/></tr>`;
     
     order_table.innerHTML = order_info;
-    
-    
-
-    //sessiong storage
-
 }
 
 const request_button = document.querySelector('#next_request');

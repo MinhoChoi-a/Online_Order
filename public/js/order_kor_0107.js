@@ -1,5 +1,5 @@
 /* Schedule Section*/
-var closed_list = [20210111, 20210118, 20210125, 20210201];
+var closed_list = [20210111, 20210118, 20210125, 20210201, 20210208, 20210215, 20210222];
 
 var today = new Date();
 var today__num = today.getDay();
@@ -56,10 +56,6 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fff8d4';
         }
 
-        if( parseInt((schedule__date[i].id).substring(4,6)) == 2 + parseInt(availalbeDate.substring(4,6))) {
-            schedule__date[i].style.background = '#efdcbe';
-        }
-
         if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = '#ececec';
             schedule__date[i].style.fontSize = '10px';
@@ -78,6 +74,13 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fffdee';
             schedule__date[i].style.fontSize = '8px';
             schedule__date[i].innerHTML = 'closed';
+            schedule__date[i].setAttribute('disabled', 'disabled');
+        }
+
+
+        if( parseInt((schedule__date[i].id).substring(4,6)) == 2 + parseInt(availalbeDate.substring(4,6))) {
+            schedule__date[i].style.background = '#fffdee';
+            schedule__date[i].innerHTML = '';
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
         /*

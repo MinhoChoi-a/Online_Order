@@ -1,14 +1,5 @@
 /* Schedule Section*/
-
-var closed_list = [20201130, 20201207, 20201214, 20201221, 20201228];
-
-var holiday = [
-    20201229, 20201230, 20201231, 20210101, 20210102, 20210103, 20210104
-];
-
-var christmas = [
-    20201223, 20201224, 20201225, 20201226
-];
+var closed_list = [20210111, 20210118, 20210125, 20210201, 20210208, 20210215, 20210222];
 
 var today = new Date();
 var today__num = today.getDay();
@@ -65,10 +56,6 @@ function updateSchedule() {
             schedule__date[i].style.background = '#fff8d4';
         }
 
-        if( parseInt((schedule__date[i].id).substring(4,6)) == 2 + parseInt(availalbeDate.substring(4,6))) {
-            schedule__date[i].style.background = '#efdcbe';
-        }
-
         if(schedule__date[i].id < availalbeDate) {
             schedule__date[i].style.background = '#ececec';
             schedule__date[i].style.fontSize = '10px';
@@ -90,6 +77,13 @@ function updateSchedule() {
             schedule__date[i].setAttribute('disabled', 'disabled');
         }
 
+
+        if( parseInt((schedule__date[i].id).substring(4,6)) == 2 + parseInt(availalbeDate.substring(4,6))) {
+            schedule__date[i].style.background = '#fffdee';
+            schedule__date[i].innerHTML = '';
+            schedule__date[i].setAttribute('disabled', 'disabled');
+        }
+        /*
         if(holiday.includes(parseInt(schedule__date[i].id))) {
              schedule__date[i].style.background = '#f8f4ec';
              schedule__date[i].style.fontSize = '7px';
@@ -99,7 +93,7 @@ function updateSchedule() {
 
          if(christmas.includes(parseInt(schedule__date[i].id))) {
             schedule__date[i].style.background = '#f19e9d';
-         }
+         }*/
       
     }
 }
@@ -321,6 +315,7 @@ calendar.addEventListener('click', (e) => {
         cake_list.innerHTML += custom_cake_div;
         dacq_list.innerHTML = dacq_div;
 
+        /*
         if(order_day == "20201223" || order_day == "20201224" || order_day == "20201225" || order_day == "20201226") {
             document.querySelector('.cake_list').style.gridTemplateColumns = "repeat(1,1fr)";
             document.querySelector('.dacq_list').style.gridTemplateColumns = "repeat(1,1fr)";
@@ -331,7 +326,7 @@ calendar.addEventListener('click', (e) => {
                 imgList[i].style.width = "50%";
             }
 
-        }
+        }*/
         
         item_section.style.display = 'block';
     });
@@ -342,7 +337,7 @@ alret_modal.addEventListener('click', e => {
 })
 
 function cake__inquiry() {
-    var content = `<p id='kor'>해당 케이크는 이메일(bakingbunny.yyc@gmail.com)로 별도 문의 부탁드립니다. 감사합니다 :)</p>`;
+    var content = `<p id='kor'>해당 케이크는 이메일(bakingbunny.yyc@gmail.com)로 별도 문의 부탁드립니다.</p>`;
     modal_content.innerHTML = content;   
     modal.style.display = "flex";
 }
@@ -512,13 +507,13 @@ function tasteValue(v) {
     console.log(tasteObjectList);
     
 
-    if(sum == 10) {
+    if(sum == 5) {
         document.querySelector(`#${v}`).value = JSON.stringify(tasteObjectList);
         taste_modal.style.height = 0;
     }
 
     else {
-        document.querySelector("#taste_message").innerHTML = "다쿠아즈 수량은 10개여야합니다";
+        document.querySelector("#taste_message").innerHTML = "다쿠아즈 수량은 5개여야합니다";
     }
     
 }
@@ -665,7 +660,7 @@ function addCart(p) {
         dacq_total += amount;
 
         if(today_limit.dacq_limit == 0) {
-            content = `<div id='kor'>죄송합니다, 이 날의 다쿠아즈는 모두 마감되었습니다.</div>`;
+            content = `<div id='kor'>죄송합니다, 이 날의 다쿠아즈는 sold-out 되었습니다.</div>`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
@@ -706,7 +701,7 @@ function addCart(p) {
         dacq_total += amount;
 
         if(today_limit.dacq_limit == 0) {
-            content = `<div id='kor'>죄송합니다, 이 날의 다쿠아즈는 모두 마감되었습니다.</div>`;
+            content = `<div id='kor'>죄송합니다, 이 날의 다쿠아즈는 sold-out 되었습니다.</div>`;
             dacq_total -= amount;
             amount_class.firstElementChild.nextElementSibling.value = 1;
         }
@@ -990,7 +985,7 @@ next_customer_button.addEventListener('click', e => {
     }
 
     //christmas
-    if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") { 
+    //if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") { 
     
     for(var i=1; i<orderObjectArray.length; i++) {
         
@@ -1031,7 +1026,7 @@ next_customer_button.addEventListener('click', e => {
             }
         }
     }
-    } //christmas
+    //} //christmas
         item_section.style.display = 'none';
         customer_section.style.display = 'block';   
     }
@@ -1117,7 +1112,7 @@ function pickup_apply() {
 
     if(selected_time.value == "") {
 
-        document.querySelector('.pickup_err').innerHTML = "<div id='kor'>시간 대를 먼저 선택해주세요</div>"
+        document.querySelector('.pickup_err').innerHTML = "Please select a time first"
     }
 
     else if(specific_time.value == "") {
@@ -1149,33 +1144,26 @@ delivery_button.addEventListener('click', e => {
     
     var order_sum = getSumOrder();
 
-    if(order_sum > 49.99) {
-
-        if(order_day == "20201225" ||order_day == "20201226") {
-            var content = "<div id='kor'> 죄송합니다. 이 날은 딜리버리 서비스가 불가능합니다.</div>";
+    if(order_day_num != 6) {
+        var content = "<div id='kor'> 죄송합니다. 딜리버리는 토요일만 가능합니다.</div>";
             delivery_button.checked = false;
             modal_content.innerHTML = content;   
             modal.style.display = "flex";
-        }
-        
-        else if(order_day_num == 5 || order_day_num == 6) {
-                delivery_info.style.display = "block";
-                delivery_option_modal.style.height = '100vh';
+    }
+    
+    else {
+        if(order_sum > 49.99) {
+
+            delivery_info.style.display = "block";
+            delivery_option_modal.style.height = '100vh';
         }
 
         else {
-            var content = "<div id='kor'> 죄송합니다. 딜리버리는 금요일에서 토요일까지만 가능합니다.</div>";
-            delivery_button.checked = false;
-            modal_content.innerHTML = content;   
-            modal.style.display = "flex";
+            var content = "<div id='kor'> 죄송합니다. 딜리버리는 $50 이상 구매하셔야 가능합니다.</div>";
+                delivery_button.checked = false;
+                modal_content.innerHTML = content;   
+                modal.style.display = "flex";
         }
-    }
-
-    else {
-        var content = "<div id='kor'> 죄송합니다. 딜리버리는 $ 50 이상 구매하셔야 가능합니다.</div>";
-            delivery_button.checked = false;
-            modal_content.innerHTML = content;   
-            modal.style.display = "flex";
     }
 })
 
@@ -1341,7 +1329,7 @@ next_check_button.addEventListener('click', e =>{
 
         if(customer_info.pickup_time == 0) {
             error_check.check = true;
-            error_check.message = "<div id='kor'>픽업 메뉴에서 시간대를 선택해주세요</div>";
+            error_check.message = "Sorry, but you didn't select a time";
         }
     }
 
@@ -1388,13 +1376,13 @@ next_check_button.addEventListener('click', e =>{
         var lettering_array = [];
 
         //christmas
-        if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+        //if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
 
         for(var t=0; t<(customer_info.lettering_id).length; t++) {
 
             lettering_array.push(document.querySelector(`#${customer_info.lettering_id[t]}`).value);
         }
-    }
+    //}
 
         customer_info.lettering = lettering_array;
 
@@ -1466,14 +1454,15 @@ function confirmation(cust, ord, deliv) {
         div = `<tr><td id="item"><input type="text" name="item_name_${i}" value="${ord[i].item_name}${size} ${ord[i].taste_set}" style="font-size:12px;" readonly/></td><td id="amount"><input type="text" name="amount_${i}" value="${ord[i].amount}" readonly/></td><td id="price"><input type="text" name="price_${i}" value="${(ord[i].price*ord[i].amount*ord[i].set_value).toFixed(1)}" readonly/></td>`;
         
          //christmas
-         if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
+      //   if(order_day != "20201223" && order_day != "20201224" && order_day != "20201225" && order_day != "20201226") {
 
         for(var t=0; t<ord[i].amount; t++) {
         
             div +=`<tr><td id="item" colspan=3><input type="text" name="lettering_${l}" value="lettering: ${cust.lettering[l]}" style="font-size:12px;" readonly/>`;        
             l++;
             }
-        } }
+    //    } 
+    }
 
         else {
 
@@ -1522,10 +1511,7 @@ function confirmation(cust, ord, deliv) {
     order_info += `<input type="hidden" name="cust_obj" value='${obj_cust}'/></tr>`;
     
     order_table.innerHTML = order_info;
-    
-    
-
-    //sessiong storage
+       
 
 }
 
