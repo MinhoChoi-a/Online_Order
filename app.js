@@ -881,7 +881,7 @@ router.post('/management', (req,res) => {
 			while(n < limit_data.length) {
         
         //save on mongo
-        
+        /*
         var pickup_array = (limit_data[n].pickup_time).split(",");
         var pick_obj_arr = [];
 
@@ -909,9 +909,9 @@ router.post('/management', (req,res) => {
               console.log(err.message)
             }
           });  
-        
+        */
           //update mongo
-  /*        
+    
           Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit}}, function(err) {
 
           if(!err) {
@@ -920,7 +920,7 @@ router.post('/management', (req,res) => {
           });
           
           //
-*/
+
         
         n++;
           
