@@ -103,7 +103,7 @@ router.get('/order/eng', function (req, res) {
             return next(err);
         }
 
-    res.render('order_eng_0225', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_eng_0403', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -493,7 +493,7 @@ router.get('/order/kor', function (req, res) {
             return next(err);
         }
     
-    res.render('order_kor_0225', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_kor_0403', {limit_data: JSON.stringify(results.limits)});
   });
 });
 

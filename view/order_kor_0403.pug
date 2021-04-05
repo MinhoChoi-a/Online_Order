@@ -24,13 +24,13 @@ body
     section.first
       div.information
         h2 Information
-        p - Please select the date to see our menu.
-        p - Dacqouise pickup is available between Thursday and Saturday.
-        p - To order custom cakes: bakingbunny.yyc@gmail.com
-        p - Delivery service is available only for more than $ 50 purchase on Saturday.
-        p - Additional delivery fee can range from 0 to 10 dollars by distance.
+        p#kor - 다쿠아즈 픽업: 매주 목, 금, 토요일입니다.
+        p#kor - 커스텀 케익 문의: bakingbunny.yyc@gmail.com
+        p#kor - 매주 일요일 자정에 다음주 선주문이 마감됩니다.
+        p#kor - 딜리버리는 $50 이상 주문 시 토요일 오후 1시에서 오후 4시 사이에 가능합니다.
+        p#kor - 거리에 따라 딜리버리 요금이 추가 될 수 있습니다.
       div.calendar__table
-        h2.month March - April
+        h2.month April
         .calendar
           .day
             .div(id="td") Sun
@@ -40,66 +40,6 @@ body
             .div(id="td") Thu
             .div(id="td") Fri
             .div(id="td") Sat
-          .week
-            .div(id="td")
-              button#20210228.date 28
-            .div(id="td")
-              button#20210301.date 1
-            .div(id="td")
-              button#20210302.date 2
-            .div(id="td")
-              button#20210303.date 3
-            .div(id="td")
-              button#20210304.date 4
-            .div(id="td")
-              button#20210305.date 5
-            .div(id="td")
-              button#20210306.date 6                   
-          .week
-            .div(id="td")
-              button#20210307.date 7
-            .div(id="td")
-              button#20210308.date 8
-            .div(id="td")
-              button#20210309.date 9
-            .div(id="td")
-              button#20210310.date 10
-            .div(id="td")
-              button#20210311.date 11
-            .div(id="td")
-              button#20210312.date 12
-            .div(id="td")
-              button#20210313.date 13
-          .week
-            .div(id="td")
-              button#20210314.date 14
-            .div(id="td")
-              button#20210315.date 15
-            .div(id="td")
-              button#20210316.date 16
-            .div(id="td")
-              button#20210317.date 17
-            .div(id="td")
-              button#20210318.date 18
-            .div(id="td")
-              button#20210319.date 19
-            .div(id="td")
-              button#20210320.date 20
-          .week
-            .div(id="td")
-              button#20210321.date 21
-            .div(id="td")
-              button#20210322.date 22
-            .div(id="td")
-              button#20210323.date 23
-            .div(id="td")
-              button#20210324.date 24
-            .div(id="td")
-              button#20210325.date 25
-            .div(id="td")
-              button#20210326.date 26
-            .div(id="td")
-              button#20210327.date 27
           .week
             .div(id="td")
               button#20210328.date 28
@@ -175,15 +115,17 @@ body
               button#20210430.date 30
             .div(id="td")
               button#20210501.date 1
+
+                   
       .hidden_block
 
     section.second
       .alret_modal
         .alret_content 
           h1 Before Select
-          p Menu items may contain or come into contact with eggs, peanuts, treenuts, and milk.
-          p Please let us know if you have any food allergies or restrictions when you place on order.
-          p If you read all, tap here :)
+          p#kor 본 메뉴는 달걀, 견과류 그리고 우유 등을 포함할 수 있습니다.
+          p#kor 만약 특정 알러지가 있으시다면 주문 하실 때 꼭 적어주세요.
+          p#kor 다 읽으셨다면, 화면을 클릭해 주세요 :)
 
       .total_check
       .item__list
@@ -202,7 +144,7 @@ body
       .cake_size_modal
         .cake_size_modal_content(value='')
           button(value="" class="xIcon" onclick="xButton_cake_taste()" style="font-size:13px") Close 
-          p#kor Chose the option below
+          p#kor 아래 옵션을 선택해주세요
           div(id="cake_size_op")
           div(id="cake_taste")
           div(id="cake_message")
@@ -213,7 +155,7 @@ body
         .dacq_set_modal_content(value='')
           button(value="" class="xIcon" onclick="xButton_taste()" style="font-size:13px") Close 
           div.taste_info(value='')
-            p#kor Please pick up 5 daqouises
+            p#kor 원하시는 맛을 5개 골라 주세요
             div(id="tastes")
             div(id="taste_message")
             button(id="apply" type="button" value='' onclick="tasteValue(this.parentElement.value)") Apply
@@ -221,7 +163,7 @@ body
       .hidden_block 
       
       .nav
-        a(href='/order/eng')
+        a(href='/order/kor')
           button#prev__schedule Previous
         button#next_customer Next
       
@@ -277,19 +219,19 @@ body
             div.pickup_location            
             div.pickup_selection
             div.pickup_specific
-              p Please put specific minute for pikcup(any number between 0 - 59)
+              p#kor 몇분에 도착 예정인지 숫자를 적어주세요 (ex. 50))
               input(type="number" max="59" id= 'specific_pick' name='specific_pick')               
             div.pickup_err
             button(id="apply" type="button" value='' onclick="pickup_apply()") Apply
           
           div.delivery_info
-            p Delviery service will be placed between 1 to 4 PM on Saturday. The specific time will be noticed with the confirmation of order.
+            p#kor 딜리버리 서비스는 토요일은 1시에서 4시 사이에 이뤄집니다. 정확한 시간은 주문하신 뒤에 별도 안내 드립니다.
             label(for='address') Please put your Postal Code
             input(type='text' id= 'postal' name='address')
             button(type='button' id="address_check") Check address
             div(id="delivery_fee")
             div(id="delivery_specific")
-              p Please put specific address to make a correct delivery service.(ex. 000 0st SW)
+              p#kor 정확한 딜리버리 서비스를 위해 상세 주소를 남겨주세요 (ex. 000 0st SW)
               input(type='text' id='specific_address' name='specific_address')               
             div.delivery_err
             button(id="apply" type="button" value='' onclick="delivery_apply()") Apply
@@ -305,7 +247,7 @@ body
         <img src="/img/logo_circle.png">
 
       h1 Request
-      p if you want to change something, you can go to the prior menu with previous button
+      p#kor 주문을 수정하고 싶으시면, Previous 버튼을 누르시고 변경하시면 됩니다.
 
       form(method='POST' action="" enctype="application/x-www-form-urlencoded")
         div(class='form-group')
@@ -320,10 +262,10 @@ body
     
     .request_modal
       .request_content
-        p Please wait for a second to proceed the request :)
+        p#kor Request를 처리 중입니다. 잠시만 기다려주세요 :)
       
     .modal
       .modal__content
 
 
-script(type='text/javascript' src='/js/order_eng_0225.js')
+script(type='text/javascript' src='/js/order_kor_0225.js')
