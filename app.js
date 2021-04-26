@@ -103,7 +103,7 @@ router.get('/order/eng', function (req, res) {
             return next(err);
         }
 
-    res.render('order_eng_0403', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_eng_0426', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -493,7 +493,7 @@ router.get('/order/kor', function (req, res) {
             return next(err);
         }
     
-    res.render('order_kor_0403', {limit_data: JSON.stringify(results.limits)});
+    res.render('order_kor_0426', {limit_data: JSON.stringify(results.limits)});
   });
 });
 
@@ -881,7 +881,7 @@ router.post('/management', (req,res) => {
 			while(n < limit_data.length) {
         
         //save on mongo
-        /*
+        
         var pickup_array = (limit_data[n].pickup_time).split(",");
         var pick_obj_arr = [];
 
@@ -909,16 +909,16 @@ router.post('/management', (req,res) => {
               console.log(err.message)
             }
           });  
-        */
+        
           //update mongo
-    
+          /*
           Limit.findOneAndUpdate({date: limit_data[n].date}, {$set: {dacq_limit: limit_data[n].dacq_limit, cake_limit: limit_data[n].cake_limit}}, function(err) {
 
           if(!err) {
             console.log("mongo success");
             }
           });
-          
+          */
           //
 
         

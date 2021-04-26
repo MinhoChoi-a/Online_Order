@@ -1,7 +1,5 @@
 /* Schedule Section*/
-var closed_list = [20210301, 20210308, 20210315, 20210322, 20210329, 
-    20210405, 20210412, 20210419, 20210426];
-
+var closed_list = [20210503, 20210510, 20210517, 20210524, 20210531];
 
 var today = new Date();
 var today__num = today.getDay();
