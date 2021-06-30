@@ -24,13 +24,13 @@ body
     section.first
       div.information
         h2 Information
-        p - Please select the date to see our menu.
-        p - Dacqouise pickup is available between Thursday and Saturday.
-        p - To order custom cakes: bakingbunny.yyc@gmail.com
-        p - Delivery service is available only for more than $ 50 purchase on Saturday.
-        p - Additional delivery fee can range from 0 to 10 dollars by distance.
+        p#kor - 다쿠아즈 픽업: 매주 목, 금, 토요일입니다.
+        p#kor - 커스텀 케익 문의: bakingbunny.yyc@gmail.com
+        p#kor - 매주 일요일 자정에 다음주 선주문이 마감됩니다.
+        p#kor - 딜리버리는 $50 이상 주문 시 토요일 오후 1시에서 오후 4시 사이에 가능합니다.
+        p#kor - 거리에 따라 딜리버리 요금이 추가 될 수 있습니다.
       div.calendar__table
-        h2.month May
+        h2.month July
         .calendar
           .day
             .div(id="td") Sun
@@ -42,88 +42,88 @@ body
             .div(id="td") Sat
           .week
             .div(id="td")
-              button#20210502.date 2
+              button#20210627.date 27
             .div(id="td")
-              button#20210503.date 3
+              button#20210628.date 28
             .div(id="td")
-              button#20210504.date 4
+              button#20210629.date 29
             .div(id="td")
-              button#20210505.date 5
+              button#20210630.date 30
             .div(id="td")
-              button#20210506.date 6
+              button#20210701.date 1
             .div(id="td")
-              button#20210507.date 7
+              button#20210702.date 2
             .div(id="td")
-              button#20210508.date 8
+              button#20210703.date 3
           .week
             .div(id="td")
-              button#20210509.date 9
+              button#20210704.date 4
             .div(id="td")
-              button#20210510.date 10
+              button#20210705.date 5
             .div(id="td")
-              button#20210511.date 11
+              button#20210706.date 6
             .div(id="td")
-              button#20210512.date 12
+              button#20210707.date 7
             .div(id="td")
-              button#20210513.date 13
+              button#20210708.date 8
             .div(id="td")
-              button#20210514.date 14
+              button#20210709.date 9
             .div(id="td")
-              button#20210515.date 15
+              button#20210710.date 10
           .week
             .div(id="td")
-              button#20210516.date 16
+              button#20210711.date 11
             .div(id="td")
-              button#20210517.date 17
+              button#20210712.date 12
             .div(id="td")
-              button#20210518.date 18
+              button#20210713.date 13
             .div(id="td")
-              button#20210519.date 19
+              button#20210714.date 14
             .div(id="td")
-              button#20210520.date 20
+              button#20210715.date 15
             .div(id="td")
-              button#20210521.date 21
+              button#20210716.date 16
             .div(id="td")
-              button#20210522.date 22
+              button#20210717.date 17
           .week
             .div(id="td")
-              button#20210523.date 23
+              button#20210718.date 18
             .div(id="td")
-              button#20210524.date 24
+              button#20210719.date 19
             .div(id="td")
-              button#20210525.date 25
+              button#20210720.date 20
             .div(id="td")
-              button#20210526.date 26
+              button#20210721.date 21
             .div(id="td")
-              button#20210527.date 27
+              button#20210722.date 22
             .div(id="td")
-              button#20210528.date 28
+              button#20210723.date 23
             .div(id="td")
-              button#20210529.date 29
+              button#20210724.date 24
           .week
             .div(id="td")
-              button#20210530.date 30
+              button#20210725.date 25
             .div(id="td")
-              button#20210531.date 31
+              button#20210726.date 26
             .div(id="td")
-              button#20210601.date 1
+              button#20210727.date 27
             .div(id="td")
-              button#20210602.date 2
+              button#20210728.date 28
             .div(id="td")
-              button#20210603.date 3
+              button#20210729.date 29
             .div(id="td")
-              button#20210604.date 4
+              button#20210730.date 30
             .div(id="td")
-              button#20210605.date 5
+              button#20210731.date 31
       .hidden_block
 
     section.second
       .alret_modal
         .alret_content 
           h1 Before Select
-          p Menu items may contain or come into contact with eggs, peanuts, treenuts, and milk.
-          p Please let us know if you have any food allergies or restrictions when you place on order.
-          p If you read all, tap here :)
+          p#kor 본 메뉴는 달걀, 견과류 그리고 우유 등을 포함할 수 있습니다.
+          p#kor 만약 특정 알러지가 있으시다면 주문 하실 때 꼭 적어주세요.
+          p#kor 다 읽으셨다면, 화면을 클릭해 주세요 :)
 
       .total_check
       .item__list
@@ -142,7 +142,7 @@ body
       .cake_size_modal
         .cake_size_modal_content(value='')
           button(value="" class="xIcon" onclick="xButton_cake_taste()" style="font-size:13px") Close 
-          p#kor Chose the option below
+          p#kor 아래 옵션을 선택해주세요
           div(id="cake_size_op")
           div(id="cake_taste")
           div(id="cake_message")
@@ -153,7 +153,7 @@ body
         .dacq_set_modal_content(value='')
           button(value="" class="xIcon" onclick="xButton_taste()" style="font-size:13px") Close 
           div.taste_info(value='')
-            p#kor Please pick up 5 daqouises
+            p#kor 원하시는 맛을 5개 골라 주세요
             div(id="tastes")
             div(id="taste_message")
             button(id="apply" type="button" value='' onclick="tasteValue(this.parentElement.value)") Apply
@@ -161,7 +161,7 @@ body
       .hidden_block 
       
       .nav
-        a(href='/order/eng')
+        a(href='/order/kor')
           button#prev__schedule Previous
         button#next_customer Next
       
@@ -217,19 +217,19 @@ body
             div.pickup_location            
             div.pickup_selection
             div.pickup_specific
-              p Please put specific minute for pikcup(any number between 0 - 59)
+              p#kor 몇분에 도착 예정인지 숫자를 적어주세요 (ex. 50))
               input(type="number" max="59" id= 'specific_pick' name='specific_pick')               
             div.pickup_err
             button(id="apply" type="button" value='' onclick="pickup_apply()") Apply
           
           div.delivery_info
-            p Delviery service will be placed between 1 to 4 PM on Saturday. The specific time will be noticed with the confirmation of order.
+            p#kor 딜리버리 서비스는 토요일은 1시에서 4시 사이에 이뤄집니다. 정확한 시간은 주문하신 뒤에 별도 안내 드립니다.
             label(for='address') Please put your Postal Code
             input(type='text' id= 'postal' name='address')
             button(type='button' id="address_check") Check address
             div(id="delivery_fee")
             div(id="delivery_specific")
-              p Please put specific address to make a correct delivery service.(ex. 000 0st SW)
+              p#kor 정확한 딜리버리 서비스를 위해 상세 주소를 남겨주세요 (ex. 000 0st SW)
               input(type='text' id='specific_address' name='specific_address')               
             div.delivery_err
             button(id="apply" type="button" value='' onclick="delivery_apply()") Apply
@@ -245,7 +245,7 @@ body
         <img src="/img/logo_circle.png">
 
       h1 Request
-      p if you want to change something, you can go to the prior menu with previous button
+      p#kor 주문을 수정하고 싶으시면, Previous 버튼을 누르시고 변경하시면 됩니다.
 
       form(method='POST' action="" enctype="application/x-www-form-urlencoded")
         div(class='form-group')
@@ -260,10 +260,10 @@ body
     
     .request_modal
       .request_content
-        p Please wait for a second to proceed the request :)
+        p#kor Request를 처리 중입니다. 잠시만 기다려주세요 :)
       
     .modal
       .modal__content
 
 
-script(type='text/javascript' src='/js/order_eng_0225.js')
+script(type='text/javascript' src='/js/order_kor_0225.js')
